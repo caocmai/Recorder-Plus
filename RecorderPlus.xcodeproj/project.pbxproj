@@ -17,6 +17,13 @@
 		2C660EDF25A6C0290054D556 /* RecorderPlusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C660EDE25A6C0290054D556 /* RecorderPlusTests.swift */; };
 		2C660EEA25A6C0290054D556 /* RecorderPlusUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C660EE925A6C0290054D556 /* RecorderPlusUITests.swift */; };
 		2C660F0025A6D7170054D556 /* ViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C660EFF25A6D7170054D556 /* ViewController2.swift */; };
+		2C660F0625A6DD990054D556 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C660F0525A6DD990054D556 /* Extensions.swift */; };
+		2C660F0B25A6DDA40054D556 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C660F0A25A6DDA40054D556 /* Colors.swift */; };
+		2C660F1025A6DDD30054D556 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C660F0F25A6DDD30054D556 /* TableViewCell.swift */; };
+		2C660F1525A6DE100054D556 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C660F1425A6DE100054D556 /* CollectionViewCell.swift */; };
+		2C660F1A25A6DE2E0054D556 /* TableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C660F1925A6DE2E0054D556 /* TableViewCellModel.swift */; };
+		2C660F1F25A6DE340054D556 /* CollectionViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C660F1E25A6DE340054D556 /* CollectionViewCellModel.swift */; };
+		2C660F2925A6E48F0054D556 /* CollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C660F2825A6E48E0054D556 /* CollectionViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +60,13 @@
 		2C660EE925A6C0290054D556 /* RecorderPlusUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecorderPlusUITests.swift; sourceTree = "<group>"; };
 		2C660EEB25A6C0290054D556 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2C660EFF25A6D7170054D556 /* ViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController2.swift; sourceTree = "<group>"; };
+		2C660F0525A6DD990054D556 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		2C660F0A25A6DDA40054D556 /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		2C660F0F25A6DDD30054D556 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		2C660F1425A6DE100054D556 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
+		2C660F1925A6DE2E0054D556 /* TableViewCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCellModel.swift; sourceTree = "<group>"; };
+		2C660F1E25A6DE340054D556 /* CollectionViewCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCellModel.swift; sourceTree = "<group>"; };
+		2C660F2825A6E48E0054D556 /* CollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollectionViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +117,7 @@
 		2C660EC325A6C0280054D556 /* RecorderPlus */ = {
 			isa = PBXGroup;
 			children = (
+				2C660F0425A6DD870054D556 /* Color Example */,
 				2C660EC425A6C0280054D556 /* AppDelegate.swift */,
 				2C660EC625A6C0280054D556 /* SceneDelegate.swift */,
 				2C660EC825A6C0280054D556 /* ViewController.swift */,
@@ -132,6 +147,20 @@
 				2C660EEB25A6C0290054D556 /* Info.plist */,
 			);
 			path = RecorderPlusUITests;
+			sourceTree = "<group>";
+		};
+		2C660F0425A6DD870054D556 /* Color Example */ = {
+			isa = PBXGroup;
+			children = (
+				2C660F0525A6DD990054D556 /* Extensions.swift */,
+				2C660F0A25A6DDA40054D556 /* Colors.swift */,
+				2C660F0F25A6DDD30054D556 /* TableViewCell.swift */,
+				2C660F1925A6DE2E0054D556 /* TableViewCellModel.swift */,
+				2C660F1425A6DE100054D556 /* CollectionViewCell.swift */,
+				2C660F2825A6E48E0054D556 /* CollectionViewCell.xib */,
+				2C660F1E25A6DE340054D556 /* CollectionViewCellModel.swift */,
+			);
+			path = "Color Example";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -240,6 +269,7 @@
 				2C660ED425A6C0280054D556 /* LaunchScreen.storyboard in Resources */,
 				2C660ED125A6C0280054D556 /* Assets.xcassets in Resources */,
 				2C660ECC25A6C0280054D556 /* Main.storyboard in Resources */,
+				2C660F2925A6E48F0054D556 /* CollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,8 +295,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C660F0025A6D7170054D556 /* ViewController2.swift in Sources */,
+				2C660F1F25A6DE340054D556 /* CollectionViewCellModel.swift in Sources */,
+				2C660F1025A6DDD30054D556 /* TableViewCell.swift in Sources */,
+				2C660F1525A6DE100054D556 /* CollectionViewCell.swift in Sources */,
+				2C660F0625A6DD990054D556 /* Extensions.swift in Sources */,
 				2C660EC925A6C0280054D556 /* ViewController.swift in Sources */,
+				2C660F0B25A6DDA40054D556 /* Colors.swift in Sources */,
 				2C660EC525A6C0280054D556 /* AppDelegate.swift in Sources */,
+				2C660F1A25A6DE2E0054D556 /* TableViewCellModel.swift in Sources */,
 				2C660EC725A6C0280054D556 /* SceneDelegate.swift in Sources */,
 				2C660ECF25A6C0280054D556 /* RecorderPlus.xcdatamodeld in Sources */,
 			);
