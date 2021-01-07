@@ -22,8 +22,23 @@ class ViewController: UIViewController {
         tableview.dataSource = self
         tableview.delegate = self
         tableview.register(TableViewCell.self, forCellReuseIdentifier: "tableviewcellid")
+        
+   
+
+        
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
+
+        
+        self.navigationItem.rightBarButtonItem = addButton
 
 
+    }
+    
+    @objc func addButtonTapped() {
+        
+        let newRecordingVC = NewRecording()
+//        let navController = UINavigationController(rootViewController: newRecordingVC)
+        self.navigationController?.pushViewController(newRecordingVC, animated: true)
     }
 }
 

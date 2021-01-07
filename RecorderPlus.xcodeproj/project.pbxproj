@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C341E2625A7CDBF005E8AD7 /* NewRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C341E2525A7CDBF005E8AD7 /* NewRecording.swift */; };
 		2C660EC525A6C0280054D556 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C660EC425A6C0280054D556 /* AppDelegate.swift */; };
 		2C660EC725A6C0280054D556 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C660EC625A6C0280054D556 /* SceneDelegate.swift */; };
 		2C660EC925A6C0280054D556 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C660EC825A6C0280054D556 /* ViewController.swift */; };
@@ -44,6 +45,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2C341E2525A7CDBF005E8AD7 /* NewRecording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRecording.swift; sourceTree = "<group>"; };
 		2C660EC125A6C0280054D556 /* RecorderPlus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecorderPlus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C660EC425A6C0280054D556 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2C660EC625A6C0280054D556 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				2C660EC425A6C0280054D556 /* AppDelegate.swift */,
 				2C660EC625A6C0280054D556 /* SceneDelegate.swift */,
 				2C660EC825A6C0280054D556 /* ViewController.swift */,
+				2C341E2525A7CDBF005E8AD7 /* NewRecording.swift */,
 				2C660EFF25A6D7170054D556 /* ViewController2.swift */,
 				2C660ECA25A6C0280054D556 /* Main.storyboard */,
 				2C660ED025A6C0280054D556 /* Assets.xcassets */,
@@ -302,6 +305,7 @@
 				2C660EC925A6C0280054D556 /* ViewController.swift in Sources */,
 				2C660F0B25A6DDA40054D556 /* Colors.swift in Sources */,
 				2C660EC525A6C0280054D556 /* AppDelegate.swift in Sources */,
+				2C341E2625A7CDBF005E8AD7 /* NewRecording.swift in Sources */,
 				2C660F1A25A6DE2E0054D556 /* TableViewCellModel.swift in Sources */,
 				2C660EC725A6C0280054D556 /* SceneDelegate.swift in Sources */,
 				2C660ECF25A6C0280054D556 /* RecorderPlus.xcdatamodeld in Sources */,

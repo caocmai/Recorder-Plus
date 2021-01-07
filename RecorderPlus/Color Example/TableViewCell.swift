@@ -20,6 +20,12 @@ class TableViewCell: UITableViewCell {
     var rowWithColors: [CollectionViewCellModel]?
     var subCategoryLabel = UILabel()
     
+    let simpleConfig = UICollectionView.CellRegistration<MyCollectionViewCell, CollectionViewCellModel> { (cell, indexPath, model) in
+        cell.label.text = model.name
+        cell.backgroundColor = model.color
+
+    }
+    
     fileprivate let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -27,7 +33,7 @@ class TableViewCell: UITableViewCell {
 
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+//        cv.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         return cv
     }()
 
@@ -88,13 +94,21 @@ extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, U
     
     // Set the data for each cell (color and color name)
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? UICollectionViewCell {
-            cell.backgroundColor = self.rowWithColors?[indexPath.item].color ?? UIColor.blue
-//            cell.text = self.rowWithColors?[indexPath.item].name ?? ""
-            return cell
-        }
-        print("test")
-        return UICollectionViewCell()
+//        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? UICollectionViewCell {
+//            cell.backgroundColor = self.rowWithColors?[indexPath.item].color ?? UIColor.blue
+////            cell.text = self.rowWithColors?[indexPath.item].name ?? ""
+//            return cell
+//        }
+//        print("test")
+//        return UICollectionViewCell()
+//        let model = self.rowWithColors?[indexPath.item].name ?? ""
+//        let model = self.rowWithColors?[indexPath.item].color
+        
+        let model = self.rowWithColors?[indexPath.item]
+        
+        return collectionView.dequeueConfiguredReusableCell(using: simpleConfig,
+                                                            for: indexPath,
+                                                            item: model)
     }
     
     // Add spaces at the beginning and the end of the collection view

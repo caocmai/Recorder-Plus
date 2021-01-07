@@ -110,7 +110,7 @@ class MyCollectionViewCell: UICollectionViewCell {
     super.init(frame: frame)
 
     contentView.addSubview(label)
-    contentView.backgroundColor = .blue
+//    contentView.backgroundColor = .blue
     label.translatesAutoresizingMaskIntoConstraints = false
     label.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
     label.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
