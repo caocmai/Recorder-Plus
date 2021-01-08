@@ -17,7 +17,7 @@ struct Colors {
             colors: [
                 // SubCategory #1.1
                 [CollectionViewCellModel(color: UIColor.colorFromHex("#DA70D6"), name: "Orchid"),
-                 CollectionViewCellModel(color: UIColor.colorFromHex("#FA8072"), name: "Salmon"),
+                 CollectionViewCellModel(color: UIColor.colorFromHex("#FA8072"), name: "Orange"),
                  CollectionViewCellModel(color: UIColor.colorFromHex("#FDF5E6"), name: "Old Lace"),
                  CollectionViewCellModel(color: UIColor.colorFromHex("#00FFFF"), name: "Aqua"),
                  CollectionViewCellModel(color: UIColor.colorFromHex("#2E8B57"), name: "Sea Green")],
