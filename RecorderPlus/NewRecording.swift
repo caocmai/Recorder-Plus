@@ -7,17 +7,25 @@
 
 import UIKit
 import AVFoundation
+import iOSDropDown
 
 
 class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDelegate {
     
+    let coreDataStack = CoreDataStack()
+    
     let playbackButton = UIButton()
     var recordButton = UIButton()
+    
+    var deleteButton = UIButton()
     
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
     var soundPlayer : AVAudioPlayer!
     
+    var dropDown: DropDown!
+    let uuid = UUID().uuidString
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,13 +35,24 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
 
         self.view.addSubview(playbackButton)
         playbackButton.setTitle("Play", for: .normal)
-        playbackButton.backgroundColor = .orange
+        playbackButton.backgroundColor = .green
         playbackButton.setTitleColor(.purple, for: .normal)
         playbackButton.addTarget(self, action: #selector(playbackButtonTapped), for: .touchUpInside)
         playbackButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             playbackButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -100),
             playbackButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+        ])
+        
+        self.view.addSubview(deleteButton)
+        deleteButton.setTitle("DELETE", for: .normal)
+        deleteButton.backgroundColor = .red
+        deleteButton.setTitleColor(.purple, for: .normal)
+        deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+        deleteButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            deleteButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 170),
+            deleteButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
         ])
         
         recordingSession = AVAudioSession.sharedInstance()
@@ -54,6 +73,60 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             // failed to record!
         }
         
+        
+    
+        
+        let valueLabel = UILabel()
+        dropDown = DropDown(frame: CGRect(x: 110, y: 100, width: 200, height: 30)) // set frame
+        dropDown.backgroundColor = .gray
+        dropDown.placeholder = "Select Category"
+        
+        var categories = [String]()
+
+        // The list of array to display. Can be changed dynamically
+        
+        coreDataStack.fetchAllRecordingCategories { (r) in
+            switch r {
+            case .failure(let error):
+                print(error)
+            case .success(let cate):
+                for c in cate {
+                    categories.append(c.category!)
+                }
+                categories.append("-OR One Type In-")
+            }
+        }
+        
+        dropDown.optionArray = categories
+
+        
+        
+        // Its Id Values and its optional
+//        dropDown.optionIds = [1,23,54,22]
+        // Image Array its optional
+//        dropDown.ImageArray = [👩🏻‍🦳,🙊,🥞]
+        
+        view.addSubview(dropDown)
+
+        // The the Closure returns Selected Index and String
+        dropDown.didSelect{(selectedText , index ,id) in
+            print("Selected String: \(selectedText) \n index: \(index)")
+        valueLabel.text = "Selected String: \(selectedText) \n index: \(index)"
+            }
+        
+    }
+    
+    @objc func deleteButtonTapped() {
+        print("hello")
+        let fileManager = FileManager.default
+
+        let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
+        do {
+            try fileManager.removeItem(at: audioFilename)
+        } catch {
+            
+        }
+
     }
     
     func getDocumentsDirectory() -> URL {
@@ -62,7 +135,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     }
     
     func startRecording() {
-        let audioFilename = getDocumentsDirectory().appendingPathComponent("recording2.m4a")
+        let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
         print(audioFilename)
         
         let settings = [
@@ -110,6 +183,9 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     }
     
     @objc func recordTapped() {
+        
+        print(dropDown.text)
+        
         if audioRecorder == nil {
             startRecording()
         } else {
@@ -136,7 +212,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     
     
     func setupPlayer() {
-        let audioFilename = getDocumentsDirectory().appendingPathComponent("recording.m4a")
+        let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
         
         do {
             soundPlayer = try AVAudioPlayer(contentsOf: audioFilename)

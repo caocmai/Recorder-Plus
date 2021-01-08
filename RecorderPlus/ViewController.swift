@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     let tableview = UITableView()
     
     var coreDataStack = CoreDataStack()
-    
+    // to be able to use uitable header content must be in 2d array
     var categories = [[RecordingCategory]]()
     var allRecordings = [Recording]()
 
@@ -233,8 +233,8 @@ extension ViewController: CollectionViewCellDelegate {
         
         if let recordingRow = didTappedInTableViewCell.recordings {
             self.tappedCell2 = recordingRow[index]
-            // just prints the color within the index
-//            print(recordingRow[index])
+            // prints the recording
+            print(recordingRow[index])
 
         }
     }
