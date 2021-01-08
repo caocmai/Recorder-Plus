@@ -10,11 +10,9 @@ import CoreData
 
 class CoreDataStack {
     
+    // has to be same name as .xcdatamodel
     private let modelName: String = "RecordingMetaData"
-    
-    //    init(modelName: String) {
-    //      self.modelName = modelName
-    //    }
+ 
     
     private lazy var storeContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: self.modelName)
@@ -28,7 +26,7 @@ class CoreDataStack {
     
     lazy var managedContext: NSManagedObjectContext = {
         // get location of stored core data file
-                print(self.storeContainer.persistentStoreDescriptions.first?.url)
+//                print(self.storeContainer.persistentStoreDescriptions.first?.url)
         return self.storeContainer.viewContext
     }()
     
@@ -42,8 +40,42 @@ class CoreDataStack {
         
     }
     
-    // currently not using to fetch projects
-    func fetchAllProjects(completion: @escaping(Result<[Recording]>) -> Void) {
+    func fetchAllRecordingCategories(completion: @escaping(Result<[RecordingCategory]>) -> Void) {
+        let fetchRequest: NSFetchRequest<RecordingCategory> = RecordingCategory.fetchRequest()
+        do {
+            let allProjects = try managedContext.fetch(fetchRequest)
+            completion(.success(allProjects))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    func fetchRecordingCategoryByID(identifier: UUID, completion: @escaping(Result<[RecordingCategory]>) -> Void) {
+        let fetchRequest: NSFetchRequest<RecordingCategory> = RecordingCategory.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "categoryID == %@", identifier as CVarArg)
+        fetchRequest.fetchLimit = 1
+        do {
+            let allProjects = try managedContext.fetch(fetchRequest)
+            completion(.success(allProjects))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    func fetchRecordingCategoryByTitle(identifier: String, completion: @escaping(Result<[RecordingCategory]>) -> Void) {
+        let fetchRequest: NSFetchRequest<RecordingCategory> = RecordingCategory.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "category == %@", identifier)
+        fetchRequest.fetchLimit = 1
+        do {
+            let allProjects = try managedContext.fetch(fetchRequest)
+            completion(.success(allProjects))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    
+    func fetchAllRecordings(completion: @escaping(Result<[Recording]>) -> Void) {
         let fetchRequest: NSFetchRequest<Recording> = Recording.fetchRequest()
         do {
             let allProjects = try managedContext.fetch(fetchRequest)
@@ -53,26 +85,6 @@ class CoreDataStack {
         }
     }
     
-//    func fetchTasks(with request: NSFetchRequest<Task> = Task.fetchRequest(), sortBy sortString: String, predicate: NSPredicate? = nil, selectedProject: Project, completion: @escaping(Result<[Task]>) -> Void) {
-//
-//        let categoryPredicate = NSPredicate(format: "parentProject == %@", selectedProject)
-//        let sectionSortDescriptor = NSSortDescriptor(key: sortString, ascending: true)
-//        //
-//        request.sortDescriptors = [sectionSortDescriptor]
-//
-//        if let addtionalPredicate = predicate {
-//            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, addtionalPredicate])
-//        } else {
-//            request.predicate = categoryPredicate
-//        }
-//
-//        do {
-//            let tasks = try managedContext.fetch(request)
-//            completion(.success(tasks))
-//        } catch {
-//            completion(.failure(error))
-//        }
-//    }
 }
 
 enum Result<T> {

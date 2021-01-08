@@ -10,8 +10,6 @@
 		2C341E2625A7CDBF005E8AD7 /* NewRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C341E2525A7CDBF005E8AD7 /* NewRecording.swift */; };
 		2C341E2F25A7FEB8005E8AD7 /* RecordingMetaData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2C341E2D25A7FEB8005E8AD7 /* RecordingMetaData.xcdatamodeld */; };
 		2C341E3C25A7FF6F005E8AD7 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C341E3B25A7FF6F005E8AD7 /* CoreDataStack.swift */; };
-		2C341E5725A80997005E8AD7 /* Recording+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C341E5525A80997005E8AD7 /* Recording+CoreDataClass.swift */; };
-		2C341E5825A80997005E8AD7 /* Recording+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C341E5625A80997005E8AD7 /* Recording+CoreDataProperties.swift */; };
 		2C660EC525A6C0280054D556 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C660EC425A6C0280054D556 /* AppDelegate.swift */; };
 		2C660EC725A6C0280054D556 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C660EC625A6C0280054D556 /* SceneDelegate.swift */; };
 		2C660EC925A6C0280054D556 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C660EC825A6C0280054D556 /* ViewController.swift */; };
@@ -29,6 +27,10 @@
 		2C660F1A25A6DE2E0054D556 /* TableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C660F1925A6DE2E0054D556 /* TableViewCellModel.swift */; };
 		2C660F1F25A6DE340054D556 /* CollectionViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C660F1E25A6DE340054D556 /* CollectionViewCellModel.swift */; };
 		2C660F2925A6E48F0054D556 /* CollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C660F2825A6E48E0054D556 /* CollectionViewCell.xib */; };
+		2C78886825A815C500053DBF /* RecordingCategory+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78886425A815C500053DBF /* RecordingCategory+CoreDataClass.swift */; };
+		2C78886925A815C500053DBF /* RecordingCategory+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78886525A815C500053DBF /* RecordingCategory+CoreDataProperties.swift */; };
+		2C78886A25A815C500053DBF /* Recording+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78886625A815C500053DBF /* Recording+CoreDataClass.swift */; };
+		2C78886B25A815C500053DBF /* Recording+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78886725A815C500053DBF /* Recording+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,8 +54,6 @@
 		2C341E2525A7CDBF005E8AD7 /* NewRecording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRecording.swift; sourceTree = "<group>"; };
 		2C341E2E25A7FEB8005E8AD7 /* RecordingMetaData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RecordingMetaData.xcdatamodel; sourceTree = "<group>"; };
 		2C341E3B25A7FF6F005E8AD7 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
-		2C341E5525A80997005E8AD7 /* Recording+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Recording+CoreDataClass.swift"; sourceTree = "<group>"; };
-		2C341E5625A80997005E8AD7 /* Recording+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Recording+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		2C660EC125A6C0280054D556 /* RecorderPlus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecorderPlus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C660EC425A6C0280054D556 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2C660EC625A6C0280054D556 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -77,6 +77,10 @@
 		2C660F1925A6DE2E0054D556 /* TableViewCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCellModel.swift; sourceTree = "<group>"; };
 		2C660F1E25A6DE340054D556 /* CollectionViewCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCellModel.swift; sourceTree = "<group>"; };
 		2C660F2825A6E48E0054D556 /* CollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollectionViewCell.xib; sourceTree = "<group>"; };
+		2C78886425A815C500053DBF /* RecordingCategory+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecordingCategory+CoreDataClass.swift"; sourceTree = "<group>"; };
+		2C78886525A815C500053DBF /* RecordingCategory+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecordingCategory+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		2C78886625A815C500053DBF /* Recording+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Recording+CoreDataClass.swift"; sourceTree = "<group>"; };
+		2C78886725A815C500053DBF /* Recording+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Recording+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,8 +111,10 @@
 		2C341E4025A801D2005E8AD7 /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
-				2C341E5525A80997005E8AD7 /* Recording+CoreDataClass.swift */,
-				2C341E5625A80997005E8AD7 /* Recording+CoreDataProperties.swift */,
+				2C78886425A815C500053DBF /* RecordingCategory+CoreDataClass.swift */,
+				2C78886525A815C500053DBF /* RecordingCategory+CoreDataProperties.swift */,
+				2C78886625A815C500053DBF /* Recording+CoreDataClass.swift */,
+				2C78886725A815C500053DBF /* Recording+CoreDataProperties.swift */,
 				2C341E2D25A7FEB8005E8AD7 /* RecordingMetaData.xcdatamodeld */,
 				2C341E3B25A7FF6F005E8AD7 /* CoreDataStack.swift */,
 			);
@@ -320,19 +326,21 @@
 				2C660F0025A6D7170054D556 /* ViewController2.swift in Sources */,
 				2C660F1F25A6DE340054D556 /* CollectionViewCellModel.swift in Sources */,
 				2C660F1025A6DDD30054D556 /* TableViewCell.swift in Sources */,
+				2C78886A25A815C500053DBF /* Recording+CoreDataClass.swift in Sources */,
 				2C660F1525A6DE100054D556 /* CollectionViewCell.swift in Sources */,
 				2C660F0625A6DD990054D556 /* Extensions.swift in Sources */,
 				2C341E2F25A7FEB8005E8AD7 /* RecordingMetaData.xcdatamodeld in Sources */,
 				2C660EC925A6C0280054D556 /* ViewController.swift in Sources */,
 				2C341E3C25A7FF6F005E8AD7 /* CoreDataStack.swift in Sources */,
 				2C660F0B25A6DDA40054D556 /* Colors.swift in Sources */,
-				2C341E5825A80997005E8AD7 /* Recording+CoreDataProperties.swift in Sources */,
 				2C660EC525A6C0280054D556 /* AppDelegate.swift in Sources */,
 				2C341E2625A7CDBF005E8AD7 /* NewRecording.swift in Sources */,
+				2C78886925A815C500053DBF /* RecordingCategory+CoreDataProperties.swift in Sources */,
+				2C78886825A815C500053DBF /* RecordingCategory+CoreDataClass.swift in Sources */,
 				2C660F1A25A6DE2E0054D556 /* TableViewCellModel.swift in Sources */,
+				2C78886B25A815C500053DBF /* Recording+CoreDataProperties.swift in Sources */,
 				2C660EC725A6C0280054D556 /* SceneDelegate.swift in Sources */,
 				2C660ECF25A6C0280054D556 /* RecorderPlus.xcdatamodeld in Sources */,
-				2C341E5725A80997005E8AD7 /* Recording+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

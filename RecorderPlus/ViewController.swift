@@ -31,31 +31,95 @@ class ViewController: UIViewController {
 
         self.navigationItem.rightBarButtonItem = addButton
         
-
-//        let newRecording = Recording(context: coreDataStack.managedContext)
+//
+//        let newRecording = RecordingCategory(context: coreDataStack.managedContext)
+//        newRecording.category = "A second song"
+//        newRecording.categoryID = UUID()
+        
+        
 //        newRecording.name = "Another on for song"
 //        newRecording.date = Date()
 //        newRecording.recordingID = UUID()
 //        newRecording.category = "A New Song"
+
 //        coreDataStack.saveContext()
         
-        coreDataStack.fetchAllProjects { (results) in
-            switch results {
+        let id1 = "7730BFA5-5079-4865-81B4-C32446ED6F40"
+        let id2 = "2A87972A-1EFE-47DF-84F8-490A8CF35836"
+
+        var uuid = UUID(uuidString: id1)!
+
+        
+//
+//        coreDataStack.fetchRecordingCategoryByID(identifier: uuid) { (results) in
+//            switch results {
+//            case .failure(let error):
+//                print(error)
+//                print("error")
+//            case .success(let recordings):
+//
+//                let new = Recording(context: self.coreDataStack.managedContext)
+//                new.date = Date()
+//                new.recordingID = UUID()
+//                new.recordingParent = recordings.first
+//                new.name = "Second Recording"
+//                new.note = "a note of recording"
+//                self.coreDataStack.saveContext()
+//
+////                var data = [DisplayRecordings].self
+////                for r in recordings {
+////                    print("success")
+//////                    print(r.date)
+//////                    print(r.note)
+//////                    print(r.name)
+////                    print(r.category)
+////                    print(r.categoryID)
+////                }
+//            }
+//        }
+        
+        coreDataStack.fetchAllRecordings { (result) in
+            switch result {
             case .failure(let error):
                 print(error)
-                print("error")
             case .success(let recordings):
-                var data = [DisplayRecordings].self
                 for r in recordings {
-                    print("success")
-                    print(r.date)
-                    print(r.note)
                     print(r.name)
-                    print(r.category)
+                    print(r.recordingParent?.category)
                 }
             }
         }
         
+//        coreDataStack.fetchAllRecordingCategories { (r) in
+//            switch r {
+//            case .failure(let error):
+//                print(error)
+//            case .success(let categories):
+//                for c in categories {
+//                    print(c.category)
+//                }
+//            }
+//        }
+        
+//        let newcate = RecordingCategory(context: coreDataStack.managedContext)
+//        newcate.category = "Homie"
+//        newcate.categoryID = UUID()
+//        coreDataStack.saveContext()
+//
+//        coreDataStack.fetchRecordingCategoryByTitle(identifier: "Homie") { (r) in
+//            switch r {
+//                case .failure(let error):
+//                    print(error)
+//                case .success(let categories):
+//                    let new = Recording(context: self.coreDataStack.managedContext)
+//                        new.date = Date()
+//                        new.recordingID = UUID()
+//                        new.recordingParent = categories.first
+//                        new.name = "The ultimate test of this"
+//                        new.note = "if this passes then it's over"
+//                        self.coreDataStack.saveContext()
+//                }
+//        }
 
 
     }

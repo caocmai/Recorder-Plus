@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="19H114" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Recording" representedClassName="Recording" syncable="YES">
-        <attribute name="category" attributeType="String"/>
         <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="note" optional="YES" attributeType="String"/>
         <attribute name="recordingID" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="recordingParent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RecordingCategory" inverseName="recordings" inverseEntity="RecordingCategory"/>
+    </entity>
+    <entity name="RecordingCategory" representedClassName="RecordingCategory" syncable="YES">
+        <attribute name="category" attributeType="String"/>
+        <attribute name="categoryID" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="recordings" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Recording" inverseName="recordingParent" inverseEntity="Recording"/>
     </entity>
     <elements>
         <element name="Recording" positionX="-54" positionY="-9" width="128" height="118"/>
+        <element name="RecordingCategory" positionX="-293.2890625" positionY="34.8359375" width="128" height="88"/>
     </elements>
 </model>

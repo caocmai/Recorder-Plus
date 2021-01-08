@@ -16,11 +16,11 @@ extension Recording {
         return NSFetchRequest<Recording>(entityName: "Recording")
     }
 
+    @NSManaged public var date: Date?
     @NSManaged public var name: String?
     @NSManaged public var note: String?
-    @NSManaged public var date: Date?
     @NSManaged public var recordingID: UUID?
-    @NSManaged public var category: String?
+    @NSManaged public var recordingParent: RecordingCategory?
 
 }
 
