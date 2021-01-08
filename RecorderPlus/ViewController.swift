@@ -10,9 +10,13 @@ import UIKit
 class ViewController: UIViewController {
     var colorsArray = Colors()
     var tappedCell: CollectionViewCellModel!
+    var tappedCell2: Recording!
     let tableview = UITableView()
     
     var coreDataStack = CoreDataStack()
+    
+    var categories = [[RecordingCategory]]()
+    var allRecordings = [Recording]()
 
 
     override func viewDidLoad() {
@@ -78,15 +82,28 @@ class ViewController: UIViewController {
 //            }
 //        }
         
+        
+        coreDataStack.fetchAllRecordingCategories { (r) in
+            switch r {
+            case .failure(let error):
+                print(error)
+            case .success(let cate):
+                for c in cate {
+                    self.categories.append([c])
+                }
+            }
+        }
+        
         coreDataStack.fetchAllRecordings { (result) in
             switch result {
             case .failure(let error):
                 print(error)
             case .success(let recordings):
-                for r in recordings {
-                    print(r.name)
-                    print(r.recordingParent?.category)
-                }
+                self.allRecordings = recordings
+//                for r in recordings {
+//                    print(r.name)
+//                    print(r.recordingParent?.category)
+//                }
             }
         }
         
@@ -138,11 +155,14 @@ class ViewController: UIViewController {
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return colorsArray.objectsArray.count
+//        return colorsArray.objectsArray.count
+        return categories.count
+
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return colorsArray.objectsArray[section].subcategory.count
+//        return colorsArray.objectsArray[section].subcategory.count
+        return 1
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -157,7 +177,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         headerView.addSubview(titleLabel)
         titleLabel.textColor = UIColor.white
         titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-        titleLabel.text = colorsArray.objectsArray[section].category
+//        titleLabel.text = colorsArray.objectsArray[section].category
+        titleLabel.text = categories[section][0].category
         return headerView
     }
     
@@ -168,13 +189,26 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "tableviewcellid", for: indexPath) as? TableViewCell {
             // Show SubCategory Title
-            let subCategoryTitle = colorsArray.objectsArray[indexPath.section].subcategory
-            cell.subCategoryLabel.text = subCategoryTitle[indexPath.row]
+//            let subCategoryTitle = colorsArray.objectsArray[indexPath.section].subcategory
+//            cell.subCategoryLabel.text = subCategoryTitle[indexPath.row]
 
             // Pass the data to colletionview inside the tableviewcell
-            let rowArray = colorsArray.objectsArray[indexPath.section].colors[indexPath.row]
-            cell.updateCellWith(row: rowArray)
+//            let rowArray = colorsArray.objectsArray[indexPath.section].colors[indexPath.row]
+//            cell.updateCellWith(row: rowArray)
+            
+            let model = categories[indexPath.section][indexPath.row]
+//            print(model.category)
+            
+            let sortby = "date"
+            coreDataStack.fetchRecordingsByCategory(sortBy: sortby, selectedCategory: model) { (r) in
+                switch r {
+                case .failure(let error):
+                    print(error)
+                case .success(let r):
+                    cell.updateCellNew(row: r)
 
+                }
+            }
             // Set cell's delegate
             cell.cellDelegate = self
             
@@ -189,9 +223,18 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension ViewController: CollectionViewCellDelegate {
     func collectionView(collectionviewcell: CollectionViewCell?, index: Int, didTappedInTableViewCell: TableViewCell) {
-        if let colorsRow = didTappedInTableViewCell.rowWithColors {
-            self.tappedCell = colorsRow[index]
-            print(colorsRow[index])
+        
+//        if let colorsRow = didTappedInTableViewCell.rowWithColors {
+//            self.tappedCell = colorsRow[index]
+//            // just prints the color within the index
+//            print(colorsRow[index])
+//
+//        }
+        
+        if let recordingRow = didTappedInTableViewCell.recordings {
+            self.tappedCell2 = recordingRow[index]
+            // just prints the color within the index
+//            print(recordingRow[index])
 
         }
     }

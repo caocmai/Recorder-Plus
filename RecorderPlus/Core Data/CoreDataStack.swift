@@ -85,6 +85,27 @@ class CoreDataStack {
         }
     }
     
+    func fetchRecordingsByCategory(with request: NSFetchRequest<Recording> = Recording.fetchRequest(), sortBy sortString: String, predicate: NSPredicate?=nil, selectedCategory: RecordingCategory, completion: @escaping(Result<[Recording]>) -> Void) {
+        
+        let categoryPredicate = NSPredicate(format: "recordingParent == %@", selectedCategory)
+        let sectionSortDescriptor = NSSortDescriptor(key: sortString, ascending: true)
+        //
+        request.sortDescriptors = [sectionSortDescriptor]
+        
+        if let addtionalPredicate = predicate {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, addtionalPredicate])
+        } else {
+            request.predicate = categoryPredicate
+        }
+        
+        do {
+            let tasks = try managedContext.fetch(request)
+            completion(.success(tasks))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
 }
 
 enum Result<T> {

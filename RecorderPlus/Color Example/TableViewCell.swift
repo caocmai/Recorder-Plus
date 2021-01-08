@@ -17,12 +17,25 @@ class TableViewCell: UITableViewCell {
     
     weak var cellDelegate: CollectionViewCellDelegate?
     
+    var cellID: UUID!
+    
+    var coreDataStack = CoreDataStack()
+    
+    var recordings: [Recording]?
+
+    
     var rowWithColors: [CollectionViewCellModel]?
     var subCategoryLabel = UILabel()
     
-    let simpleConfig = UICollectionView.CellRegistration<MyCollectionViewCell, CollectionViewCellModel> { (cell, indexPath, model) in
+//    let simpleConfig = UICollectionView.CellRegistration<MyCollectionViewCell, CollectionViewCellModel> { (cell, indexPath, model) in
+//        cell.label.text = model.name
+//        cell.backgroundColor = model.color
+//
+//    }
+    
+    let simpleConfig = UICollectionView.CellRegistration<MyCollectionViewCell, Recording> { (cell, indexPath, model) in
         cell.label.text = model.name
-        cell.backgroundColor = model.color
+        cell.backgroundColor = .blue
 
     }
     
@@ -78,6 +91,11 @@ extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, U
         self.collectionView.reloadData()
     }
     
+    func updateCellNew(row: [Recording]) {
+        self.recordings = row
+        self.collectionView.reloadData()
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as? CollectionViewCell
         print("I'm tapping the \(indexPath.item)")
@@ -85,7 +103,8 @@ extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, U
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.rowWithColors?.count ?? 0
+//        return self.rowWithColors?.count ?? 0
+        return recordings?.count ?? 0
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -104,7 +123,10 @@ extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, U
 //        let model = self.rowWithColors?[indexPath.item].name ?? ""
 //        let model = self.rowWithColors?[indexPath.item].color
         
-        let model = self.rowWithColors?[indexPath.item]
+//        let model = self.rowWithColors?[indexPath.item]
+        
+        let model = self.recordings?[indexPath.item]
+
         
         return collectionView.dequeueConfiguredReusableCell(using: simpleConfig,
                                                             for: indexPath,
