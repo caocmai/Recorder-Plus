@@ -1,9 +1,8 @@
 //
 //  Colors.swift
-//  CollectionViewInsideTableViewExample
+//  RecorderPlus
 //
-//  Created by John Codeos on 12/21/19.
-//  Copyright © 2019 John Codeos. All rights reserved.
+//  Created by Cao Mai on 1/6/21.
 //
 
 import Foundation
@@ -11,6 +10,7 @@ import UIKit
 
 struct Colors {
     var objectsArray = [
+        
         TableViewCellModel(
             category: "Category #1",
             subcategory: ["SubCategory #1.1", "SubCategory #1.2"],
@@ -26,6 +26,7 @@ struct Colors {
                  CollectionViewCellModel(color: UIColor.colorFromHex("#F0FFF0"), name: "Honeydew"),
                  CollectionViewCellModel(color: UIColor.colorFromHex("#DCDCDC"), name: "Gainsboro")]
             ]),
+        
         TableViewCellModel(
             category: "Category #2",
             subcategory: ["SubCategory #2.1"],

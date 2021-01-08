@@ -1,9 +1,8 @@
 //
 //  ColorModel.swift
-//  CollectionViewInsideTableViewExample
+//  RecorderPlus
 //
-//  Created by John Codeos on 12/21/19.
-//  Copyright © 2019 John Codeos. All rights reserved.
+//  Created by Cao Mai on 1/6/21.
 //
 
 import Foundation

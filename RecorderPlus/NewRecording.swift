@@ -62,7 +62,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     }
     
     func startRecording() {
-        let audioFilename = getDocumentsDirectory().appendingPathComponent("recording.m4a")
+        let audioFilename = getDocumentsDirectory().appendingPathComponent("recording2.m4a")
         print(audioFilename)
         
         let settings = [
@@ -137,6 +137,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     
     func setupPlayer() {
         let audioFilename = getDocumentsDirectory().appendingPathComponent("recording.m4a")
+        
         do {
             soundPlayer = try AVAudioPlayer(contentsOf: audioFilename)
             soundPlayer.delegate = self

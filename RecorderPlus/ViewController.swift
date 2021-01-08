@@ -11,6 +11,9 @@ class ViewController: UIViewController {
     var colorsArray = Colors()
     var tappedCell: CollectionViewCellModel!
     let tableview = UITableView()
+    
+    var coreDataStack = CoreDataStack()
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,16 +26,41 @@ class ViewController: UIViewController {
         tableview.delegate = self
         tableview.register(TableViewCell.self, forCellReuseIdentifier: "tableviewcellid")
         
-   
-
         
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
 
-        
         self.navigationItem.rightBarButtonItem = addButton
+        
+
+//        let newRecording = Recording(context: coreDataStack.managedContext)
+//        newRecording.name = "Another on for song"
+//        newRecording.date = Date()
+//        newRecording.recordingID = UUID()
+//        newRecording.category = "A New Song"
+//        coreDataStack.saveContext()
+        
+        coreDataStack.fetchAllProjects { (results) in
+            switch results {
+            case .failure(let error):
+                print(error)
+                print("error")
+            case .success(let recordings):
+                var data = [DisplayRecordings].self
+                for r in recordings {
+                    print("success")
+                    print(r.date)
+                    print(r.note)
+                    print(r.name)
+                    print(r.category)
+                }
+            }
+        }
+        
 
 
     }
+    
+
     
     @objc func addButtonTapped() {
         
@@ -93,13 +121,6 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "detailsviewcontrollerseg" {
-//            let DestViewController = segue.destination as! DetailsViewController
-//            DestViewController.backgroundColor = tappedCell.color
-//            DestViewController.backgroundColorName = tappedCell.name
-//        }
-//    }
 }
 
 extension ViewController: CollectionViewCellDelegate {
@@ -107,8 +128,13 @@ extension ViewController: CollectionViewCellDelegate {
         if let colorsRow = didTappedInTableViewCell.rowWithColors {
             self.tappedCell = colorsRow[index]
             print(colorsRow[index])
-//            performSegue(withIdentifier: "detailsviewcontrollerseg", sender: self)
-            // You can also do changes to the cell you tapped using the 'collectionviewcell'
+
         }
     }
+}
+
+
+struct DisplayRecordings {
+    let category: String
+    let recordings: [Recording]
 }
