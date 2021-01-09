@@ -16,9 +16,6 @@ class CategoryHeader: UITableViewHeaderFooterView {
     
     var completion: (() -> Void)?
 
-
-
-
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         configureUI()

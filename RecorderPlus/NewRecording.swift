@@ -31,18 +31,16 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     let recordingNote = UITextField()
     
     var selectedCategory: String? = nil
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
         self.view.backgroundColor = .white
-        setupUI()
-        print(selectedCategory)
-
+        setupUI()        
         UITextField.connectFields(fields: [recordingTitle, recordingNote])
-
+        
         self.view.addSubview(playbackButton)
         playbackButton.setTitle("Play", for: .normal)
         playbackButton.backgroundColor = .green
@@ -94,16 +92,14 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             // failed to record!
         }
         
-        
-    
-        
+ 
         let valueLabel = UILabel()
         dropDown = DropDown(frame: CGRect(x: 110, y: 100, width: 200, height: 30)) // set frame
         dropDown.backgroundColor = .gray
         dropDown.placeholder = "Select Category"
         
         var categories = [String]()
-
+        
         // The list of array to display. Can be changed dynamically
         
         coreDataStack.fetchAllRecordingCategories { (r) in
@@ -119,71 +115,78 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         }
         
         dropDown.optionArray = categories
-
+        
         
         view.addSubview(dropDown)
         if selectedCategory != nil {
-                    dropDown.text = selectedCategory
-                }
-
+            dropDown.text = selectedCategory
+        }
+        
         // The the Closure returns Selected Index and String
         dropDown.didSelect{(selectedText , index ,id) in
             print("Selected String: \(selectedText) \n index: \(index)")
-        valueLabel.text = "Selected String: \(selectedText) \n index: \(index)"
+            valueLabel.text = "Selected String: \(selectedText) \n index: \(index)"
             self.selectedCategory = selectedText
-            }
+        }
         
     }
     
     @objc func deleteButtonTapped() {
         let fileManager = FileManager.default
-
+        
         let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
         do {
             try fileManager.removeItem(at: audioFilename)
         } catch {
             
         }
-
+        
     }
     
     @objc func saveButtonTapped() {
-        if let category = selectedCategory {
-            coreDataStack.fetchRecordingCategoryByTitle(categoryTitle: category) { (result) in
-                switch result {
-                case .failure(let error):
-                    print(error)
-                case .success(let categoryObject):
-                    let new = Recording(context: self.coreDataStack.managedContext)
+        
+        if recordButton.titleLabel?.text == "Tap to Re-record" {
+            if let category = selectedCategory {
+                coreDataStack.fetchRecordingCategoryByTitle(categoryTitle: category) { (result) in
+                    switch result {
+                    case .failure(let error):
+                        print(error)
+                    case .success(let categoryObject):
+                        let new = Recording(context: self.coreDataStack.managedContext)
                         new.date = Date()
-                    new.recordingID = UUID(uuidString: self.uuid)
+                        new.recordingID = UUID(uuidString: self.uuid)
                         new.recordingParent = categoryObject.first
-                    new.name = self.recordingTitle.text
-                    new.note = self.recordingNote.text
+                        new.name = self.recordingTitle.text
+                        new.note = self.recordingNote.text
                         self.coreDataStack.saveContext()
+                    }
+                }
+            } else {
+                let newCategory = RecordingCategory(context: coreDataStack.managedContext)
+                newCategory.category = dropDown.text
+                newCategory.categoryID = UUID()
+                coreDataStack.saveContext()
+                
+                coreDataStack.fetchRecordingCategoryByTitle(categoryTitle: dropDown.text!) { (r) in
+                    switch r {
+                    case .failure(let error):
+                        print(error)
+                    case .success(let categories):
+                        let new = Recording(context: self.coreDataStack.managedContext)
+                        new.date = Date()
+                        new.recordingID = UUID(uuidString: self.uuid)
+                        new.recordingParent = categories.first
+                        new.name = self.recordingTitle.text
+                        new.note = self.recordingNote.text
+                        self.coreDataStack.saveContext()
+                    }
                 }
             }
+            self.navigationController?.popViewController(animated: true)
         } else {
-            let newCategory = RecordingCategory(context: coreDataStack.managedContext)
-            newCategory.category = dropDown.text
-                    newCategory.categoryID = UUID()
-                    coreDataStack.saveContext()
-            
-            coreDataStack.fetchRecordingCategoryByTitle(categoryTitle: dropDown.text!) { (r) in
-                        switch r {
-                            case .failure(let error):
-                                print(error)
-                            case .success(let categories):
-                                let new = Recording(context: self.coreDataStack.managedContext)
-                                    new.date = Date()
-                                    new.recordingID = UUID(uuidString: self.uuid)
-                                    new.recordingParent = categories.first
-                                new.name = self.recordingTitle.text
-                                new.note = self.recordingNote.text
-                                    self.coreDataStack.saveContext()
-                            }
-        }
-        }
+            let alert = UIAlertController(title: "Note", message: "You need to start then stop recording to save", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alert, animated:true, completion: nil)        }
         
     }
     
@@ -195,12 +198,12 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         recordingTitle.placeholder = "Title/Name (Optional)"
         recordingNote.placeholder = "Note (Optional)"
         
-
-//        recordingTitle.borderStyle = .line
-//        recordingTitle.backgroundColor = .blue
-//        recordingNote.borderStyle = .line
-
-//        recordingNote.backgroundColor = .blue
+        
+        //        recordingTitle.borderStyle = .line
+        //        recordingTitle.backgroundColor = .blue
+        //        recordingNote.borderStyle = .line
+        
+        //        recordingNote.backgroundColor = .blue
         
         self.view.addSubview(recordingTitle)
         self.view.addSubview(recordingNote)
@@ -310,5 +313,5 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             print(error)
         }
     }
-
+    
 }

@@ -20,7 +20,22 @@ class ViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        categories = []
+        
+        coreDataStack.fetchAllRecordingCategories { (r) in
+            switch r {
+            case .failure(let error):
+                print(error)
+            case .success(let cate):
+                for c in cate {
+                    self.categories.append([c])
+                }
+            }
+        }
+        
         tableview.reloadData()
+
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,29 +102,29 @@ class ViewController: UIViewController {
 //        }
         
         
-        coreDataStack.fetchAllRecordingCategories { (r) in
-            switch r {
-            case .failure(let error):
-                print(error)
-            case .success(let cate):
-                for c in cate {
-                    self.categories.append([c])
-                }
-            }
-        }
-        
-        coreDataStack.fetchAllRecordings { (result) in
-            switch result {
-            case .failure(let error):
-                print(error)
-            case .success(let recordings):
-                self.allRecordings = recordings
-//                for r in recordings {
-//                    print(r.name)
-//                    print(r.recordingParent?.category)
+//        coreDataStack.fetchAllRecordingCategories { (r) in
+//            switch r {
+//            case .failure(let error):
+//                print(error)
+//            case .success(let cate):
+//                for c in cate {
+//                    self.categories.append([c])
 //                }
-            }
-        }
+//            }
+//        }
+//
+//        coreDataStack.fetchAllRecordings { (result) in
+//            switch result {
+//            case .failure(let error):
+//                print(error)
+//            case .success(let recordings):
+//                self.allRecordings = recordings
+////                for r in recordings {
+////                    print(r.name)
+////                    print(r.recordingParent?.category)
+////                }
+//            }
+//        }
         
 //        coreDataStack.fetchAllRecordingCategories { (r) in
 //            switch r {

@@ -42,9 +42,13 @@ class CoreDataStack {
     
     func fetchAllRecordingCategories(completion: @escaping(Result<[RecordingCategory]>) -> Void) {
         let fetchRequest: NSFetchRequest<RecordingCategory> = RecordingCategory.fetchRequest()
+        
+        let sectionSortDescriptor = NSSortDescriptor(key: "category", ascending: true)
+        fetchRequest.sortDescriptors = [sectionSortDescriptor]
+        
         do {
-            let allProjects = try managedContext.fetch(fetchRequest)
-            completion(.success(allProjects))
+            let allCategories = try managedContext.fetch(fetchRequest)
+            completion(.success(allCategories))
         } catch {
             completion(.failure(error))
         }
