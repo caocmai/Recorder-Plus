@@ -18,7 +18,10 @@ class ViewController: UIViewController {
     var categories = [[RecordingCategory]]()
     var allRecordings = [Recording]()
 
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableview.reloadData()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -29,6 +32,7 @@ class ViewController: UIViewController {
         tableview.dataSource = self
         tableview.delegate = self
         tableview.register(TableViewCell.self, forCellReuseIdentifier: "tableviewcellid")
+        tableview.register(CategoryHeader.self, forHeaderFooterViewReuseIdentifier: CategoryHeader.indentifier)
         
         
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
@@ -171,14 +175,23 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     // Category Title
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView()
-        headerView.backgroundColor = UIColor.colorFromHex("#BC224B")
-        let titleLabel = UILabel(frame: CGRect(x: 8, y: 0, width: 200, height: 44))
-        headerView.addSubview(titleLabel)
-        titleLabel.textColor = UIColor.white
-        titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-//        titleLabel.text = colorsArray.objectsArray[section].category
-        titleLabel.text = categories[section][0].category
+//        let headerView = UIView()
+//        headerView.backgroundColor = UIColor.colorFromHex("#BC224B")
+//        let titleLabel = UILabel(frame: CGRect(x: 8, y: 0, width: 200, height: 44))
+//        headerView.addSubview(titleLabel)
+//        titleLabel.textColor = UIColor.white
+//        titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+////        titleLabel.text = colorsArray.objectsArray[section].category
+//        titleLabel.text = categories[section][0].category
+//
+        let headerView = tableview.dequeueReusableHeaderFooterView(withIdentifier: CategoryHeader.indentifier) as! CategoryHeader
+        headerView.title.text = categories[section][0].category
+        headerView.completion = {
+            let newRecordingVC = NewRecording()
+            newRecordingVC.selectedCategory = self.categories[section][0].category
+            self.navigationController?.pushViewController(newRecordingVC, animated: true)
+        }
+        
         return headerView
     }
     
@@ -245,3 +258,4 @@ struct DisplayRecordings {
     let category: String
     let recordings: [Recording]
 }
+

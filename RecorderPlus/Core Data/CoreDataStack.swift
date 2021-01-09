@@ -88,7 +88,7 @@ class CoreDataStack {
     func fetchRecordingsByCategory(with request: NSFetchRequest<Recording> = Recording.fetchRequest(), sortBy sortString: String, predicate: NSPredicate?=nil, selectedCategory: RecordingCategory, completion: @escaping(Result<[Recording]>) -> Void) {
         
         let categoryPredicate = NSPredicate(format: "recordingParent == %@", selectedCategory)
-        let sectionSortDescriptor = NSSortDescriptor(key: sortString, ascending: true)
+        let sectionSortDescriptor = NSSortDescriptor(key: sortString, ascending: false)
         //
         request.sortDescriptors = [sectionSortDescriptor]
         

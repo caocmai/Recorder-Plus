@@ -30,7 +30,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     let recordingTitle = UITextField()
     let recordingNote = UITextField()
     
-    var selectedCategory: String?
+    var selectedCategory: String? = nil
 
     
     override func viewDidLoad() {
@@ -39,6 +39,8 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         // Do any additional setup after loading the view.
         self.view.backgroundColor = .white
         setupUI()
+        print(selectedCategory)
+
         UITextField.connectFields(fields: [recordingTitle, recordingNote])
 
         self.view.addSubview(playbackButton)
@@ -120,6 +122,9 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
 
         
         view.addSubview(dropDown)
+        if selectedCategory != nil {
+                    dropDown.text = selectedCategory
+                }
 
         // The the Closure returns Selected Index and String
         dropDown.didSelect{(selectedText , index ,id) in

@@ -33,6 +33,7 @@
 		2C78886B25A815C500053DBF /* Recording+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78886725A815C500053DBF /* Recording+CoreDataProperties.swift */; };
 		2C7DDC2E25A8C7B100D6961A /* iOSDropDown.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C7DDC2D25A8C7B100D6961A /* iOSDropDown.framework */; };
 		2C7DDC3325A9538800D6961A /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7DDC3225A9538800D6961A /* UITextField.swift */; };
+		2C7DDC3825A9687B00D6961A /* CategoryHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7DDC3725A9687B00D6961A /* CategoryHeader.swift */; };
 		455EEDA79BC5A4A958CAF08D /* Pods_RecorderPlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17C3A818DF59010D14CD305E /* Pods_RecorderPlus.framework */; };
 		8BDE7CA98B5D4FF4B641616F /* Pods_RecorderPlus_RecorderPlusUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69EDD91CE66705FC9EAE4783 /* Pods_RecorderPlus_RecorderPlusUITests.framework */; };
 		DF097D630D303F75E139053B /* Pods_RecorderPlusTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C2A307CF1CFB45DA6550B9F /* Pods_RecorderPlusTests.framework */; };
@@ -90,6 +91,7 @@
 		2C78886725A815C500053DBF /* Recording+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Recording+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		2C7DDC2D25A8C7B100D6961A /* iOSDropDown.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = iOSDropDown.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C7DDC3225A9538800D6961A /* UITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
+		2C7DDC3725A9687B00D6961A /* CategoryHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryHeader.swift; sourceTree = "<group>"; };
 		3570E14681E6DDDBEB37AED1 /* Pods-RecorderPlusTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RecorderPlusTests.release.xcconfig"; path = "Target Support Files/Pods-RecorderPlusTests/Pods-RecorderPlusTests.release.xcconfig"; sourceTree = "<group>"; };
 		3ACA3548291A212DCB87E58C /* Pods-RecorderPlus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RecorderPlus.release.xcconfig"; path = "Target Support Files/Pods-RecorderPlus/Pods-RecorderPlus.release.xcconfig"; sourceTree = "<group>"; };
 		4C2A307CF1CFB45DA6550B9F /* Pods_RecorderPlusTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RecorderPlusTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -170,6 +172,7 @@
 				2C660EC425A6C0280054D556 /* AppDelegate.swift */,
 				2C660EC625A6C0280054D556 /* SceneDelegate.swift */,
 				2C660EC825A6C0280054D556 /* ViewController.swift */,
+				2C7DDC3725A9687B00D6961A /* CategoryHeader.swift */,
 				2C341E2525A7CDBF005E8AD7 /* NewRecording.swift */,
 				2C7DDC3225A9538800D6961A /* UITextField.swift */,
 				2C660EFF25A6D7170054D556 /* ViewController2.swift */,
@@ -492,6 +495,7 @@
 				2C660EC525A6C0280054D556 /* AppDelegate.swift in Sources */,
 				2C341E2625A7CDBF005E8AD7 /* NewRecording.swift in Sources */,
 				2C78886925A815C500053DBF /* RecordingCategory+CoreDataProperties.swift in Sources */,
+				2C7DDC3825A9687B00D6961A /* CategoryHeader.swift in Sources */,
 				2C78886825A815C500053DBF /* RecordingCategory+CoreDataClass.swift in Sources */,
 				2C660F1A25A6DE2E0054D556 /* TableViewCellModel.swift in Sources */,
 				2C78886B25A815C500053DBF /* Recording+CoreDataProperties.swift in Sources */,
