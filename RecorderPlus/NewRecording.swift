@@ -18,6 +18,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     var recordButton = UIButton()
     
     var deleteButton = UIButton()
+    let saveButton = UIButton()
     
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
@@ -25,6 +26,11 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     
     var dropDown: DropDown!
     let uuid = UUID().uuidString
+    
+    let recordingTitle = UITextField()
+    let recordingNote = UITextField()
+    
+    var selectedCategory: String?
 
     
     override func viewDidLoad() {
@@ -32,6 +38,8 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         
         // Do any additional setup after loading the view.
         self.view.backgroundColor = .white
+        setupUI()
+        UITextField.connectFields(fields: [recordingTitle, recordingNote])
 
         self.view.addSubview(playbackButton)
         playbackButton.setTitle("Play", for: .normal)
@@ -53,6 +61,17 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         NSLayoutConstraint.activate([
             deleteButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 170),
             deleteButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+        ])
+        
+        self.view.addSubview(saveButton)
+        saveButton.setTitle("SAVE", for: .normal)
+        saveButton.backgroundColor = .green
+        saveButton.setTitleColor(.purple, for: .normal)
+        saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+        saveButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            saveButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 210),
+            saveButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
         ])
         
         recordingSession = AVAudioSession.sharedInstance()
@@ -93,18 +112,12 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
                 for c in cate {
                     categories.append(c.category!)
                 }
-                categories.append("-OR One Type In-")
+                categories.append("-OR- Type One In")
             }
         }
         
         dropDown.optionArray = categories
 
-        
-        
-        // Its Id Values and its optional
-//        dropDown.optionIds = [1,23,54,22]
-        // Image Array its optional
-//        dropDown.ImageArray = [👩🏻‍🦳,🙊,🥞]
         
         view.addSubview(dropDown)
 
@@ -112,12 +125,12 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         dropDown.didSelect{(selectedText , index ,id) in
             print("Selected String: \(selectedText) \n index: \(index)")
         valueLabel.text = "Selected String: \(selectedText) \n index: \(index)"
+            self.selectedCategory = selectedText
             }
         
     }
     
     @objc func deleteButtonTapped() {
-        print("hello")
         let fileManager = FileManager.default
 
         let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
@@ -127,6 +140,75 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             
         }
 
+    }
+    
+    @objc func saveButtonTapped() {
+        if let category = selectedCategory {
+            coreDataStack.fetchRecordingCategoryByTitle(categoryTitle: category) { (result) in
+                switch result {
+                case .failure(let error):
+                    print(error)
+                case .success(let categoryObject):
+                    let new = Recording(context: self.coreDataStack.managedContext)
+                        new.date = Date()
+                    new.recordingID = UUID(uuidString: self.uuid)
+                        new.recordingParent = categoryObject.first
+                    new.name = self.recordingTitle.text
+                    new.note = self.recordingNote.text
+                        self.coreDataStack.saveContext()
+                }
+            }
+        } else {
+            let newCategory = RecordingCategory(context: coreDataStack.managedContext)
+            newCategory.category = dropDown.text
+                    newCategory.categoryID = UUID()
+                    coreDataStack.saveContext()
+            
+            coreDataStack.fetchRecordingCategoryByTitle(categoryTitle: dropDown.text!) { (r) in
+                        switch r {
+                            case .failure(let error):
+                                print(error)
+                            case .success(let categories):
+                                let new = Recording(context: self.coreDataStack.managedContext)
+                                    new.date = Date()
+                                    new.recordingID = UUID(uuidString: self.uuid)
+                                    new.recordingParent = categories.first
+                                new.name = self.recordingTitle.text
+                                new.note = self.recordingNote.text
+                                    self.coreDataStack.saveContext()
+                            }
+        }
+        }
+        
+    }
+    
+    private func setupUI() {
+        recordingTitle.translatesAutoresizingMaskIntoConstraints = false
+        recordingNote.translatesAutoresizingMaskIntoConstraints = false
+        recordingTitle.setBottomBorder()
+        recordingNote.setBottomBorder()
+        recordingTitle.placeholder = "Title/Name (Optional)"
+        recordingNote.placeholder = "Note (Optional)"
+        
+
+//        recordingTitle.borderStyle = .line
+//        recordingTitle.backgroundColor = .blue
+//        recordingNote.borderStyle = .line
+
+//        recordingNote.backgroundColor = .blue
+        
+        self.view.addSubview(recordingTitle)
+        self.view.addSubview(recordingNote)
+        
+        NSLayoutConstraint.activate([
+            recordingTitle.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
+            recordingTitle.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -10),
+            recordingTitle.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
+            
+            recordingNote.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
+            recordingNote.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
+            recordingNote.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -70)
+        ])
     }
     
     func getDocumentsDirectory() -> URL {

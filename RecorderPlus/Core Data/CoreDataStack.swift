@@ -62,9 +62,9 @@ class CoreDataStack {
         }
     }
     
-    func fetchRecordingCategoryByTitle(identifier: String, completion: @escaping(Result<[RecordingCategory]>) -> Void) {
+    func fetchRecordingCategoryByTitle(categoryTitle: String, completion: @escaping(Result<[RecordingCategory]>) -> Void) {
         let fetchRequest: NSFetchRequest<RecordingCategory> = RecordingCategory.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "category == %@", identifier)
+        fetchRequest.predicate = NSPredicate(format: "category == %@", categoryTitle)
         fetchRequest.fetchLimit = 1
         do {
             let allProjects = try managedContext.fetch(fetchRequest)
