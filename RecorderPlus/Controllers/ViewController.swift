@@ -8,8 +8,6 @@
 import UIKit
 
 class ViewController: UIViewController {
-    var colorsArray = Colors()
-    var tappedCell: CollectionViewCellModel!
     var tappedCell2: Recording!
     let tableview = UITableView()
     
@@ -250,7 +248,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension ViewController: CollectionViewCellDelegate {
-    func collectionView(collectionviewcell: CollectionViewCell?, index: Int, didTappedInTableViewCell: TableViewCell) {
+    func collectionView(collectionviewcell: RecordingCollectionViewCell?, index: Int, didTappedInTableViewCell: TableViewCell) {
         
 //        if let colorsRow = didTappedInTableViewCell.rowWithColors {
 //            self.tappedCell = colorsRow[index]

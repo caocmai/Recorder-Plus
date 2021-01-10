@@ -8,7 +8,7 @@
 import UIKit
 
 protocol CollectionViewCellDelegate: class {
-    func collectionView(collectionviewcell: CollectionViewCell?, index: Int, didTappedInTableViewCell: TableViewCell)
+    func collectionView(collectionviewcell: RecordingCollectionViewCell?, index: Int, didTappedInTableViewCell: TableViewCell)
     // other delegate methods that you can define to perform action in viewcontroller
 }
 
@@ -24,7 +24,7 @@ class TableViewCell: UITableViewCell {
     var recordings: [Recording]?
 
     
-    var rowWithColors: [CollectionViewCellModel]?
+//    var rowWithColors: [CollectionViewCellModel]?
     var subCategoryLabel = UILabel()
     
 //    let simpleConfig = UICollectionView.CellRegistration<MyCollectionViewCell, CollectionViewCellModel> { (cell, indexPath, model) in
@@ -33,7 +33,7 @@ class TableViewCell: UITableViewCell {
 //
 //    }
     
-    let simpleConfig = UICollectionView.CellRegistration<MyCollectionViewCell, Recording> { (cell, indexPath, model) in
+    let simpleConfig = UICollectionView.CellRegistration<RecordingCollectionViewCell, Recording> { (cell, indexPath, model) in
         cell.label.text = model.name
         cell.backgroundColor = .lightGray
         cell.uuid = model.recordingID?.uuidString
@@ -87,18 +87,18 @@ class TableViewCell: UITableViewCell {
 extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     // The data we passed from the TableView send them to the CollectionView Model
-    func updateCellWith(row: [CollectionViewCellModel]) {
-        self.rowWithColors = row
-        self.collectionView.reloadData()
-    }
-    
+//    func updateCellWith(row: [CollectionViewCellModel]) {
+//        self.rowWithColors = row
+//        self.collectionView.reloadData()
+//    }
+//
     func updateCellNew(row: [Recording]) {
         self.recordings = row
         self.collectionView.reloadData()
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath) as? CollectionViewCell
+        let cell = collectionView.cellForItem(at: indexPath) as? RecordingCollectionViewCell
         print("I'm tapping the \(indexPath.item)")
         self.cellDelegate?.collectionView(collectionviewcell: cell, index: indexPath.item, didTappedInTableViewCell: self)
     }
