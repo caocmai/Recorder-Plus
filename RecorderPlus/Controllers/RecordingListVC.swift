@@ -39,7 +39,7 @@ class RecordingListVC: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.view.backgroundColor = .white
-        self.title = "HomeView"
+        self.title = "Recordings"
         self.view.addSubview(tableview)
         tableview.frame = view.bounds
         tableview.dataSource = self
@@ -52,11 +52,8 @@ class RecordingListVC: UIViewController {
         self.navigationItem.rightBarButtonItem = addButton
 
     }
-    
 
-    
     @objc func addButtonTapped() {
-        
         let newRecordingVC = NewRecording()
         self.navigationController?.pushViewController(newRecordingVC, animated: true)
     }

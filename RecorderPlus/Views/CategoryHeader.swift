@@ -12,7 +12,7 @@ class CategoryHeader: UITableViewHeaderFooterView {
     
     static var indentifier = "categoryHeader"
     let newRecordingButton = UIButton()
-    let title = UILabel()
+    let title = UITextField()
     
     var completion: (() -> Void)?
 
@@ -26,18 +26,23 @@ class CategoryHeader: UITableViewHeaderFooterView {
     }
     
     private func configureUI() {
+        self.contentView.backgroundColor = .white
         self.contentView.addSubview(newRecordingButton)
         self.contentView.addSubview(title)
         
         newRecordingButton.translatesAutoresizingMaskIntoConstraints = false
         title.translatesAutoresizingMaskIntoConstraints = false
         title.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        title.setBottomBorder()
+        title.isUserInteractionEnabled = false
+
         
         newRecordingButton.setImage(UIImage(systemName: "plus.app"), for: .normal)
         newRecordingButton.addTarget(self, action: #selector(newRecordingButtonTapped), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
             title.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 5),
+            title.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -40),
             title.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
             
             newRecordingButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),

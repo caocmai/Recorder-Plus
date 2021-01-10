@@ -32,7 +32,7 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
         label.translatesAutoresizingMaskIntoConstraints = false
         playBackButton.translatesAutoresizingMaskIntoConstraints = false
         playBackButton.setTitle("Play", for: .normal)
-        let playButton = SFSymolCreater.setSFSymbolColor(symbolName: "play.circle", color: .green, size: 24)
+        let playButton = SFSymbolCreator.setSFSymbolColor(symbolName: "play.circle", color: .green, size: 24)
         playBackButton.setImage(playButton, for: .normal)
         playBackButton.backgroundColor = .yellow
         playBackButton.setTitleColor(.black, for: .normal)
@@ -72,14 +72,14 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
         print("playback")
         if playBackButton.titleLabel?.text == "Play" {
             playBackButton.setTitle("Stop", for: .normal)
-            let stopIcon = SFSymolCreater.setSFSymbolColor(symbolName: "stop.circle", color: .green, size: 24)
+            let stopIcon = SFSymbolCreator.setSFSymbolColor(symbolName: "stop.circle", color: .green, size: 24)
             playBackButton.setImage(stopIcon, for: .normal)
             setupPlayer()
             soundPlayer.play()
         } else {
             soundPlayer.stop()
             playBackButton.setTitle("Play", for: .normal)
-            let playButton = SFSymolCreater.setSFSymbolColor(symbolName: "play.circle", color: .green, size: 24)
+            let playButton = SFSymbolCreator.setSFSymbolColor(symbolName: "play.circle", color: .green, size: 24)
             playBackButton.setImage(playButton, for: .normal)
         }
     }

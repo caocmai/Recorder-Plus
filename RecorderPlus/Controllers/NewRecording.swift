@@ -14,10 +14,9 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     
     let coreDataStack = CoreDataStack()
     
-    let playbackButton = UIButton()
     var recordButton = UIButton()
     
-    var deleteButton = UIButton()
+//    var deleteButton = UIButton()
     let saveButton = UIButton()
     
     var recordingSession: AVAudioSession!
@@ -41,27 +40,6 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         setupUI()        
         UITextField.connectFields(fields: [recordingTitle, recordingNote])
         
-        self.view.addSubview(playbackButton)
-        playbackButton.setTitle("Play", for: .normal)
-        playbackButton.backgroundColor = .green
-        playbackButton.setTitleColor(.purple, for: .normal)
-        playbackButton.addTarget(self, action: #selector(playbackButtonTapped), for: .touchUpInside)
-        playbackButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            playbackButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -100),
-            playbackButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
-        ])
-        
-        self.view.addSubview(deleteButton)
-        deleteButton.setTitle("DELETE", for: .normal)
-        deleteButton.backgroundColor = .red
-        deleteButton.setTitleColor(.purple, for: .normal)
-        deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
-        deleteButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            deleteButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 150),
-            deleteButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
-        ])
         
         self.view.addSubview(saveButton)
         saveButton.setTitle("SAVE", for: .normal)
@@ -101,17 +79,14 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         dropDown.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             dropDown.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
-            dropDown.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -50),
+            dropDown.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -25),
             dropDown.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 30),
             dropDown.heightAnchor.constraint(equalToConstant: 50)
         ])
-        dropDown.backgroundColor = .lightGray
-        dropDown.placeholder = "Select Category"
+        dropDown.backgroundColor = .white
+        dropDown.placeholder = "Select Topic"
         
         var categories = [String]()
-        
-        // The list of array to display. Can be changed dynamically
-        
         coreDataStack.fetchAllRecordingCategories { (r) in
             switch r {
             case .failure(let error):
@@ -139,21 +114,9 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         
     }
     
-    @objc func deleteButtonTapped() {
-        let fileManager = FileManager.default
-        
-        let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
-        do {
-            try fileManager.removeItem(at: audioFilename)
-        } catch {
-            
-        }
-        
-    }
-    
     @objc func saveButtonTapped() {
         
-        if recordButton.titleLabel?.text == "Tap to Re-record" {
+        if recordButton.titleLabel?.text == "Re-record" {
             if let category = selectedCategory {
                 coreDataStack.fetchRecordingCategoryByTitle(categoryTitle: category) { (result) in
                     switch result {
@@ -206,13 +169,6 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         recordingTitle.placeholder = "Title/Name (Optional)"
         recordingNote.placeholder = "Note (Optional)"
         
-        
-        //        recordingTitle.borderStyle = .line
-        //        recordingTitle.backgroundColor = .blue
-        //        recordingNote.borderStyle = .line
-        
-        //        recordingNote.backgroundColor = .blue
-        
         self.view.addSubview(recordingTitle)
         self.view.addSubview(recordingNote)
         
@@ -248,10 +204,10 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             audioRecorder.delegate = self
             audioRecorder.record()
             
-            recordButton.setTitle("Tap to Stop", for: .normal)
-            let stopSymbol = SFSymolCreater.setSFSymbolColor(symbolName: "stop.fill", color: .black, size: 20)
+            recordButton.setTitle("Stop", for: .normal)
+            let stopSymbol = SFSymbolCreator.setSFSymbolColor(symbolName: "stop.fill", color: .red, size: 20)
             recordButton.setImage(stopSymbol, for: .normal)
-            recordButton.setTitleColor(.black, for: .normal)
+            recordButton.setTitleColor(.red, for: .normal)
 
         } catch {
             finishRecording(success: false)
@@ -263,11 +219,12 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         audioRecorder = nil
         
         if success {
-            recordButton.setTitle("Tap to Re-record", for: .normal)
-            let recordSymbol = SFSymolCreater.setSFSymbolColor(symbolName: "stop.circle.fill", color: .red, size: 20)
+            recordButton.setTitle("Re-record", for: .normal)
+            recordButton.setTitleColor(.black, for: .normal)
+            let recordSymbol = SFSymbolCreator.setSFSymbolColor(symbolName: "stop.circle.fill", color: .red, size: 20)
             recordButton.setImage(recordSymbol, for: .normal)
         } else {
-            recordButton.setTitle("Tap to Record", for: .normal)
+            recordButton.setTitle("Record", for: .normal)
         }
     }
     
@@ -280,8 +237,8 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             recordButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 50),
             recordButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
         ])
-        recordButton.setTitle("Tap to Record", for: .normal)
-        let recordSymbol = SFSymolCreater.setSFSymbolColor(symbolName: "stop.circle.fill", color: .red, size: 20)
+        recordButton.setTitle("Record", for: .normal)
+        let recordSymbol = SFSymbolCreator.setSFSymbolColor(symbolName: "stop.circle.fill", color: .red, size: 20)
         recordButton.setImage(recordSymbol, for: .normal)
         recordButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title1)
         recordButton.addTarget(self, action: #selector(recordTapped), for: .touchUpInside)
@@ -299,60 +256,4 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         }
     }
     
-    @objc func recordingButtonTapped() {
-        print("recording")
-    }
-    
-    @objc func playbackButtonTapped() {
-        print("playback")
-        
-        if playbackButton.titleLabel?.text == "Play" {
-            playbackButton.setTitle("Stop", for: .normal)
-            setupPlayer()
-            soundPlayer.play()
-        } else {
-            soundPlayer.stop()
-            playbackButton.setTitle("Play", for: .normal)
-        }
-    }
-    
-    
-    func setupPlayer() {
-        let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
-        
-        do {
-            soundPlayer = try AVAudioPlayer(contentsOf: audioFilename)
-            soundPlayer.delegate = self
-            soundPlayer.prepareToPlay()
-            soundPlayer.volume = 1.0
-        } catch {
-            print(error)
-        }
-    }
-    
-//    private func setSFSymbolColor(symbolName: String, color: UIColor) -> UIImage? {
-//        let symbol = UIImage(systemName: symbolName)
-//        let newSymbolColor = symbol?.withTintColor(color, renderingMode: .alwaysOriginal)
-//
-//        return newSymbolColor
-//
-//
-//    }
-    
-}
-
-
-struct SFSymolCreater {
-    static public func setSFSymbolColor(symbolName: String, color: UIColor, size: Int) -> UIImage? {
-        
-        guard let normalFont = UIFont(name: "Helvetica Neue", size: CGFloat(size)) else { return nil }
-        let configuration = UIImage.SymbolConfiguration(font: normalFont)
-        
-        let symbol = UIImage(systemName: symbolName, withConfiguration: configuration)
-        let newSymbolColor = symbol?.withTintColor(color, renderingMode: .alwaysOriginal)
-        
-        return newSymbolColor
-       
-        
-    }
 }

@@ -28,6 +28,7 @@
 		2CC9E5F825AAB59F00F75805 /* Recording+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC9E5F425AAB59F00F75805 /* Recording+CoreDataClass.swift */; };
 		2CC9E5F925AAB59F00F75805 /* RecordingCategory+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC9E5F525AAB59F00F75805 /* RecordingCategory+CoreDataClass.swift */; };
 		2CC9E5FA25AAB59F00F75805 /* RecordingCategory+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC9E5F625AAB59F00F75805 /* RecordingCategory+CoreDataProperties.swift */; };
+		2CC9E5FF25AAC6CF00F75805 /* SFSymbolCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC9E5FE25AAC6CF00F75805 /* SFSymbolCreator.swift */; };
 		455EEDA79BC5A4A958CAF08D /* Pods_RecorderPlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17C3A818DF59010D14CD305E /* Pods_RecorderPlus.framework */; };
 		8BDE7CA98B5D4FF4B641616F /* Pods_RecorderPlus_RecorderPlusUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69EDD91CE66705FC9EAE4783 /* Pods_RecorderPlus_RecorderPlusUITests.framework */; };
 		DF097D630D303F75E139053B /* Pods_RecorderPlusTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C2A307CF1CFB45DA6550B9F /* Pods_RecorderPlusTests.framework */; };
@@ -80,6 +81,7 @@
 		2CC9E5F425AAB59F00F75805 /* Recording+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Recording+CoreDataClass.swift"; sourceTree = "<group>"; };
 		2CC9E5F525AAB59F00F75805 /* RecordingCategory+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RecordingCategory+CoreDataClass.swift"; sourceTree = "<group>"; };
 		2CC9E5F625AAB59F00F75805 /* RecordingCategory+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RecordingCategory+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		2CC9E5FE25AAC6CF00F75805 /* SFSymbolCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFSymbolCreator.swift; sourceTree = "<group>"; };
 		3570E14681E6DDDBEB37AED1 /* Pods-RecorderPlusTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RecorderPlusTests.release.xcconfig"; path = "Target Support Files/Pods-RecorderPlusTests/Pods-RecorderPlusTests.release.xcconfig"; sourceTree = "<group>"; };
 		3ACA3548291A212DCB87E58C /* Pods-RecorderPlus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RecorderPlus.release.xcconfig"; path = "Target Support Files/Pods-RecorderPlus/Pods-RecorderPlus.release.xcconfig"; sourceTree = "<group>"; };
 		4C2A307CF1CFB45DA6550B9F /* Pods_RecorderPlusTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RecorderPlusTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -158,6 +160,7 @@
 			children = (
 				2C660EC425A6C0280054D556 /* AppDelegate.swift */,
 				2C660EC625A6C0280054D556 /* SceneDelegate.swift */,
+				2CC9E60625AAC70D00F75805 /* Model */,
 				2C73B0BF25AA9CCA00186D1A /* Controllers */,
 				2C73B0BB25AA9CBC00186D1A /* Views */,
 				2C73B0B725AA9C9900186D1A /* Extensions */,
@@ -214,6 +217,14 @@
 				2C660EFF25A6D7170054D556 /* ViewController2.swift */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		2CC9E60625AAC70D00F75805 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				2CC9E5FE25AAC6CF00F75805 /* SFSymbolCreator.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		D862FA8BC53D2D14AFC53CDE /* Pods */ = {
@@ -483,6 +494,7 @@
 				2C341E2F25A7FEB8005E8AD7 /* RecordingMetaData.xcdatamodeld in Sources */,
 				2CC9E5F825AAB59F00F75805 /* Recording+CoreDataClass.swift in Sources */,
 				2C660EC925A6C0280054D556 /* RecordingListVC.swift in Sources */,
+				2CC9E5FF25AAC6CF00F75805 /* SFSymbolCreator.swift in Sources */,
 				2C341E3C25A7FF6F005E8AD7 /* CoreDataStack.swift in Sources */,
 				2C7DDC3325A9538800D6961A /* UITextField.swift in Sources */,
 				2CC9E5F925AAB59F00F75805 /* RecordingCategory+CoreDataClass.swift in Sources */,
