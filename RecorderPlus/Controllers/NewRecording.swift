@@ -29,7 +29,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     let recordingTitle = UITextField()
     let recordingNote = UITextField()
     
-    var selectedCategory: String? = nil
+    var selectedCategory: RecordingCategory? = nil
     
     
     override func viewDidLoad() {
@@ -101,15 +101,14 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         
         dropDown.optionArray = categories
         
-        
         if selectedCategory != nil {
-            dropDown.text = selectedCategory
+            dropDown.text = selectedCategory?.category
         }
         
         // The the Closure returns Selected Index and String
         dropDown.didSelect{(selectedText , index ,id) in
             print("Selected String: \(selectedText) \n index: \(index)")
-            self.selectedCategory = selectedText
+            self.selectedCategory?.category = selectedText
         }
         
     }
@@ -118,7 +117,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         
         if recordButton.titleLabel?.text == "Re-record" {
             if let category = selectedCategory {
-                coreDataStack.fetchRecordingCategoryByTitle(categoryTitle: category) { (result) in
+                coreDataStack.fetchRecordingCategoryByTitle(categoryTitle: category.category!) { (result) in
                     switch result {
                     case .failure(let error):
                         print(error)

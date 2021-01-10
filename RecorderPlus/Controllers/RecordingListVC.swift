@@ -8,7 +8,7 @@
 import UIKit
 
 class RecordingListVC: UIViewController {
-    var tappedCell2: Recording!
+    var tappedCell: Recording!
     let tableview = UITableView()
     
     var coreDataStack = CoreDataStack()
@@ -55,6 +55,36 @@ class RecordingListVC: UIViewController {
 
     @objc func addButtonTapped() {
         let newRecordingVC = NewRecording()
+        let unknownTopicId = UserDefaults.standard.string(forKey: "unknownTopicId")
+        
+        if let validUnknownTopic = unknownTopicId {
+            coreDataStack.fetchRecordingCategoryByID(identifier: UUID(uuidString: validUnknownTopic)!) { (r) in
+                switch r {
+                case .failure(let error):
+                    print(error)
+                case .success(let recordings):
+                    newRecordingVC.selectedCategory = recordings.first
+                }
+            }
+            
+        } else {
+            let newTopic = RecordingCategory(context: coreDataStack.managedContext)
+            newTopic.category = "Unknown"
+            let uuid = UUID()
+            newTopic.categoryID = uuid
+            UserDefaults.standard.set(uuid.uuidString, forKey: "unknownTopicId")
+            coreDataStack.saveContext()
+            
+            coreDataStack.fetchRecordingCategoryByID(identifier: uuid) { (r) in
+                switch r {
+                case .failure(let error):
+                    print(error)
+                case .success(let recordings):
+                    newRecordingVC.selectedCategory = recordings.first
+                }
+            }
+        }
+    
         self.navigationController?.pushViewController(newRecordingVC, animated: true)
     }
 }
@@ -84,7 +114,7 @@ extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
         headerView.title.text = categories[section][0].category
         headerView.completion = {
             let newRecordingVC = NewRecording()
-            newRecordingVC.selectedCategory = self.categories[section][0].category
+            newRecordingVC.selectedCategory = self.categories[section][0]
             self.navigationController?.pushViewController(newRecordingVC, animated: true)
         }
         
@@ -127,7 +157,7 @@ extension RecordingListVC: CollectionViewCellDelegate {
     func collectionView(collectionviewcell: RecordingCollectionViewCell?, index: Int, didTappedInTableViewCell: TableViewCell) {
 
         if let recordingRow = didTappedInTableViewCell.recordings {
-            self.tappedCell2 = recordingRow[index]
+            self.tappedCell = recordingRow[index]
             // prints the recording
             print(recordingRow[index])
 
