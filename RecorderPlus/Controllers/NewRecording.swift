@@ -16,7 +16,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     
     var recordButton = UIButton()
     
-//    var deleteButton = UIButton()
+    //    var deleteButton = UIButton()
     let saveButton = UIButton()
     
     var recordingSession: AVAudioSession!
@@ -133,24 +133,32 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
                 }
             } else {
                 
-                let newCategory = RecordingCategory(context: coreDataStack.managedContext)
-                newCategory.category = dropDown.text
-                newCategory.categoryID = UUID()
-                coreDataStack.saveContext()
-                coreDataStack.fetchRecordingCategoryByTitle(categoryTitle: dropDown.text!) { (r) in
-                    switch r {
-                    case .failure(let error):
-                        print(error)
-                    case .success(let categories):
-                        let new = Recording(context: self.coreDataStack.managedContext)
-                        new.date = Date()
-                        new.recordingID = UUID(uuidString: self.uuid)
-                        new.recordingParent = categories.first
-                        new.name = self.recordingTitle.text
-                        new.note = self.recordingNote.text
-                        self.coreDataStack.saveContext()
+                if dropDown.text == "" {
+                    unknownTopicSaves()
+                    
+                } else {
+                    let newCategory = RecordingCategory(context: coreDataStack.managedContext)
+                    newCategory.category = dropDown.text
+                    newCategory.categoryID = UUID()
+                    coreDataStack.saveContext()
+                    coreDataStack.fetchRecordingCategoryByTitle(categoryTitle: dropDown.text!) { (r) in
+                        switch r {
+                        case .failure(let error):
+                            print(error)
+                        case .success(let categories):
+                            let new = Recording(context: self.coreDataStack.managedContext)
+                            new.date = Date()
+                            new.recordingID = UUID(uuidString: self.uuid)
+                            new.recordingParent = categories.first
+                            new.name = self.recordingTitle.text
+                            new.note = self.recordingNote.text
+                            self.coreDataStack.saveContext()
+                        }
                     }
+                    
                 }
+                
+                
             }
             self.navigationController?.popViewController(animated: true)
         } else {
@@ -158,6 +166,48 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
             self.present(alert, animated:true, completion: nil)        }
         
+    }
+    
+    private func unknownTopicSaves() {
+        let unknownTopicId = UserDefaults.standard.string(forKey: "unknownTopicId")
+        
+        if let validUnknownTopic = unknownTopicId {
+            coreDataStack.fetchRecordingCategoryByID(identifier: UUID(uuidString: validUnknownTopic)!) { (r) in
+                switch r {
+                case .failure(let error):
+                    print(error)
+                case .success(let recordings):
+                    let new = Recording(context: self.coreDataStack.managedContext)
+                    new.date = Date()
+                    new.recordingID = UUID(uuidString: self.uuid)
+                    new.recordingParent = recordings.first
+                    new.name = self.recordingTitle.text
+                    new.note = self.recordingNote.text
+                    self.coreDataStack.saveContext()                }
+            }
+            
+        } else {
+            let newTopic = RecordingCategory(context: coreDataStack.managedContext)
+            newTopic.category = "Unknown"
+            let uuid = UUID()
+            newTopic.categoryID = uuid
+            UserDefaults.standard.set(uuid.uuidString, forKey: "unknownTopicId")
+            coreDataStack.saveContext()
+            
+            coreDataStack.fetchRecordingCategoryByID(identifier: uuid) { (r) in
+                switch r {
+                case .failure(let error):
+                    print(error)
+                case .success(let recordings):
+                    let new = Recording(context: self.coreDataStack.managedContext)
+                    new.date = Date()
+                    new.recordingID = UUID(uuidString: self.uuid)
+                    new.recordingParent = recordings.first
+                    new.name = self.recordingTitle.text
+                    new.note = self.recordingNote.text
+                    self.coreDataStack.saveContext()                   }
+            }
+        }
     }
     
     private func setupUI() {
@@ -207,7 +257,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             let stopSymbol = SFSymbolCreator.setSFSymbolColor(symbolName: "stop.fill", color: .red, size: 20)
             recordButton.setImage(stopSymbol, for: .normal)
             recordButton.setTitleColor(.red, for: .normal)
-
+            
         } catch {
             finishRecording(success: false)
         }
@@ -230,7 +280,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     func loadRecordingUI() {
         self.view.addSubview(recordButton)
         recordButton.translatesAutoresizingMaskIntoConstraints = false
-//        recordButton.backgroundColor = .orange
+        //        recordButton.backgroundColor = .orange
         recordButton.setTitleColor(.red, for: .normal)
         NSLayoutConstraint.activate([
             recordButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 50),
