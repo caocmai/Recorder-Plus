@@ -16,6 +16,8 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
     var deleteButton = UIButton()
     var recordingObject: Recording!
     
+    var isPlaying = false
+    
     var coreDataStack: CoreDataStack!
 
     required init?(coder: NSCoder) {
@@ -31,7 +33,7 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
         //    contentView.backgroundColor = .blue
         label.translatesAutoresizingMaskIntoConstraints = false
         playBackButton.translatesAutoresizingMaskIntoConstraints = false
-        playBackButton.setTitle("Play", for: .normal)
+//        playBackButton.setTitle("Play", for: .normal)
         let playButton = SFSymbolCreator.setSFSymbolColor(symbolName: "play.circle", color: .green, size: 24)
         playBackButton.setImage(playButton, for: .normal)
         playBackButton.backgroundColor = .yellow
@@ -69,16 +71,17 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
     }
     
     @objc func playbackButtonTapped() {
-        print("playback")
-        if playBackButton.titleLabel?.text == "Play" {
-            playBackButton.setTitle("Stop", for: .normal)
+        if isPlaying == false {
+//            playBackButton.setTitle("Stop", for: .normal)
             let stopIcon = SFSymbolCreator.setSFSymbolColor(symbolName: "stop.circle", color: .green, size: 24)
             playBackButton.setImage(stopIcon, for: .normal)
             setupPlayer()
             soundPlayer.play()
+            isPlaying = true
         } else {
+            isPlaying = false
             soundPlayer.stop()
-            playBackButton.setTitle("Play", for: .normal)
+//            playBackButton.setTitle("Play", for: .normal)
             let playButton = SFSymbolCreator.setSFSymbolColor(symbolName: "play.circle", color: .green, size: 24)
             playBackButton.setImage(playButton, for: .normal)
         }
@@ -100,14 +103,11 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
         deleteButton.removeFromSuperview()
         contentView.backgroundColor = .white
     }
-    
-    
+
     func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return paths[0]
     }
-    
-    
     
     func setupPlayer() {
         let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
