@@ -59,7 +59,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         deleteButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            deleteButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 170),
+            deleteButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 150),
             deleteButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
         ])
         
@@ -91,11 +91,21 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         } catch {
             // failed to record!
         }
+        setupDropDown()
+    }
+    
+    private func setupDropDown() {
         
- 
-        let valueLabel = UILabel()
-        dropDown = DropDown(frame: CGRect(x: 110, y: 100, width: 200, height: 30)) // set frame
-        dropDown.backgroundColor = .gray
+        dropDown = DropDown() // set frame
+        view.addSubview(dropDown)
+        dropDown.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            dropDown.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
+            dropDown.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -50),
+            dropDown.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 30),
+            dropDown.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        dropDown.backgroundColor = .lightGray
         dropDown.placeholder = "Select Category"
         
         var categories = [String]()
@@ -117,7 +127,6 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         dropDown.optionArray = categories
         
         
-        view.addSubview(dropDown)
         if selectedCategory != nil {
             dropDown.text = selectedCategory
         }
@@ -125,7 +134,6 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         // The the Closure returns Selected Index and String
         dropDown.didSelect{(selectedText , index ,id) in
             print("Selected String: \(selectedText) \n index: \(index)")
-            valueLabel.text = "Selected String: \(selectedText) \n index: \(index)"
             self.selectedCategory = selectedText
         }
         
@@ -162,11 +170,11 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
                     }
                 }
             } else {
+                
                 let newCategory = RecordingCategory(context: coreDataStack.managedContext)
                 newCategory.category = dropDown.text
                 newCategory.categoryID = UUID()
                 coreDataStack.saveContext()
-                
                 coreDataStack.fetchRecordingCategoryByTitle(categoryTitle: dropDown.text!) { (r) in
                     switch r {
                     case .failure(let error):
@@ -210,12 +218,12 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         
         NSLayoutConstraint.activate([
             recordingTitle.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
-            recordingTitle.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -10),
+            recordingTitle.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -120),
             recordingTitle.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
             
             recordingNote.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
             recordingNote.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
-            recordingNote.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -70)
+            recordingNote.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -50)
         ])
     }
     
@@ -241,6 +249,10 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             audioRecorder.record()
             
             recordButton.setTitle("Tap to Stop", for: .normal)
+            let stopSymbol = SFSymolCreater.setSFSymbolColor(symbolName: "stop.fill", color: .black, size: 20)
+            recordButton.setImage(stopSymbol, for: .normal)
+            recordButton.setTitleColor(.black, for: .normal)
+
         } catch {
             finishRecording(success: false)
         }
@@ -252,6 +264,8 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         
         if success {
             recordButton.setTitle("Tap to Re-record", for: .normal)
+            let recordSymbol = SFSymolCreater.setSFSymbolColor(symbolName: "stop.circle.fill", color: .red, size: 20)
+            recordButton.setImage(recordSymbol, for: .normal)
         } else {
             recordButton.setTitle("Tap to Record", for: .normal)
         }
@@ -260,13 +274,15 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     func loadRecordingUI() {
         self.view.addSubview(recordButton)
         recordButton.translatesAutoresizingMaskIntoConstraints = false
-        recordButton.backgroundColor = .orange
-        recordButton.setTitleColor(.purple, for: .normal)
+//        recordButton.backgroundColor = .orange
+        recordButton.setTitleColor(.red, for: .normal)
         NSLayoutConstraint.activate([
-            recordButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 100),
+            recordButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 50),
             recordButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
         ])
         recordButton.setTitle("Tap to Record", for: .normal)
+        let recordSymbol = SFSymolCreater.setSFSymbolColor(symbolName: "stop.circle.fill", color: .red, size: 20)
+        recordButton.setImage(recordSymbol, for: .normal)
         recordButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title1)
         recordButton.addTarget(self, action: #selector(recordTapped), for: .touchUpInside)
         view.addSubview(recordButton)
@@ -314,4 +330,29 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         }
     }
     
+//    private func setSFSymbolColor(symbolName: String, color: UIColor) -> UIImage? {
+//        let symbol = UIImage(systemName: symbolName)
+//        let newSymbolColor = symbol?.withTintColor(color, renderingMode: .alwaysOriginal)
+//
+//        return newSymbolColor
+//
+//
+//    }
+    
+}
+
+
+struct SFSymolCreater {
+    static public func setSFSymbolColor(symbolName: String, color: UIColor, size: Int) -> UIImage? {
+        
+        guard let normalFont = UIFont(name: "Helvetica Neue", size: CGFloat(size)) else { return nil }
+        let configuration = UIImage.SymbolConfiguration(font: normalFont)
+        
+        let symbol = UIImage(systemName: symbolName, withConfiguration: configuration)
+        let newSymbolColor = symbol?.withTintColor(color, renderingMode: .alwaysOriginal)
+        
+        return newSymbolColor
+       
+        
+    }
 }

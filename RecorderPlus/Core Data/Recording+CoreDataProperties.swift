@@ -1,8 +1,8 @@
 //
 //  Recording+CoreDataProperties.swift
-//  RecorderPlus
+//  
 //
-//  Created by Cao Mai on 1/7/21.
+//  Created by Cao Mai on 1/9/21.
 //
 //
 
@@ -21,9 +21,5 @@ extension Recording {
     @NSManaged public var note: String?
     @NSManaged public var recordingID: UUID?
     @NSManaged public var recordingParent: RecordingCategory?
-
-}
-
-extension Recording : Identifiable {
 
 }

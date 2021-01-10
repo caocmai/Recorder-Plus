@@ -1,8 +1,8 @@
 //
 //  RecordingCategory+CoreDataProperties.swift
-//  RecorderPlus
+//  
 //
-//  Created by Cao Mai on 1/7/21.
+//  Created by Cao Mai on 1/9/21.
 //
 //
 
@@ -36,9 +36,5 @@ extension RecordingCategory {
 
     @objc(removeRecordings:)
     @NSManaged public func removeFromRecordings(_ values: NSSet)
-
-}
-
-extension RecordingCategory : Identifiable {
 
 }

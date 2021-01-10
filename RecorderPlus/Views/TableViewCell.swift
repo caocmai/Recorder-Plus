@@ -37,6 +37,8 @@ class TableViewCell: UITableViewCell {
         cell.label.text = model.name
         cell.backgroundColor = .lightGray
         cell.uuid = model.recordingID?.uuidString
+        cell.coreDataStack = CoreDataStack()
+        cell.recordingObject = model
 
     }
     
@@ -47,7 +49,7 @@ class TableViewCell: UITableViewCell {
 
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
-//        cv.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+//        cv.register(RecordingCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         return cv
     }()
 
@@ -66,11 +68,10 @@ class TableViewCell: UITableViewCell {
         
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
-        
-        
-        
+
         contentView.addSubview(collectionView)
         collectionView.backgroundColor = .white
+        
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: contentView.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),

@@ -59,10 +59,25 @@ class CoreDataStack {
         fetchRequest.predicate = NSPredicate(format: "categoryID == %@", identifier as CVarArg)
         fetchRequest.fetchLimit = 1
         do {
-            let allProjects = try managedContext.fetch(fetchRequest)
-            completion(.success(allProjects))
+            let allTopics = try managedContext.fetch(fetchRequest)
+            completion(.success(allTopics))
         } catch {
             completion(.failure(error))
+        }
+    }
+    
+    func deleteRecordingCategoryByID(identifier: UUID) {
+        let fetchRequest: NSFetchRequest<Recording> = Recording.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "recordingID == %@", identifier as CVarArg)
+//        fetchRequest.fetchLimit = 1
+        do {
+            let recordings = try managedContext.fetch(fetchRequest)
+            for object in recordings {
+                managedContext.delete(object)
+            }
+            try managedContext.save()
+        } catch {
+            print(error)
         }
     }
     
@@ -71,8 +86,8 @@ class CoreDataStack {
         fetchRequest.predicate = NSPredicate(format: "category == %@", categoryTitle)
         fetchRequest.fetchLimit = 1
         do {
-            let allProjects = try managedContext.fetch(fetchRequest)
-            completion(.success(allProjects))
+            let allTopics = try managedContext.fetch(fetchRequest)
+            completion(.success(allTopics))
         } catch {
             completion(.failure(error))
         }
@@ -82,8 +97,8 @@ class CoreDataStack {
     func fetchAllRecordings(completion: @escaping(Result<[Recording]>) -> Void) {
         let fetchRequest: NSFetchRequest<Recording> = Recording.fetchRequest()
         do {
-            let allProjects = try managedContext.fetch(fetchRequest)
-            completion(.success(allProjects))
+            let allRecordings = try managedContext.fetch(fetchRequest)
+            completion(.success(allRecordings))
         } catch {
             completion(.failure(error))
         }

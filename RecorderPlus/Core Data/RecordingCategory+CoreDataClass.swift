@@ -1,8 +1,8 @@
 //
 //  RecordingCategory+CoreDataClass.swift
-//  RecorderPlus
+//  
 //
-//  Created by Cao Mai on 1/7/21.
+//  Created by Cao Mai on 1/9/21.
 //
 //
 
