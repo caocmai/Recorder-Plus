@@ -81,6 +81,21 @@ class CoreDataStack {
         }
     }
     
+    func deleteCategoryByID(identifier: UUID) {
+        let fetchRequest: NSFetchRequest<RecordingCategory> = RecordingCategory.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "categoryID == %@", identifier as CVarArg)
+//        fetchRequest.fetchLimit = 1
+        do {
+            let recordings = try managedContext.fetch(fetchRequest)
+            for object in recordings {
+                managedContext.delete(object)
+            }
+            try managedContext.save()
+        } catch {
+            print(error)
+        }
+    }
+    
     func fetchRecordingCategoryByTitle(categoryTitle: String, completion: @escaping(Result<[RecordingCategory]>) -> Void) {
         let fetchRequest: NSFetchRequest<RecordingCategory> = RecordingCategory.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "category == %@", categoryTitle)
