@@ -68,16 +68,15 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
         //        deleteButton.setTitle("DELETE", for: .normal)
         //        deleteButton.backgroundColor = .red
         //        deleteButton.setTitleColor(.purple, for: .normal)
-        let trash = SFSymbolCreator.setSFSymbolColor(symbolName: "trash", color: .red, size: 18)
+        let trash = SFSymbolCreator.setSFSymbolColor(symbolName: "xmark.square.fill", color: .red, size: 23)
         deleteButton.setImage(trash, for: .normal)
         deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         deleteButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            deleteButton.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -5),
-            deleteButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -5),
+            deleteButton.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: -3),
+            deleteButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: 3),
         ])
         
-        //        updateTimerLabel()
     }
     
     @objc func playbackButtonTapped() {

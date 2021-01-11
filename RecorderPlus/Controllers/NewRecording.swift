@@ -38,7 +38,8 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.navigationController?.navigationBar.prefersLargeTitles = false
+
         // Do any additional setup after loading the view.
         self.view.backgroundColor = .white
         

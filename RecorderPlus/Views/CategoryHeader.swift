@@ -52,19 +52,18 @@ class CategoryHeader: UITableViewHeaderFooterView {
         
         NSLayoutConstraint.activate([
             
-            newRecordingButton.widthAnchor.constraint(equalToConstant: 25),
-            newRecordingButton.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 5),
-            newRecordingButton.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+            delete.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 5),
+            delete.widthAnchor.constraint(equalToConstant: 30),
+            delete.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
             
-            title.leadingAnchor.constraint(equalTo: newRecordingButton.trailingAnchor, constant: 5),
+            title.leadingAnchor.constraint(equalTo: delete.trailingAnchor, constant: 3),
             title.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -40),
             title.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
             
-            delete.leadingAnchor.constraint(equalTo: title.trailingAnchor, constant: 5),
-            //            delete.leadingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -80),
-            delete.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-            //            delete.widthAnchor.constraint(equalToConstant: 30),
-            
+            newRecordingButton.widthAnchor.constraint(equalToConstant: 25),
+            newRecordingButton.leadingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -40),
+            newRecordingButton.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+
         ])
     }
     

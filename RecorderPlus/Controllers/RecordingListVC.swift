@@ -121,7 +121,7 @@ extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
         
         headerView.deleteCompletion = {
             
-            let refreshAlert = UIAlertController(title: "Delete Topic Recordings", message: "Warning: This will delete ALL recordings for this topic", preferredStyle: UIAlertController.Style.alert)
+            let refreshAlert = UIAlertController(title: "Delete Topic Recordings", message: "WARNING: This will delete ALL recordings for this topic", preferredStyle: UIAlertController.Style.alert)
             
             refreshAlert.addAction(UIAlertAction(title: "Delete", style: .default, handler: { (action: UIAlertAction!) in
                 // reset unknown topic
@@ -135,7 +135,6 @@ extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
                 self.coreDataStack.deleteCategoryByID(identifier: self.categories[section][0].categoryID!)
                 self.categories.remove(at: section)
                 self.tableview.deleteSections([section], with: .fade)
-                
                 self.tableview.reloadData()
                 
             }))
@@ -157,8 +156,7 @@ extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "tableviewcellid", for: indexPath) as? TableViewCell {
             
             let model = categories[indexPath.section][indexPath.row]
-            //            print(model.category)
-            
+
             let sortby = "date"
             coreDataStack.fetchRecordingsByCategory(sortBy: sortby, selectedCategory: model) { (r) in
                 switch r {
@@ -182,6 +180,7 @@ extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension RecordingListVC: CollectionViewCellDelegate {
+    
     func collectionView(collectionviewcell: RecordingCollectionViewCell?, index: Int, didTappedInTableViewCell: TableViewCell) {
         
         if let recordingRow = didTappedInTableViewCell.recordings {
