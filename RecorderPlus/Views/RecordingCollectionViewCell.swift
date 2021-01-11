@@ -33,8 +33,9 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
         //    contentView.backgroundColor = .blue
         label.translatesAutoresizingMaskIntoConstraints = false
         playBackButton.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
 //        playBackButton.setTitle("Play", for: .normal)
-        let playButton = SFSymbolCreator.setSFSymbolColor(symbolName: "play.circle", color: .green, size: 24)
+        let playButton = SFSymbolCreator.setSFSymbolColor(symbolName: "play.circle", color: .green, size: 40)
         playBackButton.setImage(playButton, for: .normal)
         playBackButton.backgroundColor = .yellow
         playBackButton.setTitleColor(.black, for: .normal)
@@ -44,16 +45,14 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
 
         
         NSLayoutConstraint.activate([
-            label.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 8),
-            label.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 8),
-            label.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant:  -8),
-            label.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -8),
+            label.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor, constant: 5),
+            label.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 5),
+            label.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -5),
             
-            
-            playBackButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 30),
-            playBackButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
-            playBackButton.heightAnchor.constraint(equalToConstant: 50),
-            playBackButton.widthAnchor.constraint(equalToConstant: 50)
+            playBackButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15),
+            playBackButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            playBackButton.heightAnchor.constraint(equalToConstant: 60),
+            playBackButton.widthAnchor.constraint(equalToConstant: 60)
         ])
         
         
