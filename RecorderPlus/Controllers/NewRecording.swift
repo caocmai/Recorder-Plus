@@ -15,8 +15,6 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     let coreDataStack = CoreDataStack()
     
     var recordButton = UIButton()
-    
-    //    var deleteButton = UIButton()
     let saveButton = UIButton()
     
     var recordingSession: AVAudioSession!
@@ -281,7 +279,6 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     
     func startRecording() {
         let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
-        print(audioFilename)
         
         let settings = [
             AVFormatIDKey: Int(kAudioFormatMPEG4AAC),

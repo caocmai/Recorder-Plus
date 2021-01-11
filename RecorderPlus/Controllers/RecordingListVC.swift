@@ -119,19 +119,35 @@ extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
         }
         
         headerView.deleteCompletion = {
-            // reset unknown topic
-            let unknownTopicId = UserDefaults.standard.string(forKey: "unknownTopicId")
-            if let validUnknownTopicId = unknownTopicId {
-                if self.categories[section][0].categoryID! == UUID(uuidString: validUnknownTopicId) {
-                    UserDefaults.standard.set(nil, forKey: "unknownTopicId")
+            
+            
+            let refreshAlert = UIAlertController(title: "Delete Topic Recordings", message: "Warning: This will delete ALL recordings for this topic", preferredStyle: UIAlertController.Style.alert)
+            
+            refreshAlert.addAction(UIAlertAction(title: "Delete", style: .default, handler: { (action: UIAlertAction!) in
+                print("Handle Ok logic here")
+                // reset unknown topic
+                let unknownTopicId = UserDefaults.standard.string(forKey: "unknownTopicId")
+                if let validUnknownTopicId = unknownTopicId {
+                    if self.categories[section][0].categoryID! == UUID(uuidString: validUnknownTopicId) {
+                        UserDefaults.standard.set(nil, forKey: "unknownTopicId")
+                    }
                 }
-            }
- 
-            self.coreDataStack.deleteCategoryByID(identifier: self.categories[section][0].categoryID!)
-            self.categories.remove(at: section)
-            self.tableview.deleteSections([section], with: .fade)
+     
+                self.coreDataStack.deleteCategoryByID(identifier: self.categories[section][0].categoryID!)
+                self.categories.remove(at: section)
+                self.tableview.deleteSections([section], with: .fade)
 
-            self.tableview.reloadData()
+                self.tableview.reloadData()
+                
+            }))
+            
+            refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+                print("Reset is cancled")
+            }))
+            
+            self.present(refreshAlert, animated: true, completion: nil)
+            
+           
         }
         
         return headerView
