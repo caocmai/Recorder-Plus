@@ -18,24 +18,10 @@ class RecordingListVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        categories = []
-        
-        coreDataStack.fetchAllRecordingCategories { (r) in
-            switch r {
-            case .failure(let error):
-                print(error)
-            case .success(let cate):
-                for c in cate {
-                    self.categories.append([c])
-                }
-//                print(self.categories)
-            }
-        }
-        
-        tableview.reloadData()
-        
+        fetchAndSet()
     }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -55,6 +41,24 @@ class RecordingListVC: UIViewController {
         
         let quickRec = UIBarButtonItem(title: "QuickREC", style: .plain, target: self, action: #selector(quickRecTapped))
         self.navigationItem.leftBarButtonItem = quickRec
+    }
+    
+    private func fetchAndSet() {
+        categories = []
+        
+        coreDataStack.fetchAllRecordingCategories { (r) in
+            switch r {
+            case .failure(let error):
+                print(error)
+            case .success(let cate):
+                for c in cate {
+                    self.categories.append([c])
+                }
+//                print(self.categories)
+            }
+        }
+        
+        tableview.reloadData()
     }
     
     @objc func quickRecTapped() {
@@ -94,7 +98,7 @@ class RecordingListVC: UIViewController {
         //                }
         //            }
         //        }
-        
+        newRecordingVC.coreDataStack = coreDataStack
         self.navigationController?.pushViewController(newRecordingVC, animated: true)
     }
 }
@@ -125,6 +129,7 @@ extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
         headerView.newRecordingcompletion = {
             let newRecordingVC = NewRecording()
             newRecordingVC.selectedCategory = self.categories[section][0]
+            newRecordingVC.coreDataStack = self.coreDataStack
             self.navigationController?.pushViewController(newRecordingVC, animated: true)
         }
         
@@ -134,7 +139,6 @@ extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
             
             refreshAlert.addAction(UIAlertAction(title: "Delete", style: .default, handler: { (action: UIAlertAction!) in
                 // reset unknown topic
-                
                 let unknownTopicId = UserDefaults.standard.string(forKey: "unknownTopicId")
                 if let validUnknownTopicId = unknownTopicId {
                     if self.categories[section][0].categoryID! == UUID(uuidString: validUnknownTopicId) {
@@ -153,8 +157,7 @@ extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
                 self.coreDataStack.deleteCategoryByID(identifier: self.categories[section][0].categoryID!)
                 self.categories.remove(at: section)
                 self.tableview.deleteSections([section], with: .fade)
-                self.tableview.reloadData()
-                
+                self.fetchAndSet()
             }))
             
             refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in

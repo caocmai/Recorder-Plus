@@ -12,7 +12,7 @@ import iOSDropDown
 
 class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDelegate {
     
-    let coreDataStack = CoreDataStack()
+    var coreDataStack: CoreDataStack!
     var quickRec: Bool!
     
     var recordButton = UIButton()
@@ -134,9 +134,10 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
                 if categoryFound == false {
                     let newCategory = RecordingCategory(context: coreDataStack.managedContext)
                     newCategory.category = dropDown.text
-                    newCategory.categoryID = UUID()
+                    let uuid = UUID()
+                    newCategory.categoryID = uuid
                     coreDataStack.saveContext()
-                    coreDataStack.fetchRecordingCategoryByTitle(categoryTitle: dropDown.text!) { (r) in
+                    coreDataStack.fetchRecordingCategoryByID(identifier: uuid) { (r) in
                         switch r {
                         case .failure(let error):
                             print(error)
