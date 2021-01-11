@@ -53,16 +53,14 @@ class RecordingListVC: UIViewController {
         
         self.navigationItem.rightBarButtonItem = addButton
         
-        let urgentRecording = UIBarButtonItem(title: "QuickREC", style: .plain, target: self, action: #selector(urgentButtonTapped))
-        self.navigationItem.leftBarButtonItem = urgentRecording
+        let quickRec = UIBarButtonItem(title: "QuickREC", style: .plain, target: self, action: #selector(quickRecTapped))
+        self.navigationItem.leftBarButtonItem = quickRec
     }
     
-    @objc func urgentButtonTapped() {
+    @objc func quickRecTapped() {
         let newRecordingVC = NewRecording()
         newRecordingVC.quickRec = true
         self.navigationController?.pushViewController(newRecordingVC, animated: true)
-
-        
     }
     
     @objc func addButtonTapped() {
@@ -136,10 +134,19 @@ extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
             
             refreshAlert.addAction(UIAlertAction(title: "Delete", style: .default, handler: { (action: UIAlertAction!) in
                 // reset unknown topic
+                
                 let unknownTopicId = UserDefaults.standard.string(forKey: "unknownTopicId")
                 if let validUnknownTopicId = unknownTopicId {
                     if self.categories[section][0].categoryID! == UUID(uuidString: validUnknownTopicId) {
                         UserDefaults.standard.set(nil, forKey: "unknownTopicId")
+                    }
+                }
+                
+                let quickRecId = UserDefaults.standard.string(forKey: "quickRecTopicId")
+                
+                if let validQuickRecId = quickRecId {
+                    if self.categories[section][0].categoryID! == UUID(uuidString: validQuickRecId) {
+                        UserDefaults.standard.set(nil, forKey: "quickRecTopicId")
                     }
                 }
                 

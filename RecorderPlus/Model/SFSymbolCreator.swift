@@ -14,9 +14,9 @@ struct SFSymbolCreator {
         let configuration = UIImage.SymbolConfiguration(font: normalFont)
         
         let symbol = UIImage(systemName: symbolName, withConfiguration: configuration)
-        let newSymbolColor = symbol?.withTintColor(color, renderingMode: .alwaysOriginal)
+        let newSymbolColored = symbol?.withTintColor(color, renderingMode: .alwaysOriginal)
         
-        return newSymbolColor
+        return newSymbolColored
        
         
     }

@@ -111,7 +111,11 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         if recordButton.titleLabel?.text == "Re-record" {
             
             if dropDown.text == "" {
-                unknownTopicSaves()
+                if quickRec == true {
+                    unknownTopicSaves(recordingTopic: "QuickREC", recordingKey: "quickRecTopicId")
+                } else {
+                    unknownTopicSaves(recordingTopic: "Unknown", recordingKey: "unknownTopicId")
+                }
             } else {
                 var categoryFound = false
                 for category in recordingCategory{
@@ -156,8 +160,8 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         }
     }
     
-    private func unknownTopicSaves() {
-        let unknownTopicId = UserDefaults.standard.string(forKey: "unknownTopicId")
+    private func unknownTopicSaves(recordingTopic: String, recordingKey: String) {
+        let unknownTopicId = UserDefaults.standard.string(forKey: recordingKey)
         
         if let validUnknownTopic = unknownTopicId {
             coreDataStack.fetchRecordingCategoryByID(identifier: UUID(uuidString: validUnknownTopic)!) { (r) in
@@ -176,10 +180,10 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             
         } else {
             let newTopic = RecordingCategory(context: coreDataStack.managedContext)
-            newTopic.category = "Unknown"
+            newTopic.category = recordingTopic
             let uuid = UUID()
             newTopic.categoryID = uuid
-            UserDefaults.standard.set(uuid.uuidString, forKey: "unknownTopicId")
+            UserDefaults.standard.set(uuid.uuidString, forKey: recordingKey)
             coreDataStack.saveContext()
             
             coreDataStack.fetchRecordingCategoryByID(identifier: uuid) { (r) in
