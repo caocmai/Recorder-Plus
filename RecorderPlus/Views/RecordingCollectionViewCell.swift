@@ -122,7 +122,7 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
     
     func setupPlayer() {
         let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
-        print(audioFilename)
+//        print(audioFilename)
         
         do {
             soundPlayer = try AVAudioPlayer(contentsOf: audioFilename)

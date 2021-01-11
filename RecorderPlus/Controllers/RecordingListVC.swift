@@ -64,6 +64,7 @@ class RecordingListVC: UIViewController {
     @objc func quickRecTapped() {
         let newRecordingVC = NewRecording()
         newRecordingVC.quickRec = true
+        newRecordingVC.coreDataStack = coreDataStack
         self.navigationController?.pushViewController(newRecordingVC, animated: true)
     }
     
