@@ -28,8 +28,12 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     
     let recordingTitle = UITextField()
     let recordingNote = UITextField()
+    let instructionLabel = UILabel()
     
     var selectedCategory: RecordingCategory? = nil
+    
+    var timer: Timer!
+    var time = 0
     
     
     override func viewDidLoad() {
@@ -37,20 +41,8 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         
         // Do any additional setup after loading the view.
         self.view.backgroundColor = .white
-        setupUI()        
+                
         UITextField.connectFields(fields: [recordingTitle, recordingNote])
-        
-        
-        self.view.addSubview(saveButton)
-        saveButton.setTitle("SAVE", for: .normal)
-        saveButton.backgroundColor = .green
-        saveButton.setTitleColor(.purple, for: .normal)
-        saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
-        saveButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            saveButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 210),
-            saveButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
-        ])
         
         recordingSession = AVAudioSession.sharedInstance()
         
@@ -110,6 +102,8 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             print("Selected String: \(selectedText) \n index: \(index)")
             self.selectedCategory?.category = selectedText
         }
+        
+        setupUI()
         
     }
     
@@ -211,24 +205,50 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     }
     
     private func setupUI() {
+        self.view.addSubview(recordingTitle)
+        self.view.addSubview(recordingNote)
+        self.view.addSubview(instructionLabel)
+        self.view.addSubview(saveButton)
+        
+        saveButton.setTitle("SAVE", for: .normal)
+        saveButton.backgroundColor = .green
+        saveButton.setTitleColor(.purple, for: .normal)
+        saveButton.layer.cornerRadius = 5
+        saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+        
+        saveButton.translatesAutoresizingMaskIntoConstraints = false
         recordingTitle.translatesAutoresizingMaskIntoConstraints = false
         recordingNote.translatesAutoresizingMaskIntoConstraints = false
+        instructionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         recordingTitle.setBottomBorder()
         recordingNote.setBottomBorder()
         recordingTitle.placeholder = "Title/Name (Optional)"
         recordingNote.placeholder = "Note (Optional)"
         
-        self.view.addSubview(recordingTitle)
-        self.view.addSubview(recordingNote)
+        instructionLabel.text = "Select from an exsistance Topic or type in a new Topic"
+        instructionLabel.textColor = .lightGray
+        instructionLabel.numberOfLines = 0
+        instructionLabel.font = instructionLabel.font.withSize(15)
         
         NSLayoutConstraint.activate([
+            
+            instructionLabel.bottomAnchor.constraint(equalTo: dropDown.topAnchor, constant: 5),
+            instructionLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
+            instructionLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 10),
+            
             recordingTitle.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
             recordingTitle.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -120),
             recordingTitle.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
             
             recordingNote.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
             recordingNote.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
-            recordingNote.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -50)
+            recordingNote.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -50),
+            
+            saveButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 210),
+            saveButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            saveButton.widthAnchor.constraint(equalToConstant: 180),
+            saveButton.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
     
@@ -252,9 +272,10 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             audioRecorder = try AVAudioRecorder(url: audioFilename, settings: settings)
             audioRecorder.delegate = self
             audioRecorder.record()
+            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
             
             recordButton.setTitle("Stop", for: .normal)
-            let stopSymbol = SFSymbolCreator.setSFSymbolColor(symbolName: "stop.fill", color: .red, size: 20)
+            let stopSymbol = SFSymbolCreator.setSFSymbolColor(symbolName: "stop.fill", color: .red, size: 60)
             recordButton.setImage(stopSymbol, for: .normal)
             recordButton.setTitleColor(.red, for: .normal)
             
@@ -263,14 +284,24 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         }
     }
     
+    @objc func updateTimer() {
+        time += 1
+        let hours = Int(time) / 3600
+        let minutes = Int(time) / 60 % 60
+        let seconds = Int(time) % 60
+        instructionLabel.text = String(format:"%02i:%02i:%02i", hours, minutes, seconds)
+    }
+    
     func finishRecording(success: Bool) {
         audioRecorder.stop()
         audioRecorder = nil
         
         if success {
+            timer.invalidate()
+            time = 0
             recordButton.setTitle("Re-record", for: .normal)
             recordButton.setTitleColor(.black, for: .normal)
-            let recordSymbol = SFSymbolCreator.setSFSymbolColor(symbolName: "stop.circle.fill", color: .red, size: 20)
+            let recordSymbol = SFSymbolCreator.setSFSymbolColor(symbolName: "stop.circle.fill", color: .red, size: 60)
             recordButton.setImage(recordSymbol, for: .normal)
         } else {
             recordButton.setTitle("Record", for: .normal)
@@ -287,7 +318,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             recordButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
         ])
         recordButton.setTitle("Record", for: .normal)
-        let recordSymbol = SFSymbolCreator.setSFSymbolColor(symbolName: "stop.circle.fill", color: .red, size: 20)
+        let recordSymbol = SFSymbolCreator.setSFSymbolColor(symbolName: "stop.circle.fill", color: .red, size: 60)
         recordButton.setImage(recordSymbol, for: .normal)
         recordButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title1)
         recordButton.addTarget(self, action: #selector(recordTapped), for: .touchUpInside)

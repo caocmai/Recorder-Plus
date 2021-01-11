@@ -112,7 +112,7 @@ extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
 
         let headerView = tableview.dequeueReusableHeaderFooterView(withIdentifier: CategoryHeader.indentifier) as! CategoryHeader
         headerView.title.text = categories[section][0].category
-        headerView.completion = {
+        headerView.newRecordingcompletion = {
             let newRecordingVC = NewRecording()
             newRecordingVC.selectedCategory = self.categories[section][0]
             self.navigationController?.pushViewController(newRecordingVC, animated: true)

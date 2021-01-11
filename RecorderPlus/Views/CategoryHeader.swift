@@ -16,7 +16,7 @@ class CategoryHeader: UITableViewHeaderFooterView {
     let delete = UIButton()
     var deleteCompletion: (() -> Void)?
     
-    var completion: (() -> Void)?
+    var newRecordingcompletion: (() -> Void)?
 
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
@@ -41,7 +41,6 @@ class CategoryHeader: UITableViewHeaderFooterView {
         title.setBottomBorder()
         title.isUserInteractionEnabled = false
 
-        
         newRecordingButton.setImage(UIImage(systemName: "plus.app"), for: .normal)
         newRecordingButton.addTarget(self, action: #selector(newRecordingButtonTapped), for: .touchUpInside)
         
@@ -64,16 +63,11 @@ class CategoryHeader: UITableViewHeaderFooterView {
             delete.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
 //            delete.widthAnchor.constraint(equalToConstant: 30),
             
-            
-            
-            
-            
-            
         ])
     }
     
     @objc func newRecordingButtonTapped() {
-        completion?()
+        newRecordingcompletion?()
     }
     
     @objc func deleteButtonTapped() {
