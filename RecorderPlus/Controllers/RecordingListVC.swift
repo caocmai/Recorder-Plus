@@ -120,7 +120,6 @@ extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
         
         headerView.deleteCompletion = {
             
-            
             let refreshAlert = UIAlertController(title: "Delete Topic Recordings", message: "Warning: This will delete ALL recordings for this topic", preferredStyle: UIAlertController.Style.alert)
             
             refreshAlert.addAction(UIAlertAction(title: "Delete", style: .default, handler: { (action: UIAlertAction!) in

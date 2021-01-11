@@ -12,7 +12,7 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
     let countdownLabel = UILabel()
     let playBackButton = UIButton()
     var soundPlayer : AVAudioPlayer!
-    var uuid : String!
+    var uuid = String()
     var deleteButton = UIButton()
     var recordingObject: Recording!
     var recordingTitle = UILabel()
@@ -77,6 +77,7 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
             deleteButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -5),
         ])
         
+//        updateTimerLabel()
     }
     
     @objc func playbackButtonTapped() {
@@ -112,6 +113,8 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
         
         playBackButton.removeFromSuperview()
         deleteButton.removeFromSuperview()
+//        countdownLabel.removeFromSuperview()
+//        recordingTitle.removeFromSuperview()
         contentView.backgroundColor = .white
     }
 
@@ -120,8 +123,10 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
         return paths[0]
     }
     
+    
     func setupPlayer() {
         let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
+        print(audioFilename)
         
         do {
             soundPlayer = try AVAudioPlayer(contentsOf: audioFilename)
@@ -139,22 +144,25 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
     }
     
     @objc func countdown() {
+        updateTimerLabel()
+        
+    }
+    
+    func updateTimerLabel() {
         var hours: Int
         var minutes: Int
         var seconds: Int
         
-        totalSecond = totalSecond - 1
-        
         if totalSecond == 0 {
             timer?.invalidate()
         }
-        
+
 //        print(totalSecond)
         hours = totalSecond / 3600
         minutes = (totalSecond % 3600) / 60
         seconds = (totalSecond % 3600) % 60
         countdownLabel.text = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-        
-        
+        totalSecond = totalSecond - 1
+
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 protocol CollectionViewCellDelegate: class {
     func collectionView(collectionviewcell: RecordingCollectionViewCell?, index: Int, didTappedInTableViewCell: TableViewCell)
@@ -16,31 +17,21 @@ protocol CollectionViewCellDelegate: class {
 class TableViewCell: UITableViewCell {
     
     weak var cellDelegate: CollectionViewCellDelegate?
-    
-    var cellID: UUID!
-    
-    var coreDataStack = CoreDataStack()
-    
+        
+//    var coreDataStack = CoreDataStack()
     var recordings: [Recording]?
+    var recordingDuration = Int()
+    var timeString = String()
 
     
-//    var rowWithColors: [CollectionViewCellModel]?
-    var subCategoryLabel = UILabel()
-    
-//    let simpleConfig = UICollectionView.CellRegistration<MyCollectionViewCell, CollectionViewCellModel> { (cell, indexPath, model) in
-//        cell.label.text = model.name
-//        cell.backgroundColor = model.color
+//    let simpleConfig = UICollectionView.CellRegistration<RecordingCollectionViewCell, Recording> { (cell, indexPath, model) in
+//        cell.recordingTitle.text = model.name
+//        cell.backgroundColor = .lightGray
+//        cell.uuid = model.recordingID!.uuidString
+//        cell.coreDataStack = CoreDataStack()
+//        cell.recordingObject = model
 //
 //    }
-    
-    let simpleConfig = UICollectionView.CellRegistration<RecordingCollectionViewCell, Recording> { (cell, indexPath, model) in
-        cell.recordingTitle.text = model.name
-        cell.backgroundColor = .lightGray
-        cell.uuid = model.recordingID?.uuidString
-        cell.coreDataStack = CoreDataStack()
-        cell.recordingObject = model
-
-    }
     
     fileprivate let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -49,15 +40,14 @@ class TableViewCell: UITableViewCell {
 
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
-//        cv.register(RecordingCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        cv.register(RecordingCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         return cv
     }()
 
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        
-        
+
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -87,12 +77,6 @@ class TableViewCell: UITableViewCell {
 
 extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    // The data we passed from the TableView send them to the CollectionView Model
-//    func updateCellWith(row: [CollectionViewCellModel]) {
-//        self.rowWithColors = row
-//        self.collectionView.reloadData()
-//    }
-//
     func updateCellNew(row: [Recording]) {
         self.recordings = row
         self.collectionView.reloadData()
@@ -115,6 +99,8 @@ extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, U
     
     // Set the data for each cell (color and color name)
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! RecordingCollectionViewCell
 //        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? UICollectionViewCell {
 //            cell.backgroundColor = self.rowWithColors?[indexPath.item].color ?? UIColor.blue
 ////            cell.text = self.rowWithColors?[indexPath.item].name ?? ""
@@ -128,11 +114,45 @@ extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, U
 //        let model = self.rowWithColors?[indexPath.item]
         
         let model = self.recordings?[indexPath.item]
-
+        cell.recordingTitle.text = model?.name
+        cell.backgroundColor = .lightGray
+        cell.uuid = (model?.recordingID!.uuidString)!
+        cell.coreDataStack = CoreDataStack()
+        cell.recordingObject = model
+        cell.countdownLabel.text = getTimeLabel(uuid: (model?.recordingID!.uuidString)!)
         
-        return collectionView.dequeueConfiguredReusableCell(using: simpleConfig,
-                                                            for: indexPath,
-                                                            item: model)
+        return cell
+//        return collectionView.dequeueConfiguredReusableCell(using: simpleConfig,
+//                                                            for: indexPath,
+//                                                            item: model)
+    }
+    
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
+    }
+    
+    func getDuration(uuid: String) -> Int {
+        let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
+        let asset = AVURLAsset(url: audioFilename, options: nil)
+        let audioDuration = asset.duration
+        let audioDurationSeconds = Int(CMTimeGetSeconds(audioDuration))
+//        print(audioDurationSeconds)
+        return audioDurationSeconds
+    }
+    
+    func getTimeLabel(uuid: String) -> String {
+        let totalSecond = getDuration(uuid: uuid)
+        var hours: Int
+        var minutes: Int
+        var seconds: Int
+       
+        
+//        print(totalSecond)
+        hours = totalSecond / 3600
+        minutes = (totalSecond % 3600) / 60
+        seconds = (totalSecond % 3600) % 60
+        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
     }
     
     // Add spaces at the beginning and the end of the collection view
