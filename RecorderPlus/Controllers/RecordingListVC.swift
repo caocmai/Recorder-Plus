@@ -53,6 +53,16 @@ class RecordingListVC: UIViewController {
         
         self.navigationItem.rightBarButtonItem = addButton
         
+        let urgentRecording = UIBarButtonItem(title: "QuickREC", style: .plain, target: self, action: #selector(urgentButtonTapped))
+        self.navigationItem.leftBarButtonItem = urgentRecording
+    }
+    
+    @objc func urgentButtonTapped() {
+        let newRecordingVC = NewRecording()
+        newRecordingVC.quickRec = true
+        self.navigationController?.pushViewController(newRecordingVC, animated: true)
+
+        
     }
     
     @objc func addButtonTapped() {

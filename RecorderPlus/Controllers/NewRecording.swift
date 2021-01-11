@@ -13,6 +13,7 @@ import iOSDropDown
 class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDelegate {
     
     let coreDataStack = CoreDataStack()
+    var quickRec: Bool!
     
     var recordButton = UIButton()
     let saveButton = UIButton()
@@ -67,6 +68,14 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         }
         setupUI()
         setupDropDown()
+        
+        if quickRec == true {
+            if audioRecorder == nil {
+                startRecording()
+            } else {
+                finishRecording(success: true)
+            }
+        }
     }
     
     private func setupDropDown() {
@@ -341,7 +350,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     
     @objc func recordTapped() {
         
-        print(dropDown.text)
+//        print(dropDown.text)
         
         if audioRecorder == nil {
             startRecording()
