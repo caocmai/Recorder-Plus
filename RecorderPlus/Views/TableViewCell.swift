@@ -17,48 +17,48 @@ protocol CollectionViewCellDelegate: class {
 class TableViewCell: UITableViewCell {
     
     weak var cellDelegate: CollectionViewCellDelegate?
-        
-//    var coreDataStack = CoreDataStack()
+    
+    //    var coreDataStack = CoreDataStack()
     var recordings: [Recording]?
     var recordingDuration = Int()
     var timeString = String()
-
     
-//    let simpleConfig = UICollectionView.CellRegistration<RecordingCollectionViewCell, Recording> { (cell, indexPath, model) in
-//        cell.recordingTitle.text = model.name
-//        cell.backgroundColor = .lightGray
-//        cell.uuid = model.recordingID!.uuidString
-//        cell.coreDataStack = CoreDataStack()
-//        cell.recordingObject = model
-//
-//    }
+    
+    //    let simpleConfig = UICollectionView.CellRegistration<RecordingCollectionViewCell, Recording> { (cell, indexPath, model) in
+    //        cell.recordingTitle.text = model.name
+    //        cell.backgroundColor = .lightGray
+    //        cell.uuid = model.recordingID!.uuidString
+    //        cell.coreDataStack = CoreDataStack()
+    //        cell.recordingObject = model
+    //
+    //    }
     
     fileprivate let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: 150, height: 180)
-
+        
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.register(RecordingCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         return cv
     }()
-
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-
+        
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
         self.collectionView.showsHorizontalScrollIndicator = false
         
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
-
+        
         contentView.addSubview(collectionView)
         collectionView.backgroundColor = .white
         
@@ -67,11 +67,11 @@ class TableViewCell: UITableViewCell {
             collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
-
+            
         ])
-
+        
     }
-
+    
 }
 
 
@@ -89,7 +89,7 @@ extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, U
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return self.rowWithColors?.count ?? 0
+        //        return self.rowWithColors?.count ?? 0
         return recordings?.count ?? 0
     }
     
@@ -101,17 +101,17 @@ extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, U
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! RecordingCollectionViewCell
-//        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? UICollectionViewCell {
-//            cell.backgroundColor = self.rowWithColors?[indexPath.item].color ?? UIColor.blue
-////            cell.text = self.rowWithColors?[indexPath.item].name ?? ""
-//            return cell
-//        }
-//        print("test")
-//        return UICollectionViewCell()
-//        let model = self.rowWithColors?[indexPath.item].name ?? ""
-//        let model = self.rowWithColors?[indexPath.item].color
+        //        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? UICollectionViewCell {
+        //            cell.backgroundColor = self.rowWithColors?[indexPath.item].color ?? UIColor.blue
+        ////            cell.text = self.rowWithColors?[indexPath.item].name ?? ""
+        //            return cell
+        //        }
+        //        print("test")
+        //        return UICollectionViewCell()
+        //        let model = self.rowWithColors?[indexPath.item].name ?? ""
+        //        let model = self.rowWithColors?[indexPath.item].color
         
-//        let model = self.rowWithColors?[indexPath.item]
+        //        let model = self.rowWithColors?[indexPath.item]
         
         let model = self.recordings?[indexPath.item]
         cell.recordingTitle.text = model?.name
@@ -122,9 +122,9 @@ extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, U
         cell.countdownLabel.text = getTimeLabel(uuid: (model?.recordingID!.uuidString)!)
         
         return cell
-//        return collectionView.dequeueConfiguredReusableCell(using: simpleConfig,
-//                                                            for: indexPath,
-//                                                            item: model)
+        //        return collectionView.dequeueConfiguredReusableCell(using: simpleConfig,
+        //                                                            for: indexPath,
+        //                                                            item: model)
     }
     
     func getDocumentsDirectory() -> URL {
@@ -137,7 +137,7 @@ extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, U
         let asset = AVURLAsset(url: audioFilename, options: nil)
         let audioDuration = asset.duration
         let audioDurationSeconds = Int(CMTimeGetSeconds(audioDuration))
-//        print(audioDurationSeconds)
+        //        print(audioDurationSeconds)
         return audioDurationSeconds
     }
     
@@ -146,9 +146,9 @@ extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, U
         var hours: Int
         var minutes: Int
         var seconds: Int
-       
         
-//        print(totalSecond)
+        
+        //        print(totalSecond)
         hours = totalSecond / 3600
         minutes = (totalSecond % 3600) / 60
         seconds = (totalSecond % 3600) % 60

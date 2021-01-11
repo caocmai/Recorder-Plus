@@ -21,7 +21,7 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
     
     var isPlaying = false
     var coreDataStack: CoreDataStack!
-
+    
     required init?(coder: NSCoder) {
         fatalError("nope!")
     }
@@ -40,11 +40,11 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
         
         countdownLabel.textAlignment = .center
         recordingTitle.textAlignment = .center
-
-//        playBackButton.setTitle("Play", for: .normal)
+        
+        //        playBackButton.setTitle("Play", for: .normal)
         let playButton = SFSymbolCreator.setSFSymbolColor(symbolName: "play.circle", color: .green, size: 40)
         playBackButton.setImage(playButton, for: .normal)
-//        playBackButton.backgroundColor = .yellow
+        //        playBackButton.backgroundColor = .yellow
         playBackButton.setTitleColor(.black, for: .normal)
         playBackButton.addTarget(self, action: #selector(playbackButtonTapped), for: .touchUpInside)
         
@@ -65,10 +65,10 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
         
         
         self.contentView.addSubview(deleteButton)
-//        deleteButton.setTitle("DELETE", for: .normal)
-//        deleteButton.backgroundColor = .red
-//        deleteButton.setTitleColor(.purple, for: .normal)
-        let trash = SFSymbolCreator.setSFSymbolColor(symbolName: "trash", color: .red, size: 20)
+        //        deleteButton.setTitle("DELETE", for: .normal)
+        //        deleteButton.backgroundColor = .red
+        //        deleteButton.setTitleColor(.purple, for: .normal)
+        let trash = SFSymbolCreator.setSFSymbolColor(symbolName: "trash", color: .red, size: 18)
         deleteButton.setImage(trash, for: .normal)
         deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         deleteButton.translatesAutoresizingMaskIntoConstraints = false
@@ -77,12 +77,12 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
             deleteButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -5),
         ])
         
-//        updateTimerLabel()
+        //        updateTimerLabel()
     }
     
     @objc func playbackButtonTapped() {
         if isPlaying == false {
-//            playBackButton.setTitle("Stop", for: .normal)
+            //            playBackButton.setTitle("Stop", for: .normal)
             let stopIcon = SFSymbolCreator.setSFSymbolColor(symbolName: "stop.circle", color: .green, size: 40)
             playBackButton.setImage(stopIcon, for: .normal)
             setupPlayer()
@@ -93,7 +93,7 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
             timer?.invalidate()
             isPlaying = false
             soundPlayer.stop()
-//            playBackButton.setTitle("Play", for: .normal)
+            //            playBackButton.setTitle("Play", for: .normal)
             let playButton = SFSymbolCreator.setSFSymbolColor(symbolName: "play.circle", color: .green, size: 40)
             playBackButton.setImage(playButton, for: .normal)
         }
@@ -113,11 +113,11 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
         
         playBackButton.removeFromSuperview()
         deleteButton.removeFromSuperview()
-//        countdownLabel.removeFromSuperview()
-//        recordingTitle.removeFromSuperview()
+        //        countdownLabel.removeFromSuperview()
+        //        recordingTitle.removeFromSuperview()
         contentView.backgroundColor = .white
     }
-
+    
     func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return paths[0]
@@ -140,7 +140,7 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
     }
     
     func startTimer(){
-    timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countdown), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countdown), userInfo: nil, repeats: true)
     }
     
     @objc func countdown() {
@@ -155,14 +155,16 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
         
         if totalSecond == 0 {
             timer?.invalidate()
+            let stopIcon = SFSymbolCreator.setSFSymbolColor(symbolName: "play.circle", color: .green, size: 40)
+            playBackButton.setImage(stopIcon, for: .normal)
         }
-
-//        print(totalSecond)
+        
+        //        print(totalSecond)
         hours = totalSecond / 3600
         minutes = (totalSecond % 3600) / 60
         seconds = (totalSecond % 3600) % 60
         countdownLabel.text = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
         totalSecond = totalSecond - 1
-
+        
     }
 }

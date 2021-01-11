@@ -26,6 +26,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     
     let recordingTitle = UITextField()
     let recordingNote = UITextField()
+    // currently hidden not used
     let instructionLabel = UILabel()
     let timerLabel = UILabel()
     
@@ -40,7 +41,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         
         // Do any additional setup after loading the view.
         self.view.backgroundColor = .white
-                
+        
         UITextField.connectFields(fields: [recordingTitle, recordingNote])
         
         recordingSession = AVAudioSession.sharedInstance()
@@ -61,22 +62,12 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         } catch {
             // failed to record!
         }
+        setupUI()
         setupDropDown()
     }
     
     private func setupDropDown() {
         
-        dropDown = DropDown() // set frame
-        view.addSubview(dropDown)
-        dropDown.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            dropDown.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
-            dropDown.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -25),
-            dropDown.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 30),
-            dropDown.heightAnchor.constraint(equalToConstant: 50)
-        ])
-        dropDown.backgroundColor = .white
-        dropDown.placeholder = "Select or Type-In new Topic"
         
         var categories = [String]()
         coreDataStack.fetchAllRecordingCategories { (r) in
@@ -102,9 +93,6 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             print("Selected String: \(selectedText) \n index: \(index)")
             self.selectedCategory?.category = selectedText
         }
-        
-        setupUI()
-        
     }
     
     @objc func saveButtonTapped() {
@@ -212,9 +200,18 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         self.view.addSubview(timerLabel)
         self.view.addSubview(saveButton)
         
+        dropDown = DropDown()
+        self.view.addSubview(dropDown)
+        dropDown.translatesAutoresizingMaskIntoConstraints = false
+        dropDown.font = UIFont.systemFont(ofSize: 20.0)
+       
+        dropDown.backgroundColor = .white
+        dropDown.placeholder = "Select or Type-In new Topic"
+        
         saveButton.setTitle("SAVE", for: .normal)
-        saveButton.backgroundColor = .green
-        saveButton.setTitleColor(.purple, for: .normal)
+        saveButton.backgroundColor = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
+        saveButton.setTitleColor(.white, for: .normal)
+        saveButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         saveButton.layer.cornerRadius = 5
         saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         
@@ -225,32 +222,46 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         timerLabel.translatesAutoresizingMaskIntoConstraints = false
         recordButton.translatesAutoresizingMaskIntoConstraints = false
         
+        timerLabel.text = "00:00:00"
+        
         recordButton.setTitleColor(.red, for: .normal)
         recordButton.setTitle("Record", for: .normal)
         let recordSymbol = SFSymbolCreator.setSFSymbolColor(symbolName: "stop.circle.fill", color: .red, size: 60)
         recordButton.setImage(recordSymbol, for: .normal)
         recordButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title1)
         recordButton.addTarget(self, action: #selector(recordTapped), for: .touchUpInside)
-
+        
         recordingTitle.setBottomBorder()
         recordingNote.setBottomBorder()
         recordingTitle.placeholder = "Title/Name (Optional)"
         recordingNote.placeholder = "Note (Optional)"
+        
+        recordingTitle.font = UIFont.systemFont(ofSize: 19)
+        recordingNote.font = UIFont.systemFont(ofSize: 16)
         
         instructionLabel.text = "Select an existing Topic or input a new Topic"
         instructionLabel.textColor = .lightGray
         instructionLabel.numberOfLines = 0
         instructionLabel.font = instructionLabel.font.withSize(15)
         
+
+        
         NSLayoutConstraint.activate([
             
-            instructionLabel.bottomAnchor.constraint(equalTo: dropDown.topAnchor, constant: 5),
-            instructionLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
-            instructionLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
+//            instructionLabel.bottomAnchor.constraint(equalTo: dropDown.topAnchor, constant: 5),
+//            instructionLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
+//            instructionLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
+            
+            
             
             recordingTitle.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
             recordingTitle.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -120),
             recordingTitle.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
+            
+            dropDown.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
+            dropDown.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -25),
+            dropDown.bottomAnchor.constraint(equalTo: recordingTitle.topAnchor, constant: -30),
+            dropDown.heightAnchor.constraint(equalToConstant: 50),
             
             recordingNote.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
             recordingNote.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),

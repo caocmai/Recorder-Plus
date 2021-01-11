@@ -17,7 +17,7 @@ class CategoryHeader: UITableViewHeaderFooterView {
     var deleteCompletion: (() -> Void)?
     
     var newRecordingcompletion: (() -> Void)?
-
+    
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         configureUI()
@@ -40,13 +40,15 @@ class CategoryHeader: UITableViewHeaderFooterView {
         title.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         title.setBottomBorder()
         title.isUserInteractionEnabled = false
-
+        
         newRecordingButton.setImage(UIImage(systemName: "plus.app"), for: .normal)
         newRecordingButton.addTarget(self, action: #selector(newRecordingButtonTapped), for: .touchUpInside)
         
-        delete.setImage(UIImage(systemName: "trash"), for: .normal)
+        let trashSymbol = SFSymbolCreator.setSFSymbolColor(symbolName: "trash.circle", color: .systemBlue, size: 24)
+        
+        delete.setImage(trashSymbol, for: .normal)
         delete.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
-//        delete.backgroundColor = .blue
+        //        delete.backgroundColor = .blue
         
         NSLayoutConstraint.activate([
             
@@ -59,9 +61,9 @@ class CategoryHeader: UITableViewHeaderFooterView {
             title.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
             
             delete.leadingAnchor.constraint(equalTo: title.trailingAnchor, constant: 5),
-//            delete.leadingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -80),
+            //            delete.leadingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -80),
             delete.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-//            delete.widthAnchor.constraint(equalToConstant: 30),
+            //            delete.widthAnchor.constraint(equalToConstant: 30),
             
         ])
     }

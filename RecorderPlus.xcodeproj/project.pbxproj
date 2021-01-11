@@ -19,7 +19,6 @@
 		2C660ED425A6C0280054D556 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C660ED225A6C0280054D556 /* LaunchScreen.storyboard */; };
 		2C660EDF25A6C0290054D556 /* RecorderPlusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C660EDE25A6C0290054D556 /* RecorderPlusTests.swift */; };
 		2C660EEA25A6C0290054D556 /* RecorderPlusUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C660EE925A6C0290054D556 /* RecorderPlusUITests.swift */; };
-		2C660F0025A6D7170054D556 /* ViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C660EFF25A6D7170054D556 /* ViewController2.swift */; };
 		2C660F1025A6DDD30054D556 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C660F0F25A6DDD30054D556 /* TableViewCell.swift */; };
 		2C7DDC2E25A8C7B100D6961A /* iOSDropDown.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C7DDC2D25A8C7B100D6961A /* iOSDropDown.framework */; };
 		2C7DDC3325A9538800D6961A /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7DDC3225A9538800D6961A /* UITextField.swift */; };
@@ -72,7 +71,6 @@
 		2C660EE525A6C0290054D556 /* RecorderPlusUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RecorderPlusUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C660EE925A6C0290054D556 /* RecorderPlusUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecorderPlusUITests.swift; sourceTree = "<group>"; };
 		2C660EEB25A6C0290054D556 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2C660EFF25A6D7170054D556 /* ViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController2.swift; sourceTree = "<group>"; };
 		2C660F0F25A6DDD30054D556 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		2C7DDC2D25A8C7B100D6961A /* iOSDropDown.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = iOSDropDown.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C7DDC3225A9538800D6961A /* UITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
@@ -214,7 +212,6 @@
 			children = (
 				2C660EC825A6C0280054D556 /* RecordingListVC.swift */,
 				2C341E2525A7CDBF005E8AD7 /* NewRecording.swift */,
-				2C660EFF25A6D7170054D556 /* ViewController2.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -489,7 +486,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2C660F0025A6D7170054D556 /* ViewController2.swift in Sources */,
 				2C660F1025A6DDD30054D556 /* TableViewCell.swift in Sources */,
 				2C341E2F25A7FEB8005E8AD7 /* RecordingMetaData.xcdatamodeld in Sources */,
 				2CC9E5F825AAB59F00F75805 /* Recording+CoreDataClass.swift in Sources */,
