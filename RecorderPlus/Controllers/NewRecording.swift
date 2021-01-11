@@ -31,6 +31,8 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     let timerLabel = UILabel()
     
     var selectedCategory: RecordingCategory? = nil
+    var recordingCategory = [RecordingCategory]()
+    var categories = [String]()
     
     var timer: Timer!
     var time = 0
@@ -39,7 +41,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.prefersLargeTitles = false
-
+        
         // Do any additional setup after loading the view.
         self.view.backgroundColor = .white
         
@@ -69,17 +71,16 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     
     private func setupDropDown() {
         
-        
-        var categories = [String]()
         coreDataStack.fetchAllRecordingCategories { (r) in
             switch r {
             case .failure(let error):
                 print(error)
             case .success(let cate):
+                self.recordingCategory = cate
                 for c in cate {
-                    categories.append(c.category!)
+                    self.categories.append(c.category!)
                 }
-                categories.append("-OR- Type One In")
+            //                self.categories.append("-OR- Type One In")
             }
         }
         
@@ -99,27 +100,25 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     @objc func saveButtonTapped() {
         
         if recordButton.titleLabel?.text == "Re-record" {
-            if let category = selectedCategory {
-                coreDataStack.fetchRecordingCategoryByTitle(categoryTitle: category.category!) { (result) in
-                    switch result {
-                    case .failure(let error):
-                        print(error)
-                    case .success(let categoryObject):
+            
+            if dropDown.text == "" {
+                unknownTopicSaves()
+            } else {
+                var categoryFound = false
+                for category in recordingCategory{
+                    if dropDown.text == category.category {
+                        categoryFound = true
                         let new = Recording(context: self.coreDataStack.managedContext)
                         new.date = Date()
                         new.recordingID = UUID(uuidString: self.uuid)
-                        new.recordingParent = categoryObject.first
+                        new.recordingParent = category
                         new.name = self.recordingTitle.text
                         new.note = self.recordingNote.text
                         self.coreDataStack.saveContext()
                     }
                 }
-            } else {
                 
-                if dropDown.text == "" {
-                    unknownTopicSaves()
-                    
-                } else {
+                if categoryFound == false {
                     let newCategory = RecordingCategory(context: coreDataStack.managedContext)
                     newCategory.category = dropDown.text
                     newCategory.categoryID = UUID()
@@ -138,17 +137,14 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
                             self.coreDataStack.saveContext()
                         }
                     }
-                    
                 }
-                
-                
             }
             self.navigationController?.popViewController(animated: true)
         } else {
             let alert = UIAlertController(title: "Note", message: "You need to start then stop recording to save", preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-            self.present(alert, animated:true, completion: nil)        }
-        
+            self.present(alert, animated:true, completion: nil)
+        }
     }
     
     private func unknownTopicSaves() {
@@ -194,7 +190,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     }
     
     private func setupUI() {
-        self.view.addSubview(instructionLabel)
+        //        self.view.addSubview(instructionLabel)
         self.view.addSubview(recordingTitle)
         self.view.addSubview(recordingNote)
         self.view.addSubview(recordButton)
@@ -204,10 +200,12 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         dropDown = DropDown()
         self.view.addSubview(dropDown)
         dropDown.translatesAutoresizingMaskIntoConstraints = false
-        dropDown.font = UIFont.systemFont(ofSize: 20.0)
-       
+        //        dropDown.font = UIFont.systemFont(ofSize: 20.0)
+        dropDown.font = UIFont.boldSystemFont(ofSize: 21)
+        
+        
         dropDown.backgroundColor = .white
-        dropDown.placeholder = "Select or Type-In new Topic"
+        dropDown.placeholder = "Select or Type-In New Topic"
         
         saveButton.setTitle("SAVE", for: .normal)
         saveButton.backgroundColor = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
@@ -237,7 +235,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         recordingTitle.placeholder = "Title/Name (Optional)"
         recordingNote.placeholder = "Note (Optional)"
         
-        recordingTitle.font = UIFont.systemFont(ofSize: 19)
+        recordingTitle.font = UIFont.systemFont(ofSize: 21)
         recordingNote.font = UIFont.systemFont(ofSize: 16)
         
         instructionLabel.text = "Select an existing Topic or input a new Topic"
@@ -245,13 +243,13 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         instructionLabel.numberOfLines = 0
         instructionLabel.font = instructionLabel.font.withSize(15)
         
-
+        
         
         NSLayoutConstraint.activate([
             
-//            instructionLabel.bottomAnchor.constraint(equalTo: dropDown.topAnchor, constant: 5),
-//            instructionLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
-//            instructionLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
+            //            instructionLabel.bottomAnchor.constraint(equalTo: dropDown.topAnchor, constant: 5),
+            //            instructionLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
+            //            instructionLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
             
             
             
@@ -261,7 +259,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             
             dropDown.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
             dropDown.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -25),
-            dropDown.bottomAnchor.constraint(equalTo: recordingTitle.topAnchor, constant: -30),
+            dropDown.bottomAnchor.constraint(equalTo: recordingTitle.topAnchor, constant: -26),
             dropDown.heightAnchor.constraint(equalToConstant: 50),
             
             recordingNote.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
