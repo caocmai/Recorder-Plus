@@ -121,10 +121,12 @@ extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
         headerView.deleteCompletion = {
             // reset unknown topic
             let unknownTopicId = UserDefaults.standard.string(forKey: "unknownTopicId")
-            if self.categories[section][0].categoryID! == UUID(uuidString: unknownTopicId!) {
-                UserDefaults.standard.set(nil, forKey: "unknownTopicId")
+            if let validUnknownTopicId = unknownTopicId {
+                if self.categories[section][0].categoryID! == UUID(uuidString: validUnknownTopicId) {
+                    UserDefaults.standard.set(nil, forKey: "unknownTopicId")
+                }
             }
-            
+ 
             self.coreDataStack.deleteCategoryByID(identifier: self.categories[section][0].categoryID!)
             self.categories.remove(at: section)
             self.tableview.deleteSections([section], with: .fade)

@@ -47,19 +47,28 @@ class CategoryHeader: UITableViewHeaderFooterView {
         
         delete.setImage(UIImage(systemName: "trash"), for: .normal)
         delete.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+//        delete.backgroundColor = .blue
         
         NSLayoutConstraint.activate([
-            title.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 5),
+            
+            newRecordingButton.widthAnchor.constraint(equalToConstant: 25),
+            newRecordingButton.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 5),
+            newRecordingButton.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+            
+            title.leadingAnchor.constraint(equalTo: newRecordingButton.trailingAnchor, constant: 5),
             title.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -40),
             title.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
             
-            newRecordingButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
-            newRecordingButton.leadingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -40),
-            newRecordingButton.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-            
-            delete.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
+            delete.leadingAnchor.constraint(equalTo: title.trailingAnchor, constant: 5),
 //            delete.leadingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -80),
-            delete.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor)
+            delete.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+//            delete.widthAnchor.constraint(equalToConstant: 30),
+            
+            
+            
+            
+            
+            
         ])
     }
     
