@@ -49,11 +49,11 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
         playBackButton.addTarget(self, action: #selector(playbackButtonTapped), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
-            countdownLabel.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor, constant: 5),
+            countdownLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 25),
             countdownLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 5),
             countdownLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -5),
             
-            playBackButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15),
+            playBackButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -8),
             playBackButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             playBackButton.heightAnchor.constraint(equalToConstant: 60),
             playBackButton.widthAnchor.constraint(equalToConstant: 60),
@@ -65,16 +65,13 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
         
         
         self.contentView.addSubview(deleteButton)
-        //        deleteButton.setTitle("DELETE", for: .normal)
-        //        deleteButton.backgroundColor = .red
-        //        deleteButton.setTitleColor(.purple, for: .normal)
         let trash = SFSymbolCreator.setSFSymbolColor(symbolName: "xmark.square.fill", color: .red, size: 23)
         deleteButton.setImage(trash, for: .normal)
         deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         deleteButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             deleteButton.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: -3),
-            deleteButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: 3),
+            deleteButton.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: -3),
         ])
         
     }

@@ -115,7 +115,7 @@ extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, U
         
         let model = self.recordings?[indexPath.item]
         cell.recordingTitle.text = model?.name
-        cell.backgroundColor = .lightGray
+        cell.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         cell.uuid = (model?.recordingID!.uuidString)!
         cell.coreDataStack = CoreDataStack()
         cell.recordingObject = model

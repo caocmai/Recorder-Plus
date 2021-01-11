@@ -29,8 +29,7 @@ class RecordingListVC: UIViewController {
                 for c in cate {
                     self.categories.append([c])
                 }
-                
-                print(self.categories)
+//                print(self.categories)
             }
         }
         
