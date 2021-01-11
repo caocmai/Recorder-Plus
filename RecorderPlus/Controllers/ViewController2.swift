@@ -14,7 +14,7 @@ class ViewController2: UIViewController, UITableViewDelegate, UITableViewDataSou
     let table = UITableView()
     
     let simpleConfig = UICollectionView.CellRegistration<RecordingCollectionViewCell, String> { (cell, indexPath, model) in
-      cell.label.text = model
+//      cell.label.text = model
 
     }
 

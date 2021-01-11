@@ -124,7 +124,6 @@ extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
             let refreshAlert = UIAlertController(title: "Delete Topic Recordings", message: "Warning: This will delete ALL recordings for this topic", preferredStyle: UIAlertController.Style.alert)
             
             refreshAlert.addAction(UIAlertAction(title: "Delete", style: .default, handler: { (action: UIAlertAction!) in
-                print("Handle Ok logic here")
                 // reset unknown topic
                 let unknownTopicId = UserDefaults.standard.string(forKey: "unknownTopicId")
                 if let validUnknownTopicId = unknownTopicId {
@@ -142,14 +141,11 @@ extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
             }))
             
             refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
-                print("Reset is cancled")
+                print("User cancels delete")
             }))
             
             self.present(refreshAlert, animated: true, completion: nil)
-            
-           
         }
-        
         return headerView
     }
     

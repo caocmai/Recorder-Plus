@@ -34,7 +34,7 @@ class TableViewCell: UITableViewCell {
 //    }
     
     let simpleConfig = UICollectionView.CellRegistration<RecordingCollectionViewCell, Recording> { (cell, indexPath, model) in
-        cell.label.text = model.name
+        cell.recordingTitle.text = model.name
         cell.backgroundColor = .lightGray
         cell.uuid = model.recordingID?.uuidString
         cell.coreDataStack = CoreDataStack()
