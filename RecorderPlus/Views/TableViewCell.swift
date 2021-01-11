@@ -160,3 +160,47 @@ extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, U
         return UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
     }
 }
+
+
+extension TableViewCell: UIContextMenuInteractionDelegate {
+    
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+            return nil
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        
+        let edit = UIAction(title: "Edit...") { _ in
+            let cell = collectionView.cellForItem(at: indexPath) as? RecordingCollectionViewCell
+            print("I'm tapping the \(indexPath.item)")
+            self.cellDelegate?.collectionView(collectionviewcell: cell, index: indexPath.item, didTappedInTableViewCell: self)
+            
+        }
+        
+        let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash"), identifier: .none, discoverabilityTitle: .none, attributes: .destructive, state: .off) { (_) in
+            
+            let recording = self.recordings?[indexPath.row]
+            let coreDataStack = CoreDataStack()
+            coreDataStack.deleteRecordingCategoryByID(identifier: (recording?.recordingID)!)
+            self.recordings?.remove(at: indexPath.row)
+            collectionView.deleteItems(at: [indexPath])
+            let fileManager = FileManager.default
+            
+            let uuidString = recording?.recordingID?.uuidString
+            
+            let audioFilename = self.getDocumentsDirectory().appendingPathComponent(uuidString!+".m4a")
+            do {
+                try fileManager.removeItem(at: audioFilename)
+            } catch {
+               print("file not found to delete")
+            }
+            
+
+        }
+        
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            UIMenu(title: "Actions", children: [edit, delete])
+        }
+    }
+    
+}

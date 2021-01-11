@@ -15,6 +15,8 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     var coreDataStack: CoreDataStack!
     var quickRec: Bool!
     
+    var editRecording: Recording!
+    
     var recordButton = UIButton()
     let saveButton = UIButton()
     
@@ -221,7 +223,13 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         dropDown.backgroundColor = .white
         dropDown.placeholder = "Select or Type-In New Topic"
         
-        saveButton.setTitle("SAVE", for: .normal)
+        if let validEditRecording = editRecording {
+            saveButton.setTitle("UPDATE", for: .normal)
+
+        } else {
+            saveButton.setTitle("SAVE", for: .normal)
+
+        }
         saveButton.backgroundColor = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
         saveButton.setTitleColor(.white, for: .normal)
         saveButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)

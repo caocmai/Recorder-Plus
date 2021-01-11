@@ -70,35 +70,6 @@ class RecordingListVC: UIViewController {
     
     @objc func addButtonTapped() {
         let newRecordingVC = NewRecording()
-        //        let unknownTopicId = UserDefaults.standard.string(forKey: "unknownTopicId")
-        //
-        //        if let validUnknownTopic = unknownTopicId {
-        //            coreDataStack.fetchRecordingCategoryByID(identifier: UUID(uuidString: validUnknownTopic)!) { (r) in
-        //                switch r {
-        //                case .failure(let error):
-        //                    print(error)
-        //                case .success(let recordings):
-        //                    newRecordingVC.selectedCategory = recordings.first
-        //                }
-        //            }
-        //
-        //        } else {
-        //            let newTopic = RecordingCategory(context: coreDataStack.managedContext)
-        //            newTopic.category = "Unknown"
-        //            let uuid = UUID()
-        //            newTopic.categoryID = uuid
-        //            UserDefaults.standard.set(uuid.uuidString, forKey: "unknownTopicId")
-        //            coreDataStack.saveContext()
-        //
-        //            coreDataStack.fetchRecordingCategoryByID(identifier: uuid) { (r) in
-        //                switch r {
-        //                case .failure(let error):
-        //                    print(error)
-        //                case .success(let recordings):
-        //                    newRecordingVC.selectedCategory = recordings.first
-        //                }
-        //            }
-        //        }
         newRecordingVC.coreDataStack = coreDataStack
         self.navigationController?.pushViewController(newRecordingVC, animated: true)
     }
@@ -205,9 +176,14 @@ extension RecordingListVC: CollectionViewCellDelegate {
     func collectionView(collectionviewcell: RecordingCollectionViewCell?, index: Int, didTappedInTableViewCell: TableViewCell) {
         
         if let recordingRow = didTappedInTableViewCell.recordings {
+            
+            let editVC = NewRecording()
+            editVC.coreDataStack = coreDataStack
+            editVC.editRecording = recordingRow[index]
+            self.navigationController?.pushViewController(editVC, animated: true)
             self.tappedCell = recordingRow[index]
             // prints the recording
-            print(recordingRow[index])
+//            print(recordingRow[index])
             
         }
     }
