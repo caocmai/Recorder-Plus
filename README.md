@@ -27,8 +27,8 @@ Project code can be viewed locally and run in Xcode's simulator by cloning or do
 * [Swift - 5.1.4](https://developer.apple.com/swift/) - Programming language
 
 ### CocoaPods
-*[RangeSeekSlider](https://github.com/WorldDownTown/RangeSeekSlider)
-*[iOSDropDown](https://cocoapods.org/pods/iOSDropDown)
+* [RangeSeekSlider](https://github.com/WorldDownTown/RangeSeekSlider)
+* [iOSDropDown](https://cocoapods.org/pods/iOSDropDown)
 
 ## Author
 * Cao Mai - [Portfolio](https://www.makeschool.com/portfolio/Cao-Mai)

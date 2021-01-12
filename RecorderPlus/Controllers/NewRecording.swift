@@ -85,20 +85,21 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         }
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        if self.isMovingFromParent {
-            // to delete temp recording file that wasn't saved
-            let fileManager = FileManager.default
-            let audioFilename = self.getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
-            do {
-                try fileManager.removeItem(at: audioFilename)
-            } catch {
-               print("file not found to delete")
-            }
-        }
-    }
+//    override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//
+//        if self.isMovingFromParent {
+//            // to delete temp recording file that wasn't saved
+//            let fileManager = FileManager.default
+//            let audioFilename = self.getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
+//            do {
+//                try fileManager.removeItem(at: audioFilename)
+//            } catch {
+//               print("file not found to delete")
+//            }
+//        }
+//    }
+    
     private func setupDropDown() {
         
         coreDataStack.fetchAllRecordingCategories { (r) in
@@ -260,7 +261,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         self.view.addSubview(rangeSeekSlider)
         rangeSeekSlider.translatesAutoresizingMaskIntoConstraints = false
         rangeSeekSlider.tintColor = .lightGray
-        rangeSeekSlider.colorBetweenHandles = .blue
+        rangeSeekSlider.colorBetweenHandles = #colorLiteral(red: 0.2055417001, green: 1, blue: 0, alpha: 1)
 //        rangeSeekSlider.handleColor = .blue
         rangeSeekSlider.lineHeight = 5
         rangeSeekSlider.isHidden = true
@@ -276,8 +277,8 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         dropDown.placeholder = "Select or Type-In New Topic"
         
         
-        saveButton.backgroundColor = #colorLiteral(red: 1, green: 0.6470588235, blue: 0, alpha: 1)
-        saveButton.setTitleColor(.white, for: .normal)
+        saveButton.backgroundColor = #colorLiteral(red: 0.2055417001, green: 1, blue: 0, alpha: 1)
+        saveButton.setTitleColor(.gray, for: .normal)
         saveButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         saveButton.layer.cornerRadius = 5
         saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
@@ -289,6 +290,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         timerLabel.translatesAutoresizingMaskIntoConstraints = false
         recordButton.translatesAutoresizingMaskIntoConstraints = false
         
+        timerLabel.font = UIFont.systemFont(ofSize: 25)
         timerLabel.text = "00:00:00"
         
         recordButton.setTitleColor(.red, for: .normal)
