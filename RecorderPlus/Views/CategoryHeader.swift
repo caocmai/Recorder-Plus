@@ -44,7 +44,7 @@ class CategoryHeader: UITableViewHeaderFooterView {
         newRecordingButton.setImage(UIImage(systemName: "plus.app"), for: .normal)
         newRecordingButton.addTarget(self, action: #selector(newRecordingButtonTapped), for: .touchUpInside)
         
-        let trashSymbol = SFSymbolCreator.setSFSymbolColor(symbolName: "trash.circle", color: .systemBlue, size: 24)
+        let trashSymbol = SFSymbolCreator.setSFSymbolColor(symbolName: "trash", color: #colorLiteral(red: 1, green: 0.2586690485, blue: 0.2360589504, alpha: 1), size: 17)
         
         delete.setImage(trashSymbol, for: .normal)
         delete.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)

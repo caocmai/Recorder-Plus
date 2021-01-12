@@ -164,7 +164,7 @@ extension TableViewCell: UIContextMenuInteractionDelegate {
             
             let recording = self.recordings?[indexPath.row]
             let coreDataStack = CoreDataStack()
-            coreDataStack.deleteRecordingCategoryByID(identifier: (recording?.recordingID)!)
+            coreDataStack.deleteRecordingsCategoryByID(identifier: (recording?.recordingID)!)
             self.recordings?.remove(at: indexPath.row)
             collectionView.deleteItems(at: [indexPath])
             let fileManager = FileManager.default

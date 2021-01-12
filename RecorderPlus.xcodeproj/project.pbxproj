@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2C06994825AA9B3400E1F8BA /* RecordingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C06994725AA9B3400E1F8BA /* RecordingCollectionViewCell.swift */; };
+		2C06FB3125AD803F00935F85 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 2C06FB3025AD803F00935F85 /* README.md */; };
 		2C341E2625A7CDBF005E8AD7 /* NewRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C341E2525A7CDBF005E8AD7 /* NewRecording.swift */; };
 		2C341E2F25A7FEB8005E8AD7 /* RecordingMetaData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2C341E2D25A7FEB8005E8AD7 /* RecordingMetaData.xcdatamodeld */; };
 		2C341E3C25A7FF6F005E8AD7 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C341E3B25A7FF6F005E8AD7 /* CoreDataStack.swift */; };
@@ -54,6 +55,7 @@
 		0D8E5483A31CD5E08AB6CEB3 /* Pods-RecorderPlus-RecorderPlusUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RecorderPlus-RecorderPlusUITests.release.xcconfig"; path = "Target Support Files/Pods-RecorderPlus-RecorderPlusUITests/Pods-RecorderPlus-RecorderPlusUITests.release.xcconfig"; sourceTree = "<group>"; };
 		17C3A818DF59010D14CD305E /* Pods_RecorderPlus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RecorderPlus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C06994725AA9B3400E1F8BA /* RecordingCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingCollectionViewCell.swift; sourceTree = "<group>"; };
+		2C06FB3025AD803F00935F85 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		2C341E2525A7CDBF005E8AD7 /* NewRecording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRecording.swift; sourceTree = "<group>"; };
 		2C341E2E25A7FEB8005E8AD7 /* RecordingMetaData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RecordingMetaData.xcdatamodel; sourceTree = "<group>"; };
 		2C341E3B25A7FF6F005E8AD7 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 		2C660EB825A6C0280054D556 = {
 			isa = PBXGroup;
 			children = (
+				2C06FB3025AD803F00935F85 /* README.md */,
 				2C660EC325A6C0280054D556 /* RecorderPlus */,
 				2C660EDD25A6C0290054D556 /* RecorderPlusTests */,
 				2C660EE825A6C0290054D556 /* RecorderPlusUITests */,
@@ -358,6 +361,7 @@
 			files = (
 				2C660ED425A6C0280054D556 /* LaunchScreen.storyboard in Resources */,
 				2C660ED125A6C0280054D556 /* Assets.xcassets in Resources */,
+				2C06FB3125AD803F00935F85 /* README.md in Resources */,
 				2C660ECC25A6C0280054D556 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

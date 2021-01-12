@@ -41,6 +41,8 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
         countdownLabel.textAlignment = .center
         recordingTitle.textAlignment = .center
         
+        countdownLabel.textColor = .gray
+        
         //        playBackButton.setTitle("Play", for: .normal)
         let playButton = SFSymbolCreator.setSFSymbolColor(symbolName: "play.circle", color: .green, size: 40)
         playBackButton.setImage(playButton, for: .normal)
@@ -97,7 +99,7 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
     
     @objc func deleteButtonTapped() {
         
-        coreDataStack.deleteRecordingCategoryByID(identifier: UUID(uuidString: uuid)!)
+        coreDataStack.deleteRecordingsCategoryByID(identifier: UUID(uuidString: uuid)!)
         let fileManager = FileManager.default
         
         let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")

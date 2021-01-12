@@ -66,19 +66,33 @@ class CoreDataStack {
         }
     }
     
-    func deleteRecordingCategoryByID(identifier: UUID) {
+    func deleteRecordingsCategoryByID(identifier: UUID) {
         let fetchRequest: NSFetchRequest<Recording> = Recording.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "recordingID == %@", identifier as CVarArg)
 //        fetchRequest.fetchLimit = 1
         do {
             let recordings = try managedContext.fetch(fetchRequest)
             for object in recordings {
+                let fileManager = FileManager.default
+                let uuidString = object.recordingID?.uuidString
+                let audioFilename = self.getDocumentsDirectory().appendingPathComponent(uuidString!+".m4a")
+                do {
+                    try fileManager.removeItem(at: audioFilename)
+                } catch {
+                   print("file not found to delete")
+                }
+                
                 managedContext.delete(object)
             }
             try managedContext.save()
         } catch {
             print(error)
         }
+    }
+    
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
     }
     
     func deleteCategoryByID(identifier: UUID) {

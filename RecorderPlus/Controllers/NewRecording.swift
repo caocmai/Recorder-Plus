@@ -85,6 +85,20 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         }
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        if self.isMovingFromParent {
+            // to delete temp recording file that wasn't saved
+            let fileManager = FileManager.default
+            let audioFilename = self.getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
+            do {
+                try fileManager.removeItem(at: audioFilename)
+            } catch {
+               print("file not found to delete")
+            }
+        }
+    }
     private func setupDropDown() {
         
         coreDataStack.fetchAllRecordingCategories { (r) in
@@ -262,7 +276,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         dropDown.placeholder = "Select or Type-In New Topic"
         
         
-        saveButton.backgroundColor = #colorLiteral(red: 0, green: 0.742849052, blue: 1, alpha: 1)
+        saveButton.backgroundColor = #colorLiteral(red: 1, green: 0.6470588235, blue: 0, alpha: 1)
         saveButton.setTitleColor(.white, for: .normal)
         saveButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         saveButton.layer.cornerRadius = 5
