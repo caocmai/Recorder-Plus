@@ -1,16 +1,20 @@
 PODS:
   - iOSDropDown (0.3.4)
+  - RangeSeekSlider (1.8.0)
 
 DEPENDENCIES:
   - iOSDropDown
+  - RangeSeekSlider (~> 1.8)
 
 SPEC REPOS:
   trunk:
     - iOSDropDown
+    - RangeSeekSlider
 
 SPEC CHECKSUMS:
   iOSDropDown: c10a761f9a00c3f1cc9d3bce43ae504628e2f692
+  RangeSeekSlider: 650b11fa1edcb92e1e0ede797669d98622570fb5
 
-PODFILE CHECKSUM: 7b1c21b4df18d8924c0e7b12f4d8d6c30fee4c8d
+PODFILE CHECKSUM: 6bb42e9c5ccdf42d7c524edf5cd51108ca0c2835
 
 COCOAPODS: 1.9.3

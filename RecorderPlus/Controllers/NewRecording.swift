@@ -8,6 +8,7 @@
 import UIKit
 import AVFoundation
 import iOSDropDown
+import RangeSeekSlider
 
 
 class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDelegate {
@@ -39,6 +40,10 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     
     var timer: Timer!
     var time = 0
+    
+    var rangeSeekSlider = RangeSeekSlider()
+    
+    var recordingDuration = Float64()
     
     
     override func viewDidLoad() {
@@ -110,6 +115,15 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     
     @objc func saveButtonTapped() {
         
+        if rangeSeekSlider.selectedMinValue != 0 || rangeSeekSlider.selectedMaxValue != CGFloat(recordingDuration) {
+            let newTrimmedRecId = UUID().uuidString
+            let asset = AVURLAsset(url: getDocumentsDirectory().appendingPathComponent(uuid+".m4a"))
+            exportAsset2(asset, importUUID: uuid, exportUUID: newTrimmedRecId, start: Int64(rangeSeekSlider.selectedMinValue), end: Int64(rangeSeekSlider.selectedMaxValue))
+            
+            uuid = newTrimmedRecId
+
+        }
+                
         if saveButton.currentTitle == "UPDATE"  {
             editRecording.name = recordingTitle.text
             editRecording.note = recordingNote.text
@@ -229,6 +243,13 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         self.view.addSubview(recordButton)
         self.view.addSubview(timerLabel)
         self.view.addSubview(saveButton)
+        self.view.addSubview(rangeSeekSlider)
+        rangeSeekSlider.translatesAutoresizingMaskIntoConstraints = false
+        rangeSeekSlider.tintColor = .lightGray
+        rangeSeekSlider.colorBetweenHandles = .blue
+//        rangeSeekSlider.handleColor = .blue
+        rangeSeekSlider.lineHeight = 5
+        rangeSeekSlider.isHidden = true
         
         dropDown = DropDown()
         self.view.addSubview(dropDown)
@@ -280,9 +301,15 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             saveButton.setTitle("UPDATE", for: .normal)
             recordButton.setTitle("Re-record", for: .normal)
             
+            rangeSeekSlider.isHidden = false
+            
             recordingTitle.text = validEditRecording.name
             recordingNote.text = validEditRecording.note
             uuid = validEditRecording.recordingID!.uuidString
+            let asset = AVURLAsset(url: getDocumentsDirectory().appendingPathComponent(uuid+".m4a"))
+            recordingDuration = CMTimeGetSeconds(asset.duration)
+
+            rangeSeekSlider.maxValue = CGFloat(recordingDuration)
             dropDown.text = validEditRecording.recordingParent?.category
             
         } else {
@@ -322,7 +349,11 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             saveButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 210),
             saveButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             saveButton.widthAnchor.constraint(equalToConstant: 180),
-            saveButton.heightAnchor.constraint(equalToConstant: 60)
+            saveButton.heightAnchor.constraint(equalToConstant: 60),
+            
+            rangeSeekSlider.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -5),
+            rangeSeekSlider.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5),
+            rangeSeekSlider.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5)
         ])
         
         
@@ -380,6 +411,16 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             recordButton.setTitleColor(.black, for: .normal)
             let recordSymbol = SFSymbolCreator.setSFSymbolColor(symbolName: "stop.circle.fill", color: .red, size: 60)
             recordButton.setImage(recordSymbol, for: .normal)
+            
+            let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
+            print(audioFilename)
+            let asset = AVURLAsset(url: getDocumentsDirectory().appendingPathComponent(uuid+".m4a"))
+            recordingDuration = CMTimeGetSeconds(asset.duration)
+
+            rangeSeekSlider.maxValue = CGFloat(recordingDuration)
+            rangeSeekSlider.selectedMaxValue = CGFloat(recordingDuration)
+            rangeSeekSlider.isHidden = false
+            
         } else {
             recordButton.setTitle("Record", for: .normal)
         }
@@ -396,4 +437,150 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         }
     }
     
+    
+//    func trimSelectedAudio(){
+//
+////        let name = browseData.name!
+//        let name = "me"
+//        let uuid = "uuid"
+//        if let asset = AVURLAsset(url: getDocumentsDirectory().appendingPathComponent("\(uuid).m4a")) as? AVAsset {
+//            exportAsset(asset, fileName: name)
+//        }
+//    }
+
+    func exportAsset(_ asset: AVAsset, fileName:String){
+        let uuid = "me"
+        let trimmedSoundFileUrl = getDocumentsDirectory().appendingPathComponent("\(uuid)_trimmed.m4a")
+                print("Saving to \(trimmedSoundFileUrl.absoluteString)")
+
+        if let exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A){
+            exporter.outputFileType = AVFileType.m4a
+            exporter.outputURL = trimmedSoundFileUrl
+
+            let duration = CMTimeGetSeconds(asset.duration)
+            if duration < 5.0{
+                print("Audio is not song long")
+                return
+            }
+            let startTime = CMTimeMake(value: 5, timescale: 1)
+            let stopTime = CMTimeMake(value: 10, timescale: 1)
+            exporter.timeRange = CMTimeRangeFromTimeToTime(start: startTime, end: stopTime)
+
+            exporter.exportAsynchronously(completionHandler: {
+                print("export complete \(exporter.status)")
+
+                switch exporter.status {
+                case  AVAssetExportSessionStatus.failed:
+
+                    if let e = exporter.error {
+                        print("export failed \(e)")
+                    }
+
+                case AVAssetExportSessionStatus.cancelled:
+                    print("export cancelled \(String(describing: exporter.error))")
+                default:
+                    print("export complete")
+//                    self.deleteFileAlreadyPresent()
+                    // change core data data here
+                }
+            })
+        } else{
+            print("cannot create AVAssetExportSession for asset \(asset)")
+        }
+    }
+    
+    func exportAsset2(_ asset: AVAsset, importUUID: String, exportUUID: String, start: Int64, end: Int64){
+        let trimmedSoundFileUrl = getDocumentsDirectory().appendingPathComponent("\(exportUUID).m4a")
+//                print("Saving to \(trimmedSoundFileUrl.absoluteString)")
+
+        if let exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A){
+            exporter.outputFileType = AVFileType.m4a
+            exporter.outputURL = trimmedSoundFileUrl
+
+//            let duration = CMTimeGetSeconds(asset.duration)
+//            if duration < 5.0{
+//                print("Audio is not song long")
+//                return
+//            }
+            let startTime = CMTimeMake(value: start, timescale: 1)
+            let stopTime = CMTimeMake(value: end, timescale: 1)
+            exporter.timeRange = CMTimeRangeFromTimeToTime(start: startTime, end: stopTime)
+
+            exporter.exportAsynchronously(completionHandler: {
+                print("export complete \(exporter.status)")
+
+                switch exporter.status {
+                case  AVAssetExportSessionStatus.failed:
+
+                    if let e = exporter.error {
+                        print("export failed \(e)")
+                    }
+
+                case AVAssetExportSessionStatus.cancelled:
+                    print("export cancelled \(String(describing: exporter.error))")
+                default:
+                    print("export complete")
+                    self.deleteFileAlreadyPresent(uuid: importUUID)
+                    // change core data data here
+                }
+            })
+        } else{
+            print("cannot create AVAssetExportSession for asset \(asset)")
+        }
+    }
+
+    func deleteFileAlreadyPresent(uuid: String){
+        let PresentAudioUrl = getDocumentsDirectory().appendingPathComponent("\(uuid).m4a")
+                if FileManager.default.fileExists(atPath: PresentAudioUrl.path){
+                    print("Sound exists, removing \(PresentAudioUrl.path)")
+                    do{
+                        if try PresentAudioUrl.checkResourceIsReachable(){
+                            print("is reachable")
+                            // just a delete from directory
+//                            self.deleteRecordingFile(audioName: "\(uuid).m4a")
+                            try FileManager.default.removeItem(at: PresentAudioUrl)
+                            
+                        }
+                       // try FileManager.default.removeItem(atPath: trimmedSoundFileUrl.absoluteString)
+                    } catch{
+                        print("Could not remove \(PresentAudioUrl.absoluteString)")
+                    }
+                }
+    }
+    
+//    func deleteRecordingFile(fileName: String) {
+//        let fileManager = FileManager.default
+//        let audioFilename = self.getDocumentsDirectory().appendingPathComponent(".m4a")
+//        do {
+//            try fileManager.removeItem(at: audioFilename)
+//        } catch {
+//           print("file not found to delete")
+//        }
+//
+//    }
+
+    func saveTrimmedData(){
+        print("saved new data")
+//        DispatchQueue.main.async {
+//            self.browseData.image = (self.imgToSave.image?.jpeg!)!
+//            self.browseData.note = self.tfNotes.text
+//             self.browseData.name = "\(self.tfTitle.text!)_trimmed"
+//
+//
+//
+//        do{
+//            try self.context.save()
+//            self.goToParentVC()
+//
+//        } catch let error as NSError{
+//            print("Could not save \(error) \(error.userInfo)")
+//        }
+//
+//             }
+    }
+
+    
 }
+
+
+  

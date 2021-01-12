@@ -6,11 +6,14 @@ target 'RecorderPlus' do
   use_frameworks!
 
 pod 'iOSDropDown'
+pod 'RangeSeekSlider', '~> 1.8'
+
 
   # Pods for RecorderPlus
 
   target 'RecorderPlusTests' do
     inherit! :search_paths
+
     # Pods for testing
   end
 
