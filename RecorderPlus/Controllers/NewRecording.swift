@@ -115,60 +115,68 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             editRecording.note = recordingNote.text
             coreDataStack.saveContext()
             self.navigationController?.popViewController(animated: true)
-
-        } else {
-        
-        if recordButton.titleLabel?.text == "Re-record" {
             
-            if dropDown.text == "" {
-                if quickRec == true {
-                    unknownTopicSaves(recordingTopic: "QuickREC", recordingKey: "quickRecTopicId")
-                } else {
-                    unknownTopicSaves(recordingTopic: "Unknown", recordingKey: "unknownTopicId")
-                }
-            } else {
-                var categoryFound = false
-                for category in recordingCategory{
-                    if dropDown.text == category.category {
-                        categoryFound = true
-                        let new = Recording(context: self.coreDataStack.managedContext)
-                        new.date = Date()
-                        new.recordingID = UUID(uuidString: self.uuid)
-                        new.recordingParent = category
-                        new.name = self.recordingTitle.text
-                        new.note = self.recordingNote.text
-                        self.coreDataStack.saveContext()
-                    }
+        } else {
+            
+            if recordButton.titleLabel?.text == "Re-record" {
+                
+                if saveButton.currentTitle == "UPDATE"  {
+                    editRecording.name = recordingTitle.text
+                    editRecording.note = recordingNote.text
+                    coreDataStack.saveContext()
+                    self.navigationController?.popViewController(animated: true)
+                    
                 }
                 
-                if categoryFound == false {
-                    let newCategory = RecordingCategory(context: coreDataStack.managedContext)
-                    newCategory.category = dropDown.text
-                    let uuid = UUID()
-                    newCategory.categoryID = uuid
-                    coreDataStack.saveContext()
-                    coreDataStack.fetchRecordingCategoryByID(identifier: uuid) { (r) in
-                        switch r {
-                        case .failure(let error):
-                            print(error)
-                        case .success(let categories):
+                if dropDown.text == "" {
+                    if quickRec == true {
+                        unknownTopicSaves(recordingTopic: "QuickREC", recordingKey: "quickRecTopicId")
+                    } else {
+                        unknownTopicSaves(recordingTopic: "Unknown", recordingKey: "unknownTopicId")
+                    }
+                } else {
+                    var categoryFound = false
+                    for category in recordingCategory{
+                        if dropDown.text == category.category {
+                            categoryFound = true
                             let new = Recording(context: self.coreDataStack.managedContext)
                             new.date = Date()
                             new.recordingID = UUID(uuidString: self.uuid)
-                            new.recordingParent = categories.first
+                            new.recordingParent = category
                             new.name = self.recordingTitle.text
                             new.note = self.recordingNote.text
                             self.coreDataStack.saveContext()
                         }
                     }
+                    
+                    if categoryFound == false {
+                        let newCategory = RecordingCategory(context: coreDataStack.managedContext)
+                        newCategory.category = dropDown.text
+                        let uuid = UUID()
+                        newCategory.categoryID = uuid
+                        coreDataStack.saveContext()
+                        coreDataStack.fetchRecordingCategoryByID(identifier: uuid) { (r) in
+                            switch r {
+                            case .failure(let error):
+                                print(error)
+                            case .success(let categories):
+                                let new = Recording(context: self.coreDataStack.managedContext)
+                                new.date = Date()
+                                new.recordingID = UUID(uuidString: self.uuid)
+                                new.recordingParent = categories.first
+                                new.name = self.recordingTitle.text
+                                new.note = self.recordingNote.text
+                                self.coreDataStack.saveContext()
+                            }
+                        }
+                    }
                 }
+                self.navigationController?.popViewController(animated: true)
+            } else {
+                let alert = UIAlertController(title: "Caution", message: "You need to start then stop recording to save", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                self.present(alert, animated:true, completion: nil)
             }
-            self.navigationController?.popViewController(animated: true)
-        } else {
-            let alert = UIAlertController(title: "Caution", message: "You need to start then stop recording to save", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-            self.present(alert, animated:true, completion: nil)
-        }
         }
     }
     
@@ -232,17 +240,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         dropDown.backgroundColor = .white
         dropDown.placeholder = "Select or Type-In New Topic"
         
-        if let validEditRecording = editRecording {
-            saveButton.setTitle("UPDATE", for: .normal)
-            recordingTitle.text = validEditRecording.name
-            recordingNote.text = validEditRecording.note
-            uuid = validEditRecording.recordingID!.uuidString
-            dropDown.text = validEditRecording.recordingParent?.category
-
-        } else {
-            saveButton.setTitle("SAVE", for: .normal)
-
-        }
+        
         saveButton.backgroundColor = #colorLiteral(red: 0, green: 0.742849052, blue: 1, alpha: 1)
         saveButton.setTitleColor(.white, for: .normal)
         saveButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
@@ -277,6 +275,20 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         instructionLabel.textColor = .lightGray
         instructionLabel.numberOfLines = 0
         instructionLabel.font = instructionLabel.font.withSize(15)
+        
+        if let validEditRecording = editRecording {
+            saveButton.setTitle("UPDATE", for: .normal)
+            recordButton.setTitle("Re-record", for: .normal)
+            
+            recordingTitle.text = validEditRecording.name
+            recordingNote.text = validEditRecording.note
+            uuid = validEditRecording.recordingID!.uuidString
+            dropDown.text = validEditRecording.recordingParent?.category
+            
+        } else {
+            saveButton.setTitle("SAVE", for: .normal)
+            
+        }
         
         
         
@@ -372,13 +384,11 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             recordButton.setTitle("Record", for: .normal)
         }
     }
-    
-    
+
     
     @objc func recordTapped() {
         
-//        print(dropDown.text)
-        
+        //        print(dropDown.text)
         if audioRecorder == nil {
             startRecording()
         } else {

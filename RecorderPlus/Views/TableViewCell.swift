@@ -17,8 +17,6 @@ protocol CollectionViewCellDelegate: class {
 class TableViewCell: UITableViewCell {
     
     weak var cellDelegate: CollectionViewCellDelegate?
-    
-    //    var coreDataStack = CoreDataStack()
     var recordings: [Recording]?
     var recordingDuration = Int()
     var timeString = String()
@@ -66,11 +64,8 @@ class TableViewCell: UITableViewCell {
             collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
-            
         ])
-        
     }
-    
 }
 
 
