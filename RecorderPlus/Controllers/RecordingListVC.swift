@@ -79,13 +79,11 @@ class RecordingListVC: UIViewController {
 extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        //        return colorsArray.objectsArray.count
         return categories.count
         
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //        return colorsArray.objectsArray[section].subcategory.count
         return 1
     }
     

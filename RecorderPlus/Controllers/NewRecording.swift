@@ -25,7 +25,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     var soundPlayer : AVAudioPlayer!
     
     var dropDown: DropDown!
-    let uuid = UUID().uuidString
+    var uuid = UUID().uuidString
     
     let recordingTitle = UITextField()
     let recordingNote = UITextField()
@@ -110,6 +110,14 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     
     @objc func saveButtonTapped() {
         
+        if saveButton.currentTitle == "UPDATE"  {
+            editRecording.name = recordingTitle.text
+            editRecording.note = recordingNote.text
+            coreDataStack.saveContext()
+            self.navigationController?.popViewController(animated: true)
+
+        } else {
+        
         if recordButton.titleLabel?.text == "Re-record" {
             
             if dropDown.text == "" {
@@ -157,9 +165,10 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             }
             self.navigationController?.popViewController(animated: true)
         } else {
-            let alert = UIAlertController(title: "Note", message: "You need to start then stop recording to save", preferredStyle: UIAlertController.Style.alert)
+            let alert = UIAlertController(title: "Caution", message: "You need to start then stop recording to save", preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
             self.present(alert, animated:true, completion: nil)
+        }
         }
     }
     
@@ -225,12 +234,16 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         
         if let validEditRecording = editRecording {
             saveButton.setTitle("UPDATE", for: .normal)
+            recordingTitle.text = validEditRecording.name
+            recordingNote.text = validEditRecording.note
+            uuid = validEditRecording.recordingID!.uuidString
+            dropDown.text = validEditRecording.recordingParent?.category
 
         } else {
             saveButton.setTitle("SAVE", for: .normal)
 
         }
-        saveButton.backgroundColor = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
+        saveButton.backgroundColor = #colorLiteral(red: 0, green: 0.742849052, blue: 1, alpha: 1)
         saveButton.setTitleColor(.white, for: .normal)
         saveButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         saveButton.layer.cornerRadius = 5
@@ -302,6 +315,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         
         
         instructionLabel.isHidden = true
+        
     }
     
     func getDocumentsDirectory() -> URL {

@@ -101,17 +101,6 @@ extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, U
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! RecordingCollectionViewCell
-        //        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? UICollectionViewCell {
-        //            cell.backgroundColor = self.rowWithColors?[indexPath.item].color ?? UIColor.blue
-        ////            cell.text = self.rowWithColors?[indexPath.item].name ?? ""
-        //            return cell
-        //        }
-        //        print("test")
-        //        return UICollectionViewCell()
-        //        let model = self.rowWithColors?[indexPath.item].name ?? ""
-        //        let model = self.rowWithColors?[indexPath.item].color
-        
-        //        let model = self.rowWithColors?[indexPath.item]
         
         let model = self.recordings?[indexPath.item]
         cell.recordingTitle.text = model?.name
