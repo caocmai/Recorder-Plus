@@ -53,8 +53,7 @@ class TableViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         
-        // Configure the view for the selected state
-        self.collectionView.showsHorizontalScrollIndicator = false
+//        self.collectionView.showsHorizontalScrollIndicator = false
         
         self.collectionView.dataSource = self
         self.collectionView.delegate = self

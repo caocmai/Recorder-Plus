@@ -133,8 +133,8 @@ class CoreDataStack {
         }
         
         do {
-            let tasks = try managedContext.fetch(request)
-            completion(.success(tasks))
+            let recordings = try managedContext.fetch(request)
+            completion(.success(recordings))
         } catch {
             completion(.failure(error))
         }
