@@ -18,6 +18,7 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
     var recordingTitle = UILabel()
     var timer:Timer?
     var totalSecond = 0
+    var totalAudioDuration = 0
     
     var isPlaying = false
     var coreDataStack: CoreDataStack!
@@ -84,7 +85,11 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
         if isPlaying == false {
             //            playBackButton.setTitle("Stop", for: .normal)
             let stopIcon = SFSymbolCreator.setSFSymbolColor(symbolName: "stop.circle", color: .green, size: 40)
+            
             AudioPlayer.shared.play(url: audioFilename)
+            
+            totalSecond = Int(AudioPlayer.shared.player.duration)
+//            totalAudioDuration = totalSecond
             AudioPlayer.shared.player.play()
             playBackButton.setImage(stopIcon, for: .normal)
 //            setupPlayer()
@@ -155,13 +160,21 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
         var minutes: Int
         var seconds: Int
         
+        
         if totalSecond == 0 {
             timer?.invalidate()
             let stopIcon = SFSymbolCreator.setSFSymbolColor(symbolName: "play.circle", color: .green, size: 40)
             playBackButton.setImage(stopIcon, for: .normal)
+            
+            totalSecond = Int(AudioPlayer.shared.player.duration)
+            hours = totalSecond / 3600
+            minutes = (totalSecond % 3600) / 60
+            seconds = (totalSecond % 3600) % 60
+            countdownLabel.text = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+
         }
         
-        //        print(totalSecond)
+        print(totalSecond)
         hours = totalSecond / 3600
         minutes = (totalSecond % 3600) / 60
         seconds = (totalSecond % 3600) % 60

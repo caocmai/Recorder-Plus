@@ -129,8 +129,6 @@ extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, U
         var hours: Int
         var minutes: Int
         var seconds: Int
-        
-        
         //        print(totalSecond)
         hours = totalSecond / 3600
         minutes = (totalSecond % 3600) / 60
