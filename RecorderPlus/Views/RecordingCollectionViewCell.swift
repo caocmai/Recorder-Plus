@@ -11,7 +11,7 @@ import AVFoundation
 class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
     let countdownLabel = UILabel()
     let playBackButton = UIButton()
-    var soundPlayer : AVAudioPlayer!
+//    var soundPlayer = AudioPlayer()
     var uuid = String()
     var deleteButton = UIButton()
     var recordingObject: Recording!
@@ -79,18 +79,22 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
     }
     
     @objc func playbackButtonTapped() {
+        let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
+
         if isPlaying == false {
             //            playBackButton.setTitle("Stop", for: .normal)
             let stopIcon = SFSymbolCreator.setSFSymbolColor(symbolName: "stop.circle", color: .green, size: 40)
+            AudioPlayer.shared.play(url: audioFilename)
+            AudioPlayer.shared.player.play()
             playBackButton.setImage(stopIcon, for: .normal)
-            setupPlayer()
-            soundPlayer.play()
+//            setupPlayer()
+//            soundPlayer.player.play()
             isPlaying = true
             startTimer()
         } else {
             timer?.invalidate()
             isPlaying = false
-            soundPlayer.stop()
+            AudioPlayer.shared.player.stop()
             //            playBackButton.setTitle("Play", for: .normal)
             let playButton = SFSymbolCreator.setSFSymbolColor(symbolName: "play.circle", color: .green, size: 40)
             playBackButton.setImage(playButton, for: .normal)
@@ -127,11 +131,11 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
 //        print(audioFilename)
         
         do {
-            soundPlayer = try AVAudioPlayer(contentsOf: audioFilename)
-            soundPlayer.delegate = self
-            totalSecond = Int(soundPlayer.duration)
-            soundPlayer.prepareToPlay()
-            soundPlayer.volume = 1.0
+            
+//            soundPlayer?.delegate = self
+//            totalSecond = Int(soundPlayer.duration)
+//            soundPlayer.prepareToPlay()
+//            soundPlayer.volume = 1.0
         } catch {
             print(error)
         }

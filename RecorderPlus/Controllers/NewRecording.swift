@@ -100,6 +100,15 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
 //        }
 //    }
     
+//    override func willMove(toParent parent: UIViewController?)
+//    {
+//        super.willMove(toParent: parent)
+//        if parent == nil
+//        {
+//            print("This VC is 'will' be popped. i.e. the back button was pressed.")
+//        }
+//    }
+//
     private func setupDropDown() {
         
         coreDataStack.fetchAllRecordingCategories { (r) in
