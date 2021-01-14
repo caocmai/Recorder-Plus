@@ -108,7 +108,7 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
     
     @objc func deleteButtonTapped() {
         
-        coreDataStack.deleteRecordingsCategoryByID(identifier: UUID(uuidString: uuid)!)
+        coreDataStack.deleteRecordingByCategoryId(identifier: UUID(uuidString: uuid)!)
         let fileManager = FileManager.default
         
         let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")

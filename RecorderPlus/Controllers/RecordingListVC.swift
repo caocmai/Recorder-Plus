@@ -14,7 +14,7 @@ class RecordingListVC: UIViewController {
     var coreDataStack = CoreDataStack()
     // to be able to use uitable header content must be in 2d array
     var categories = [[RecordingCategory]]()
-//    var allRecordings = [Recording]()
+    //    var allRecordings = [Recording]()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -54,7 +54,7 @@ class RecordingListVC: UIViewController {
                 for c in cate {
                     self.categories.append([c])
                 }
-//                print(self.categories)
+            //                print(self.categories)
             }
         }
         
@@ -124,7 +124,9 @@ extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
                     }
                 }
                 
+                self.coreDataStack.deleteRecordingsByCategoryId(parentCategory: self.categories[section][0])
                 self.coreDataStack.deleteCategoryByID(identifier: self.categories[section][0].categoryID!)
+                
                 self.categories.remove(at: section)
                 self.tableview.deleteSections([section], with: .fade)
                 self.fetchAndSet()
@@ -147,7 +149,7 @@ extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "tableviewcellid", for: indexPath) as? TableViewCell {
             
             let model = categories[indexPath.section][indexPath.row]
-
+            
             let sortby = "date"
             coreDataStack.fetchRecordingsByCategory(sortBy: sortby, selectedCategory: model) { (r) in
                 switch r {
@@ -181,7 +183,7 @@ extension RecordingListVC: CollectionViewCellDelegate {
             self.navigationController?.pushViewController(editVC, animated: true)
             self.tappedCell = recordingRow[index]
             // prints the recording
-//            print(recordingRow[index])
+            //            print(recordingRow[index])
             
         }
     }

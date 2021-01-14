@@ -12,7 +12,7 @@ class CoreDataStack {
     
     // has to be same name as .xcdatamodel
     private let modelName: String = "RecordingMetaData"
- 
+    
     
     private lazy var storeContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: self.modelName)
@@ -26,7 +26,7 @@ class CoreDataStack {
     
     lazy var managedContext: NSManagedObjectContext = {
         // get location of stored core data file
-//                print(self.storeContainer.persistentStoreDescriptions.first?.url)
+        //                print(self.storeContainer.persistentStoreDescriptions.first?.url)
         return self.storeContainer.viewContext
     }()
     
@@ -66,10 +66,10 @@ class CoreDataStack {
         }
     }
     
-    func deleteRecordingsCategoryByID(identifier: UUID) {
+    func deleteRecordingByCategoryId(identifier: UUID) {
         let fetchRequest: NSFetchRequest<Recording> = Recording.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "recordingID == %@", identifier as CVarArg)
-//        fetchRequest.fetchLimit = 1
+        //        fetchRequest.fetchLimit = 1
         do {
             let recordings = try managedContext.fetch(fetchRequest)
             for object in recordings {
@@ -79,7 +79,7 @@ class CoreDataStack {
                 do {
                     try fileManager.removeItem(at: audioFilename)
                 } catch {
-                   print("file not found to delete")
+                    print("file not found to delete")
                 }
                 
                 managedContext.delete(object)
@@ -98,7 +98,7 @@ class CoreDataStack {
     func deleteCategoryByID(identifier: UUID) {
         let fetchRequest: NSFetchRequest<RecordingCategory> = RecordingCategory.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "categoryID == %@", identifier as CVarArg)
-//        fetchRequest.fetchLimit = 1
+        //        fetchRequest.fetchLimit = 1
         do {
             let recordings = try managedContext.fetch(fetchRequest)
             for object in recordings {
@@ -153,6 +153,30 @@ class CoreDataStack {
             completion(.failure(error))
         }
     }
+    
+    //    func deleteRecordingsByCategory(uuid)
+    
+    func deleteRecordingsByCategoryId(parentCategory: RecordingCategory) {
+        let fetchRequest: NSFetchRequest<Recording> = Recording.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "recordingParent == %@", parentCategory)
+        
+        do {
+            let allRecordings = try managedContext.fetch(fetchRequest)
+            for rec in allRecordings {
+                let fileManager = FileManager.default
+                let uuidString = rec.recordingID?.uuidString
+                let audioFilename = self.getDocumentsDirectory().appendingPathComponent(uuidString!+".m4a")
+                do {
+                    try fileManager.removeItem(at: audioFilename)
+                } catch {
+                    print("file not found to delete")
+                }
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
     
 }
 
