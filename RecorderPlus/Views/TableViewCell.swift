@@ -21,16 +21,6 @@ class TableViewCell: UITableViewCell {
     var recordingDuration = Int()
     var timeString = String()
     
-    
-    //    let simpleConfig = UICollectionView.CellRegistration<RecordingCollectionViewCell, Recording> { (cell, indexPath, model) in
-    //        cell.recordingTitle.text = model.name
-    //        cell.backgroundColor = .lightGray
-    //        cell.uuid = model.recordingID!.uuidString
-    //        cell.coreDataStack = CoreDataStack()
-    //        cell.recordingObject = model
-    //
-    //    }
-    
     fileprivate let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -50,9 +40,7 @@ class TableViewCell: UITableViewCell {
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        
-//        self.collectionView.showsHorizontalScrollIndicator = false
-        
+                
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
         
@@ -105,9 +93,7 @@ extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, U
         cell.countdownLabel.text = getTimeLabel(uuid: (model?.recordingID!.uuidString)!)
         
         return cell
-        //        return collectionView.dequeueConfiguredReusableCell(using: simpleConfig,
-        //                                                            for: indexPath,
-        //                                                            item: model)
+
     }
     
     func getDocumentsDirectory() -> URL {

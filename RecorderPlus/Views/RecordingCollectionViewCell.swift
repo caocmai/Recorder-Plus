@@ -130,22 +130,6 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
         return paths[0]
     }
     
-    
-    func setupPlayer() {
-        let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
-//        print(audioFilename)
-        
-        do {
-            
-//            soundPlayer?.delegate = self
-//            totalSecond = Int(soundPlayer.duration)
-//            soundPlayer.prepareToPlay()
-//            soundPlayer.volume = 1.0
-        } catch {
-            print(error)
-        }
-    }
-    
     func startTimer(){
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countdown), userInfo: nil, repeats: true)
     }

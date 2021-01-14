@@ -85,30 +85,30 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         }
     }
     
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//
-//        if self.isMovingFromParent {
-//            // to delete temp recording file that wasn't saved
-//            let fileManager = FileManager.default
-//            let audioFilename = self.getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
-//            do {
-//                try fileManager.removeItem(at: audioFilename)
-//            } catch {
-//               print("file not found to delete")
-//            }
-//        }
-//    }
+    //    override func viewWillDisappear(_ animated: Bool) {
+    //        super.viewWillDisappear(animated)
+    //
+    //        if self.isMovingFromParent {
+    //            // to delete temp recording file that wasn't saved
+    //            let fileManager = FileManager.default
+    //            let audioFilename = self.getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
+    //            do {
+    //                try fileManager.removeItem(at: audioFilename)
+    //            } catch {
+    //               print("file not found to delete")
+    //            }
+    //        }
+    //    }
     
-//    override func willMove(toParent parent: UIViewController?)
-//    {
-//        super.willMove(toParent: parent)
-//        if parent == nil
-//        {
-//            print("This VC is 'will' be popped. i.e. the back button was pressed.")
-//        }
-//    }
-//
+    //    override func willMove(toParent parent: UIViewController?)
+    //    {
+    //        super.willMove(toParent: parent)
+    //        if parent == nil
+    //        {
+    //            print("This VC is 'will' be popped. i.e. the back button was pressed.")
+    //        }
+    //    }
+    //
     private func setupDropDown() {
         
         coreDataStack.fetchAllRecordingCategories { (r) in
@@ -120,7 +120,6 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
                 for c in cate {
                     self.categories.append(c.category!)
                 }
-            //                self.categories.append("-OR- Type One In")
             }
         }
         
@@ -130,7 +129,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             dropDown.text = selectedCategory?.category
         }
         
-        // The the Closure returns Selected Index and String
+        // the closure to get selected item
         dropDown.didSelect{(selectedText , index ,id) in
             print("Selected String: \(selectedText) \n index: \(index)")
             self.selectedCategory?.category = selectedText
@@ -144,12 +143,12 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             
             let newTrimmedRecId = UUID().uuidString
             let asset = AVURLAsset(url: getDocumentsDirectory().appendingPathComponent(uuid+".m4a"))
-            exportAsset2(asset, importUUID: uuid, exportUUID: newTrimmedRecId, start: Int64(rangeSeekSlider.selectedMinValue), end: Int64(rangeSeekSlider.selectedMaxValue))
+            exportAsset(asset, importUUID: uuid, exportUUID: newTrimmedRecId, start: Int64(rangeSeekSlider.selectedMinValue), end: Int64(rangeSeekSlider.selectedMaxValue))
             
             uuid = newTrimmedRecId
-
+            
         }
-                
+        
         if saveButton.currentTitle == "UPDATE"  {
             editRecording.name = recordingTitle.text
             editRecording.note = recordingNote.text
@@ -243,12 +242,12 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         } else {
             let newTopic = RecordingCategory(context: coreDataStack.managedContext)
             newTopic.category = recordingTopic
-            let uuid = UUID()
-            newTopic.categoryID = uuid
-            UserDefaults.standard.set(uuid.uuidString, forKey: recordingKey)
+            let categoryUUID = UUID()
+            newTopic.categoryID = categoryUUID
+            UserDefaults.standard.set(categoryUUID.uuidString, forKey: recordingKey)
             coreDataStack.saveContext()
             
-            coreDataStack.fetchRecordingCategoryByID(identifier: uuid) { (r) in
+            coreDataStack.fetchRecordingCategoryByID(identifier: categoryUUID) { (r) in
                 switch r {
                 case .failure(let error):
                     print(error)
@@ -275,7 +274,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         rangeSeekSlider.translatesAutoresizingMaskIntoConstraints = false
         rangeSeekSlider.tintColor = .lightGray
         rangeSeekSlider.colorBetweenHandles = #colorLiteral(red: 0.2055417001, green: 1, blue: 0, alpha: 1)
-//        rangeSeekSlider.handleColor = .blue
+        //        rangeSeekSlider.handleColor = .blue
         rangeSeekSlider.lineHeight = 5
         rangeSeekSlider.isHidden = true
         
@@ -337,7 +336,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             uuid = validEditRecording.recordingID!.uuidString
             let asset = AVURLAsset(url: getDocumentsDirectory().appendingPathComponent(uuid+".m4a"))
             recordingDuration = CMTimeGetSeconds(asset.duration)
-
+            
             rangeSeekSlider.maxValue = CGFloat(recordingDuration)
             dropDown.text = validEditRecording.recordingParent?.category
             
@@ -445,7 +444,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             print(audioFilename)
             let asset = AVURLAsset(url: getDocumentsDirectory().appendingPathComponent(uuid+".m4a"))
             recordingDuration = CMTimeGetSeconds(asset.duration)
-
+            
             rangeSeekSlider.maxValue = CGFloat(recordingDuration)
             rangeSeekSlider.selectedMaxValue = CGFloat(recordingDuration)
             rangeSeekSlider.isHidden = false
@@ -454,7 +453,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             recordButton.setTitle("Record", for: .normal)
         }
     }
-
+    
     
     @objc func recordTapped() {
         
@@ -467,149 +466,61 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     }
     
     
-//    func trimSelectedAudio(){
-//
-////        let name = browseData.name!
-//        let name = "me"
-//        let uuid = "uuid"
-//        if let asset = AVURLAsset(url: getDocumentsDirectory().appendingPathComponent("\(uuid).m4a")) as? AVAsset {
-//            exportAsset(asset, fileName: name)
-//        }
-//    }
-
-    func exportAsset(_ asset: AVAsset, fileName:String){
-        let uuid = "me"
-        let trimmedSoundFileUrl = getDocumentsDirectory().appendingPathComponent("\(uuid)_trimmed.m4a")
-                print("Saving to \(trimmedSoundFileUrl.absoluteString)")
-
-        if let exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A){
-            exporter.outputFileType = AVFileType.m4a
-            exporter.outputURL = trimmedSoundFileUrl
-
-            let duration = CMTimeGetSeconds(asset.duration)
-            if duration < 5.0{
-                print("Audio is not song long")
-                return
-            }
-            let startTime = CMTimeMake(value: 5, timescale: 1)
-            let stopTime = CMTimeMake(value: 10, timescale: 1)
-            exporter.timeRange = CMTimeRangeFromTimeToTime(start: startTime, end: stopTime)
-
-            exporter.exportAsynchronously(completionHandler: {
-                print("export complete \(exporter.status)")
-
-                switch exporter.status {
-                case  AVAssetExportSessionStatus.failed:
-
-                    if let e = exporter.error {
-                        print("export failed \(e)")
-                    }
-
-                case AVAssetExportSessionStatus.cancelled:
-                    print("export cancelled \(String(describing: exporter.error))")
-                default:
-                    print("export complete")
-//                    self.deleteFileAlreadyPresent()
-                    // change core data data here
-                }
-            })
-        } else{
-            print("cannot create AVAssetExportSession for asset \(asset)")
-        }
-    }
     
-    func exportAsset2(_ asset: AVAsset, importUUID: String, exportUUID: String, start: Int64, end: Int64){
+    func exportAsset(_ asset: AVAsset, importUUID: String, exportUUID: String, start: Int64, end: Int64){
         let trimmedSoundFileUrl = getDocumentsDirectory().appendingPathComponent("\(exportUUID).m4a")
-//                print("Saving to \(trimmedSoundFileUrl.absoluteString)")
-
+        //                print("Saving to \(trimmedSoundFileUrl.absoluteString)")
+        
         if let exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A){
             exporter.outputFileType = AVFileType.m4a
             exporter.outputURL = trimmedSoundFileUrl
-
-//            let duration = CMTimeGetSeconds(asset.duration)
-//            if duration < 5.0{
-//                print("Audio is not song long")
-//                return
-//            }
+            
             let startTime = CMTimeMake(value: start, timescale: 1)
             let stopTime = CMTimeMake(value: end, timescale: 1)
             exporter.timeRange = CMTimeRangeFromTimeToTime(start: startTime, end: stopTime)
-
+            
             exporter.exportAsynchronously(completionHandler: {
                 print("export complete \(exporter.status)")
-
+                
                 switch exporter.status {
                 case  AVAssetExportSessionStatus.failed:
-
+                    
                     if let e = exporter.error {
                         print("export failed \(e)")
                     }
-
+                    
                 case AVAssetExportSessionStatus.cancelled:
                     print("export cancelled \(String(describing: exporter.error))")
                 default:
                     print("export complete")
                     self.deleteFileAlreadyPresent(uuid: importUUID)
-                    // change core data data here
+                // change core data data here
                 }
             })
         } else{
             print("cannot create AVAssetExportSession for asset \(asset)")
         }
     }
-
+    
     func deleteFileAlreadyPresent(uuid: String){
-        let PresentAudioUrl = getDocumentsDirectory().appendingPathComponent("\(uuid).m4a")
-                if FileManager.default.fileExists(atPath: PresentAudioUrl.path){
-                    print("Sound exists, removing \(PresentAudioUrl.path)")
-                    do{
-                        if try PresentAudioUrl.checkResourceIsReachable(){
-                            print("is reachable")
-                            // just a delete from directory
-//                            self.deleteRecordingFile(audioName: "\(uuid).m4a")
-                            try FileManager.default.removeItem(at: PresentAudioUrl)
-                            
-                        }
-                       // try FileManager.default.removeItem(atPath: trimmedSoundFileUrl.absoluteString)
-                    } catch{
-                        print("Could not remove \(PresentAudioUrl.absoluteString)")
-                    }
+        let audioUrl = getDocumentsDirectory().appendingPathComponent("\(uuid).m4a")
+        if FileManager.default.fileExists(atPath: audioUrl.path){
+            print("Sound exists, removing \(audioUrl.path)")
+            do{
+                if try audioUrl.checkResourceIsReachable(){
+                    print("is reachable")
+                    try FileManager.default.removeItem(at: audioUrl)
                 }
+                
+            } catch{
+                print("Could not remove \(audioUrl.absoluteString)")
+            }
+        }
     }
     
-//    func deleteRecordingFile(fileName: String) {
-//        let fileManager = FileManager.default
-//        let audioFilename = self.getDocumentsDirectory().appendingPathComponent(".m4a")
-//        do {
-//            try fileManager.removeItem(at: audioFilename)
-//        } catch {
-//           print("file not found to delete")
-//        }
-//
-//    }
-
-    func saveTrimmedData(){
-        print("saved new data")
-//        DispatchQueue.main.async {
-//            self.browseData.image = (self.imgToSave.image?.jpeg!)!
-//            self.browseData.note = self.tfNotes.text
-//             self.browseData.name = "\(self.tfTitle.text!)_trimmed"
-//
-//
-//
-//        do{
-//            try self.context.save()
-//            self.goToParentVC()
-//
-//        } catch let error as NSError{
-//            print("Could not save \(error) \(error.userInfo)")
-//        }
-//
-//             }
-    }
-
+    
     
 }
 
 
-  
+

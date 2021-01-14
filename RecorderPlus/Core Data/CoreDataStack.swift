@@ -153,9 +153,7 @@ class CoreDataStack {
             completion(.failure(error))
         }
     }
-    
-    //    func deleteRecordingsByCategory(uuid)
-    
+
     func deleteRecordingsByCategoryId(parentCategory: RecordingCategory) {
         let fetchRequest: NSFetchRequest<Recording> = Recording.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "recordingParent == %@", parentCategory)
