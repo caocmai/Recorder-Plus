@@ -174,7 +174,7 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
 
         }
         
-        print(totalSecond)
+//        print(totalSecond)
         hours = totalSecond / 3600
         minutes = (totalSecond % 3600) / 60
         seconds = (totalSecond % 3600) % 60

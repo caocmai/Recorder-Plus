@@ -7,7 +7,7 @@ This is an audio recorder app where users can quickly record audio and assign it
 ### Features
 * Record/Playback Audio with cropping ability
 * Group recordings
-* Start recording for group
+* Start recording from group
 * Context menu to delete for edit recordings
 * Quick recording
 

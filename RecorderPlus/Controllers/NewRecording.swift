@@ -139,7 +139,9 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     
     @objc func saveButtonTapped() {
         
+        print(recordingDuration)
         if rangeSeekSlider.selectedMinValue != 0 || rangeSeekSlider.selectedMaxValue != CGFloat(recordingDuration) {
+            
             let newTrimmedRecId = UUID().uuidString
             let asset = AVURLAsset(url: getDocumentsDirectory().appendingPathComponent(uuid+".m4a"))
             exportAsset2(asset, importUUID: uuid, exportUUID: newTrimmedRecId, start: Int64(rangeSeekSlider.selectedMinValue), end: Int64(rangeSeekSlider.selectedMaxValue))
@@ -151,6 +153,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         if saveButton.currentTitle == "UPDATE"  {
             editRecording.name = recordingTitle.text
             editRecording.note = recordingNote.text
+            editRecording.recordingID = UUID(uuidString: uuid)
             coreDataStack.saveContext()
             self.navigationController?.popViewController(animated: true)
             
@@ -161,6 +164,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
                 if saveButton.currentTitle == "UPDATE"  {
                     editRecording.name = recordingTitle.text
                     editRecording.note = recordingNote.text
+                    editRecording.recordingID = UUID(uuidString: uuid)
                     coreDataStack.saveContext()
                     self.navigationController?.popViewController(animated: true)
                     
