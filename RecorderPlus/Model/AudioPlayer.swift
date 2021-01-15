@@ -37,7 +37,7 @@ class AudioPlayer {
                 print(error.localizedDescription)
             }
             player.play()
-            player.volume = 0.7
+            player.volume = 0.9
             
         } catch let error as NSError {
             print(error.localizedDescription)

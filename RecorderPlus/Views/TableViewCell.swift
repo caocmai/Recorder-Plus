@@ -10,7 +10,6 @@ import AVFoundation
 
 protocol CollectionViewCellDelegate: class {
     func collectionView(collectionviewcell: RecordingCollectionViewCell?, index: Int, didTappedInTableViewCell: TableViewCell)
-    // other delegate methods that you can define to perform action in viewcontroller
 }
 
 

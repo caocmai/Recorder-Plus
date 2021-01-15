@@ -11,7 +11,6 @@ import AVFoundation
 class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
     let countdownLabel = UILabel()
     let playBackButton = UIButton()
-//    var soundPlayer = AudioPlayer()
     var uuid = String()
     var deleteButton = UIButton()
     var recordingObject: Recording!
@@ -44,10 +43,8 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
         
         countdownLabel.textColor = .gray
         
-        //        playBackButton.setTitle("Play", for: .normal)
         let playButton = SFSymbolCreator.setSFSymbolColor(symbolName: "play.circle", color: .green, size: 40)
         playBackButton.setImage(playButton, for: .normal)
-        //        playBackButton.backgroundColor = .yellow
         playBackButton.setTitleColor(.black, for: .normal)
         playBackButton.addTarget(self, action: #selector(playbackButtonTapped), for: .touchUpInside)
         
@@ -83,24 +80,19 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
         let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
 
         if isPlaying == false {
-            //            playBackButton.setTitle("Stop", for: .normal)
             let stopIcon = SFSymbolCreator.setSFSymbolColor(symbolName: "stop.circle", color: .green, size: 40)
             
             AudioPlayer.shared.play(url: audioFilename)
             
             totalSecond = Int(AudioPlayer.shared.player.duration)
-//            totalAudioDuration = totalSecond
             AudioPlayer.shared.player.play()
             playBackButton.setImage(stopIcon, for: .normal)
-//            setupPlayer()
-//            soundPlayer.player.play()
             isPlaying = true
             startTimer()
         } else {
             timer?.invalidate()
             isPlaying = false
             AudioPlayer.shared.player.stop()
-            //            playBackButton.setTitle("Play", for: .normal)
             let playButton = SFSymbolCreator.setSFSymbolColor(symbolName: "play.circle", color: .green, size: 40)
             playBackButton.setImage(playButton, for: .normal)
         }
@@ -120,8 +112,8 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
         
         playBackButton.removeFromSuperview()
         deleteButton.removeFromSuperview()
-        //        countdownLabel.removeFromSuperview()
-        //        recordingTitle.removeFromSuperview()
+        countdownLabel.removeFromSuperview()
+        recordingTitle.removeFromSuperview()
         contentView.backgroundColor = .white
     }
     
