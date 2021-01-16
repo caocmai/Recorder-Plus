@@ -10,10 +10,10 @@ import UIKit
 
 class CategoryHeader: UITableViewHeaderFooterView {
     
-    static var indentifier = "categoryHeader"
     let newRecordingButton = UIButton()
     let title = UITextField()
     let delete = UIButton()
+    static var indentifier = "categoryHeader"
     var deleteCompletion: (() -> Void)?
     
     var newRecordingcompletion: (() -> Void)?

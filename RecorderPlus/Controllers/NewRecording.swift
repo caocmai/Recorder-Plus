@@ -281,7 +281,6 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         dropDown = DropDown()
         self.view.addSubview(dropDown)
         dropDown.translatesAutoresizingMaskIntoConstraints = false
-        //        dropDown.font = UIFont.systemFont(ofSize: 20.0)
         dropDown.font = UIFont.boldSystemFont(ofSize: 21)
         
         
@@ -342,18 +341,13 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             
         } else {
             saveButton.setTitle("SAVE", for: .normal)
-            
         }
-        
-        
         
         NSLayoutConstraint.activate([
             
             //            instructionLabel.bottomAnchor.constraint(equalTo: dropDown.topAnchor, constant: 5),
             //            instructionLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
             //            instructionLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
-            
-            
             
             recordingTitle.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
             recordingTitle.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -120),
@@ -454,7 +448,6 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         }
     }
     
-    
     @objc func recordTapped() {
         
         //        print(dropDown.text)
@@ -464,8 +457,6 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             finishRecording(success: true)
         }
     }
-    
-    
     
     func exportAsset(_ asset: AVAsset, importUUID: String, exportUUID: String, start: Int64, end: Int64){
         let trimmedSoundFileUrl = getDocumentsDirectory().appendingPathComponent("\(exportUUID).m4a")
@@ -484,17 +475,14 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
                 
                 switch exporter.status {
                 case  AVAssetExportSessionStatus.failed:
-                    
                     if let e = exporter.error {
                         print("export failed \(e)")
                     }
-                    
                 case AVAssetExportSessionStatus.cancelled:
                     print("export cancelled \(String(describing: exporter.error))")
                 default:
                     print("export complete")
                     self.deleteFileAlreadyPresent(uuid: importUUID)
-                // change core data data here
                 }
             })
         } else{
@@ -511,14 +499,11 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
                     print("is reachable")
                     try FileManager.default.removeItem(at: audioUrl)
                 }
-                
             } catch{
                 print("Could not remove \(audioUrl.absoluteString)")
             }
         }
     }
-    
-    
     
 }
 

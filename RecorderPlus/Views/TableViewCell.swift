@@ -15,10 +15,10 @@ protocol CollectionViewCellDelegate: class {
 
 class TableViewCell: UITableViewCell {
     
+    let recordingDuration = Int()
+    let timeString = String()
     weak var cellDelegate: CollectionViewCellDelegate?
     var recordings: [Recording]?
-    var recordingDuration = Int()
-    var timeString = String()
     
     fileprivate let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -39,7 +39,7 @@ class TableViewCell: UITableViewCell {
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-                
+        
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
         
@@ -70,7 +70,6 @@ extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, U
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //        return self.rowWithColors?.count ?? 0
         return recordings?.count ?? 0
     }
     
@@ -78,7 +77,6 @@ extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, U
         return 1
     }
     
-    // Set the data for each cell (color and color name)
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! RecordingCollectionViewCell
@@ -89,18 +87,18 @@ extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, U
         cell.uuid = (model?.recordingID!.uuidString)!
         cell.coreDataStack = CoreDataStack()
         cell.recordingObject = model
-        cell.countdownLabel.text = getTimeLabel(uuid: (model?.recordingID!.uuidString)!)
+        cell.countdownLabel.text = setTimeLabel(uuid: (model?.recordingID!.uuidString)!)
         
         return cell
-
+        
     }
     
-    func getDocumentsDirectory() -> URL {
+    private func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return paths[0]
     }
     
-    func getDuration(uuid: String) -> Int {
+    private func getDuration(uuid: String) -> Int {
         let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
         let asset = AVURLAsset(url: audioFilename, options: nil)
         let audioDuration = asset.duration
@@ -109,7 +107,7 @@ extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, U
         return audioDurationSeconds
     }
     
-    func getTimeLabel(uuid: String) -> String {
+    private func setTimeLabel(uuid: String) -> String {
         let totalSecond = getDuration(uuid: uuid)
         var hours: Int
         var minutes: Int
@@ -131,7 +129,7 @@ extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, U
 extension TableViewCell: UIContextMenuInteractionDelegate {
     
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
-            return nil
+        return nil
     }
     
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
@@ -151,19 +149,14 @@ extension TableViewCell: UIContextMenuInteractionDelegate {
             self.recordings?.remove(at: indexPath.row)
             collectionView.deleteItems(at: [indexPath])
             let fileManager = FileManager.default
-            
             let uuidString = recording?.recordingID?.uuidString
-            
             let audioFilename = self.getDocumentsDirectory().appendingPathComponent(uuidString!+".m4a")
             do {
                 try fileManager.removeItem(at: audioFilename)
             } catch {
-               print("file not found to delete")
+                print("file not found to delete")
             }
-            
-
         }
-        
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(title: "Actions", children: [edit, delete])
         }

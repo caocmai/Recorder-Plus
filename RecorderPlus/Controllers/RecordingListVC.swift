@@ -8,12 +8,11 @@
 import UIKit
 
 class RecordingListVC: UIViewController {
-    var tappedCell: Recording!
     let tableview = UITableView()
-    
-    var coreDataStack = CoreDataStack()
+    let coreDataStack = CoreDataStack()
     // to be able to use uitable header content must be in 2d array
     var categories = [[RecordingCategory]]()
+    var tappedCell: Recording!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -147,7 +146,6 @@ extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "tableviewcellid", for: indexPath) as? TableViewCell {
             
             let model = categories[indexPath.section][indexPath.row]
-            
             let sortby = "date"
             coreDataStack.fetchRecordingsByCategory(sortBy: sortby, selectedCategory: model) { (r) in
                 switch r {
@@ -157,7 +155,7 @@ extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
                     cell.updateCellNew(row: r)
                 }
             }
-            // Set cell's delegate
+            // set cell's delegate
             cell.cellDelegate = self
             
             cell.selectionStyle = .none
@@ -165,8 +163,7 @@ extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
         }
         return UITableViewCell()
     }
-    
-    
+
 }
 
 extension RecordingListVC: CollectionViewCellDelegate {
@@ -174,7 +171,6 @@ extension RecordingListVC: CollectionViewCellDelegate {
     func collectionView(collectionviewcell: RecordingCollectionViewCell?, index: Int, didTappedInTableViewCell: TableViewCell) {
         
         if let recordingRow = didTappedInTableViewCell.recordings {
-            
             let editVC = NewRecording()
             editVC.coreDataStack = coreDataStack
             editVC.editRecording = recordingRow[index]

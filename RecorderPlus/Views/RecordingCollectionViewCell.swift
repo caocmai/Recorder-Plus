@@ -11,14 +11,12 @@ import AVFoundation
 class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
     let countdownLabel = UILabel()
     let playBackButton = UIButton()
-    var uuid = String()
-    var deleteButton = UIButton()
+    let deleteButton = UIButton()
+    let recordingTitle = UILabel()
     var recordingObject: Recording!
-    var recordingTitle = UILabel()
+    var uuid = String()
     var timer:Timer?
-    var totalSecond = 0
-    var totalAudioDuration = 0
-    
+    var totalAudioSeconds = 0
     var isPlaying = false
     var coreDataStack: CoreDataStack!
     
@@ -78,13 +76,11 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
     
     @objc func playbackButtonTapped() {
         let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
-
+        
         if isPlaying == false {
             let stopIcon = SFSymbolCreator.setSFSymbolColor(symbolName: "stop.circle", color: .green, size: 40)
-            
             AudioPlayer.shared.play(url: audioFilename)
-            
-            totalSecond = Int(AudioPlayer.shared.player.duration)
+            totalAudioSeconds = Int(AudioPlayer.shared.player.duration)
             AudioPlayer.shared.player.play()
             playBackButton.setImage(stopIcon, for: .normal)
             isPlaying = true
@@ -98,11 +94,10 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
         }
     }
     
+    /// not sure if should keep this functionality
     @objc func deleteButtonTapped() {
-        
         coreDataStack.deleteRecordingByCategoryId(identifier: UUID(uuidString: uuid)!)
         let fileManager = FileManager.default
-        
         let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
         do {
             try fileManager.removeItem(at: audioFilename)
@@ -136,26 +131,25 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
         var minutes: Int
         var seconds: Int
         
-        
-        if totalSecond == 0 {
+        if totalAudioSeconds == 0 {
             timer?.invalidate()
             let stopIcon = SFSymbolCreator.setSFSymbolColor(symbolName: "play.circle", color: .green, size: 40)
             playBackButton.setImage(stopIcon, for: .normal)
             
-            totalSecond = Int(AudioPlayer.shared.player.duration)
-            hours = totalSecond / 3600
-            minutes = (totalSecond % 3600) / 60
-            seconds = (totalSecond % 3600) % 60
+            totalAudioSeconds = Int(AudioPlayer.shared.player.duration)
+            hours = totalAudioSeconds / 3600
+            minutes = (totalAudioSeconds % 3600) / 60
+            seconds = (totalAudioSeconds % 3600) % 60
             countdownLabel.text = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-
+            
         }
         
-//        print(totalSecond)
-        hours = totalSecond / 3600
-        minutes = (totalSecond % 3600) / 60
-        seconds = (totalSecond % 3600) % 60
+        //        print(totalSecond)
+        hours = totalAudioSeconds / 3600
+        minutes = (totalAudioSeconds % 3600) / 60
+        seconds = (totalAudioSeconds % 3600) % 60
         countdownLabel.text = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-        totalSecond = totalSecond - 1
+        totalAudioSeconds = totalAudioSeconds - 1
         
     }
 }
