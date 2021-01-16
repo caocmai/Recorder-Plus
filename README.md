@@ -12,6 +12,7 @@ This is an audio recorder app where users can quickly record audio and assign it
 * Quick recording
 
 ### App Screenshots
+![](Screenshots/image1.png)
 
 
 ### Usage

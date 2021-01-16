@@ -14,7 +14,6 @@ class RecordingListVC: UIViewController {
     var coreDataStack = CoreDataStack()
     // to be able to use uitable header content must be in 2d array
     var categories = [[RecordingCategory]]()
-    //    var allRecordings = [Recording]()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -24,7 +23,6 @@ class RecordingListVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         self.view.backgroundColor = .white
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.title = "Recordings"
