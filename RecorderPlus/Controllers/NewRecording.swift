@@ -230,13 +230,9 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
                 case .failure(let error):
                     print(error)
                 case .success(let recordings):
-                    let new = Recording(context: self.coreDataStack.managedContext)
-                    new.date = Date()
-                    new.recordingID = UUID(uuidString: self.uuid)
-                    new.recordingParent = recordings.first
-                    new.name = self.recordingTitle.text
-                    new.note = self.recordingNote.text
-                    self.coreDataStack.saveContext()                }
+                    self.createNewRecording(with: self.uuid, topic: recordings.first!)
+
+                }
             }
             
         } else {
@@ -252,15 +248,20 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
                 case .failure(let error):
                     print(error)
                 case .success(let recordings):
-                    let new = Recording(context: self.coreDataStack.managedContext)
-                    new.date = Date()
-                    new.recordingID = UUID(uuidString: self.uuid)
-                    new.recordingParent = recordings.first
-                    new.name = self.recordingTitle.text
-                    new.note = self.recordingNote.text
-                    self.coreDataStack.saveContext()                   }
+                    self.createNewRecording(with: self.uuid, topic: recordings.first!)
+                }
             }
         }
+    }
+    
+    private func createNewRecording(with uuid: String, topic: RecordingCategory) {
+        let new = Recording(context: self.coreDataStack.managedContext)
+        new.date = Date()
+        new.recordingID = UUID(uuidString: uuid)
+        new.recordingParent = topic
+        new.name = self.recordingTitle.text
+        new.note = self.recordingNote.text
+        self.coreDataStack.saveContext()
     }
     
     private func setupUI() {
