@@ -13,7 +13,6 @@ class CoreDataStack {
     // has to be same name as .xcdatamodel
     private let modelName: String = "RecordingMetaData"
     
-    
     private lazy var storeContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: self.modelName)
         container.loadPersistentStores { (storeDescription, error) in
@@ -122,7 +121,6 @@ class CoreDataStack {
         }
     }
     
-    
     func fetchAllRecordings(completion: @escaping(Result<[Recording]>) -> Void) {
         let fetchRequest: NSFetchRequest<Recording> = Recording.fetchRequest()
         do {
@@ -174,7 +172,6 @@ class CoreDataStack {
             print(error)
         }
     }
-    
     
 }
 

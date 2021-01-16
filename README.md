@@ -21,11 +21,14 @@ Open the app and tap on the "+" icon on the upper right, once you allow the app 
 If you need to quickly record something tap on the QuickRec to start a recording immediately and once done tap the SAVE button. By default, these recordings' topic will be set to "QuickRec".
 
 ### Run Locally
-Project code can be viewed locally and run in Xcode's simulator by cloning or downloading this [repo](https://github.com/caocmai/Recorder-Plus).
+Before running this project in Xcode's simulator please note it requires the installation of some CocoaPods. To install the necessary CocoaPods navigate to the root of this project and execute the following in terminal:
+
+`pod install`
 
 ## Built With
 * [Xcode - 12.1](https://developer.apple.com/xcode/) - The IDE used
 * [Swift - 5.1.4](https://developer.apple.com/swift/) - Programming language
+* [CocoaPods - 1.9.3](https://cocoapods.org/) - 3rd party dependencies
 
 ### CocoaPods
 * [RangeSeekSlider](https://github.com/WorldDownTown/RangeSeekSlider)
