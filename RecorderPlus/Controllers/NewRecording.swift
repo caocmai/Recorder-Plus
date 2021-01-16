@@ -49,14 +49,11 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.prefersLargeTitles = false
-        
-        // Do any additional setup after loading the view.
         self.view.backgroundColor = .white
-        
         UITextField.connectFields(fields: [recordingTitle, recordingNote])
         
         recordingSession = AVAudioSession.sharedInstance()
-        
+        // asking for recording permission
         do {
             try recordingSession.setCategory(.playAndRecord, mode: .default)
             try recordingSession.setActive(true)
@@ -137,16 +134,12 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     }
     
     @objc func saveButtonTapped() {
-        
-        print(recordingDuration)
+//        print(recordingDuration)
         if rangeSeekSlider.selectedMinValue != 0 || rangeSeekSlider.selectedMaxValue != CGFloat(recordingDuration) {
-            
             let newTrimmedRecId = UUID().uuidString
             let asset = AVURLAsset(url: getDocumentsDirectory().appendingPathComponent(uuid+".m4a"))
             exportAsset(asset, importUUID: uuid, exportUUID: newTrimmedRecId, start: Int64(rangeSeekSlider.selectedMinValue), end: Int64(rangeSeekSlider.selectedMaxValue))
-            
             uuid = newTrimmedRecId
-            
         }
         
         if saveButton.currentTitle == "UPDATE"  {
@@ -157,16 +150,13 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             self.navigationController?.popViewController(animated: true)
             
         } else {
-            
             if recordButton.titleLabel?.text == "Re-record" {
-                
                 if saveButton.currentTitle == "UPDATE"  {
                     editRecording.name = recordingTitle.text
                     editRecording.note = recordingNote.text
                     editRecording.recordingID = UUID(uuidString: uuid)
                     coreDataStack.saveContext()
                     self.navigationController?.popViewController(animated: true)
-                    
                 }
                 
                 if dropDown.text == "" {
@@ -180,34 +170,18 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
                     for category in recordingCategory{
                         if dropDown.text == category.category {
                             categoryFound = true
-                            let new = Recording(context: self.coreDataStack.managedContext)
-                            new.date = Date()
-                            new.recordingID = UUID(uuidString: self.uuid)
-                            new.recordingParent = category
-                            new.name = self.recordingTitle.text
-                            new.note = self.recordingNote.text
-                            self.coreDataStack.saveContext()
+                            self.createNewRecording(withUUID: self.uuid, topic: category)
                         }
                     }
-                    
                     if categoryFound == false {
-                        let newCategory = RecordingCategory(context: coreDataStack.managedContext)
-                        newCategory.category = dropDown.text
-                        let uuid = UUID()
-                        newCategory.categoryID = uuid
-                        coreDataStack.saveContext()
-                        coreDataStack.fetchRecordingCategoryByID(identifier: uuid) { (r) in
-                            switch r {
+                        let categoryUUID = UUID()
+                        createNewRecordingTopic(withUUID: categoryUUID, recordingTopic: dropDown.text!)
+                        coreDataStack.fetchRecordingCategoryByID(identifier: categoryUUID) { (results) in
+                            switch results {
                             case .failure(let error):
                                 print(error)
                             case .success(let categories):
-                                let new = Recording(context: self.coreDataStack.managedContext)
-                                new.date = Date()
-                                new.recordingID = UUID(uuidString: self.uuid)
-                                new.recordingParent = categories.first
-                                new.name = self.recordingTitle.text
-                                new.note = self.recordingNote.text
-                                self.coreDataStack.saveContext()
+                                self.createNewRecording(withUUID: self.uuid, topic: categories.first!)
                             }
                         }
                     }
@@ -225,36 +199,32 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         let unknownTopicId = UserDefaults.standard.string(forKey: recordingKey)
         
         if let validUnknownTopic = unknownTopicId {
-            coreDataStack.fetchRecordingCategoryByID(identifier: UUID(uuidString: validUnknownTopic)!) { (r) in
-                switch r {
+            coreDataStack.fetchRecordingCategoryByID(identifier: UUID(uuidString: validUnknownTopic)!) { (results) in
+                switch results {
                 case .failure(let error):
                     print(error)
                 case .success(let recordings):
-                    self.createNewRecording(with: self.uuid, topic: recordings.first!)
-
+                    self.createNewRecording(withUUID: self.uuid, topic: recordings.first!)
                 }
             }
             
         } else {
-            let newTopic = RecordingCategory(context: coreDataStack.managedContext)
-            newTopic.category = recordingTopic
             let categoryUUID = UUID()
-            newTopic.categoryID = categoryUUID
+            createNewRecordingTopic(withUUID: categoryUUID, recordingTopic: recordingTopic)
             UserDefaults.standard.set(categoryUUID.uuidString, forKey: recordingKey)
-            coreDataStack.saveContext()
-            
-            coreDataStack.fetchRecordingCategoryByID(identifier: categoryUUID) { (r) in
-                switch r {
+
+            coreDataStack.fetchRecordingCategoryByID(identifier: categoryUUID) { (results) in
+                switch results {
                 case .failure(let error):
                     print(error)
                 case .success(let recordings):
-                    self.createNewRecording(with: self.uuid, topic: recordings.first!)
+                    self.createNewRecording(withUUID: self.uuid, topic: recordings.first!)
                 }
             }
         }
     }
     
-    private func createNewRecording(with uuid: String, topic: RecordingCategory) {
+    private func createNewRecording(withUUID uuid: String, topic: RecordingCategory) {
         let new = Recording(context: self.coreDataStack.managedContext)
         new.date = Date()
         new.recordingID = UUID(uuidString: uuid)
@@ -262,6 +232,13 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         new.name = self.recordingTitle.text
         new.note = self.recordingNote.text
         self.coreDataStack.saveContext()
+    }
+    
+    private func createNewRecordingTopic(withUUID uuid: UUID, recordingTopic: String) {
+        let newTopic = RecordingCategory(context: coreDataStack.managedContext)
+        newTopic.category = recordingTopic
+        newTopic.categoryID = uuid
+        coreDataStack.saveContext()
     }
     
     private func setupUI() {
