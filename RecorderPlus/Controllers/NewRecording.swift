@@ -18,12 +18,12 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     
     var editRecording: Recording!
     
-    var recordButton = UIButton()
+    let recordButton = UIButton()
     let saveButton = UIButton()
     
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
-    var soundPlayer : AVAudioPlayer!
+//    var soundPlayer : AVAudioPlayer!
     
     var dropDown: DropDown!
     var uuid = UUID().uuidString
@@ -53,7 +53,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         UITextField.connectFields(fields: [recordingTitle, recordingNote])
         
         recordingSession = AVAudioSession.sharedInstance()
-        // asking for recording permission
+        // ask for recording permission
         do {
             try recordingSession.setCategory(.playAndRecord, mode: .default)
             try recordingSession.setActive(true)
@@ -133,6 +133,9 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         }
     }
     
+    // - MARK: Save/Update Button
+
+    
     @objc func saveButtonTapped() {
 //        print(recordingDuration)
         if rangeSeekSlider.selectedMinValue != 0 || rangeSeekSlider.selectedMaxValue != CGFloat(recordingDuration) {
@@ -148,7 +151,6 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             editRecording.recordingID = UUID(uuidString: uuid)
             coreDataStack.saveContext()
             self.navigationController?.popViewController(animated: true)
-            
         } else {
             if recordButton.titleLabel?.text == "Re-record" {
                 if saveButton.currentTitle == "UPDATE"  {
@@ -241,6 +243,9 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         coreDataStack.saveContext()
     }
     
+    
+    // - MARK: Setup UI
+
     private func setupUI() {
         //        self.view.addSubview(instructionLabel)
         self.view.addSubview(recordingTitle)
@@ -366,7 +371,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         return paths[0]
     }
     
-    func startRecording() {
+    private func startRecording() {
         let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
         
         let settings = [
@@ -400,7 +405,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         timerLabel.text = String(format:"%02i:%02i:%02i", hours, minutes, seconds)
     }
     
-    func finishRecording(success: Bool) {
+    private func finishRecording(success: Bool) {
         audioRecorder.stop()
         audioRecorder = nil
         

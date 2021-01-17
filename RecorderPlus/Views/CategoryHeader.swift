@@ -13,9 +13,8 @@ class CategoryHeader: UITableViewHeaderFooterView {
     let newRecordingButton = UIButton()
     let title = UITextField()
     let delete = UIButton()
-    static var indentifier = "categoryHeader"
+    static let indentifier = "categoryHeader"
     var deleteCompletion: (() -> Void)?
-    
     var newRecordingcompletion: (() -> Void)?
     
     override init(reuseIdentifier: String?) {
@@ -48,7 +47,6 @@ class CategoryHeader: UITableViewHeaderFooterView {
         
         delete.setImage(trashSymbol, for: .normal)
         delete.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
-        //        delete.backgroundColor = .blue
         
         NSLayoutConstraint.activate([
             
@@ -63,7 +61,6 @@ class CategoryHeader: UITableViewHeaderFooterView {
             newRecordingButton.widthAnchor.constraint(equalToConstant: 25),
             newRecordingButton.leadingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -40),
             newRecordingButton.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-
         ])
     }
     

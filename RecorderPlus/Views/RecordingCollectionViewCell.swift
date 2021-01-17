@@ -21,7 +21,7 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
     var coreDataStack: CoreDataStack!
     
     required init?(coder: NSCoder) {
-        fatalError("nope!")
+        fatalError("fatal error")
     }
     
     override init(frame: CGRect) {
@@ -123,7 +123,6 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
     
     @objc func countdown() {
         updateTimerLabel()
-        
     }
     
     func updateTimerLabel() {
@@ -135,7 +134,7 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
             timer?.invalidate()
             let stopIcon = SFSymbolCreator.setSFSymbolColor(symbolName: "play.circle", color: .green, size: 40)
             playBackButton.setImage(stopIcon, for: .normal)
-            
+            // reset label to be audio duration when playback is finished
             totalAudioSeconds = Int(AudioPlayer.shared.player.duration)
             hours = totalAudioSeconds / 3600
             minutes = (totalAudioSeconds % 3600) / 60

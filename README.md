@@ -1,8 +1,8 @@
 # Recorder Plus
-An iOS app to record audio and organizes them in their respective groups
+An iOS app to record audio and organizes them in their respective groups.
 
 ## Description
-This is an audio recorder app where users can quickly record audio and assign it more information like its name, description as well as group them into their own topic
+This is an audio recorder app where users can quickly record audio and assign it more information like its name, description as well as group them into their own topic.
 
 ### Features
 * Record/Playback Audio with cropping ability
@@ -24,6 +24,8 @@ If you need to quickly record something tap on the QuickRec to start a recording
 Before running this project in Xcode's simulator please note it requires the installation of some CocoaPods. To install the necessary CocoaPods navigate to the root of this project and execute the following in terminal:
 
 `pod install`
+
+Then make sure you run the project file with the .xcworkspace extension and NOT the file with .xcodeproj extension.
 
 ## Built With
 * [Xcode - 12.1](https://developer.apple.com/xcode/) - The IDE used
