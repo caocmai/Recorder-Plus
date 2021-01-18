@@ -29,8 +29,10 @@ class RecordingListVC: UIViewController {
         self.view.backgroundColor = .white
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.title = "Recordings"
+        
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
         self.navigationItem.rightBarButtonItem = addButton
+        
         let quickRec = UIBarButtonItem(title: "QuickREC", style: .plain, target: self, action: #selector(quickRecTapped))
         self.navigationItem.leftBarButtonItem = quickRec
         

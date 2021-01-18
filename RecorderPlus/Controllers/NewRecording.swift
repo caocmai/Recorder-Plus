@@ -85,15 +85,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     //        }
     //    }
     
-    //    override func willMove(toParent parent: UIViewController?)
-    //    {
-    //        super.willMove(toParent: parent)
-    //        if parent == nil
-    //        {
-    //            print("This VC is 'will' be popped. i.e. the back button was pressed.")
-    //        }
-    //    }
-    //
+
     private func setupDropDown() {
         
         coreDataStack.fetchAllRecordingCategories { (r) in
@@ -123,7 +115,6 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     
     // - MARK: Save/Update Button
 
-    
     @objc func saveButtonTapped() {
 //        print(recordingDuration)
         if rangeSeekSlider.selectedMinValue != 0 || rangeSeekSlider.selectedMaxValue != CGFloat(recordingDuration) {
