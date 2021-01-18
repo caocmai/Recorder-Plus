@@ -55,6 +55,7 @@ class TableViewCell: UITableViewCell {
     }
 }
 
+// - MARK: UITableView
 
 extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
@@ -125,6 +126,7 @@ extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, U
     }
 }
 
+// - MARK: UIContextMenuInteractionDelegate
 
 extension TableViewCell: UIContextMenuInteractionDelegate {
     

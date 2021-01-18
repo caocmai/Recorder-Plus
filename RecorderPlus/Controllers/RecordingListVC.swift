@@ -72,6 +72,7 @@ class RecordingListVC: UIViewController {
     }
 }
 
+// - MARK: UITableView
 
 extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
     
@@ -165,6 +166,8 @@ extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
     }
 
 }
+
+// - MARK: CollectionViewCellDelegate
 
 extension RecordingListVC: CollectionViewCellDelegate {
     

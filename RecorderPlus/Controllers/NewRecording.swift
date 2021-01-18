@@ -13,36 +13,24 @@ import RangeSeekSlider
 
 class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDelegate {
     
-    var coreDataStack: CoreDataStack!
-    var quickRec: Bool!
-    
-    var editRecording: Recording!
-    
-    let recordButton = UIButton()
-    let saveButton = UIButton()
-    
-    var recordingSession: AVAudioSession!
-    var audioRecorder: AVAudioRecorder!
-//    var soundPlayer : AVAudioPlayer!
-    
-    var dropDown: DropDown!
-    var uuid = UUID().uuidString
-    
     let recordingTitle = UITextField()
     let recordingNote = UITextField()
-    // currently hidden not used
-    let instructionLabel = UILabel()
     let timerLabel = UILabel()
-    
+    let recordButton = UIButton()
+    let saveButton = UIButton()
+    var coreDataStack: CoreDataStack!
+    var quickRec: Bool!
+    var editRecording: Recording!
+    var recordingSession: AVAudioSession!
+    var audioRecorder: AVAudioRecorder!
+    var dropDown: DropDown!
+    var uuid = UUID().uuidString
     var selectedCategory: RecordingCategory? = nil
     var recordingCategory = [RecordingCategory]()
     var categories = [String]()
-    
     var timer: Timer!
     var time = 0
-    
     var rangeSeekSlider = RangeSeekSlider()
-    
     var recordingDuration = Float64()
     
     
@@ -280,7 +268,6 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         recordingTitle.translatesAutoresizingMaskIntoConstraints = false
         recordingNote.translatesAutoresizingMaskIntoConstraints = false
-        instructionLabel.translatesAutoresizingMaskIntoConstraints = false
         timerLabel.translatesAutoresizingMaskIntoConstraints = false
         recordButton.translatesAutoresizingMaskIntoConstraints = false
         
@@ -302,11 +289,6 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         recordingTitle.font = UIFont.systemFont(ofSize: 21)
         recordingNote.font = UIFont.systemFont(ofSize: 16)
         
-        instructionLabel.text = "Select an existing Topic or input a new Topic"
-        instructionLabel.textColor = .lightGray
-        instructionLabel.numberOfLines = 0
-        instructionLabel.font = instructionLabel.font.withSize(15)
-        
         if let validEditRecording = editRecording {
             saveButton.setTitle("UPDATE", for: .normal)
             recordButton.setTitle("Re-record", for: .normal)
@@ -327,19 +309,14 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         }
         
         NSLayoutConstraint.activate([
-            
-            //            instructionLabel.bottomAnchor.constraint(equalTo: dropDown.topAnchor, constant: 5),
-            //            instructionLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
-            //            instructionLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
-            
-            recordingTitle.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
-            recordingTitle.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -120),
-            recordingTitle.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
-            
             dropDown.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
             dropDown.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -25),
             dropDown.bottomAnchor.constraint(equalTo: recordingTitle.topAnchor, constant: -26),
             dropDown.heightAnchor.constraint(equalToConstant: 50),
+            
+            recordingTitle.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
+            recordingTitle.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -120),
+            recordingTitle.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
             
             recordingNote.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
             recordingNote.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
@@ -360,9 +337,6 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             rangeSeekSlider.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5),
             rangeSeekSlider.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5)
         ])
-        
-        
-        instructionLabel.isHidden = true
         
     }
     
@@ -432,7 +406,6 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     }
     
     @objc func recordTapped() {
-        
         //        print(dropDown.text)
         if audioRecorder == nil {
             startRecording()
@@ -441,7 +414,12 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         }
     }
     
-    func exportAsset(_ asset: AVAsset, importUUID: String, exportUUID: String, start: Int64, end: Int64){
+}
+
+// - MARK: Cropping Audio File
+
+extension NewRecording {
+    private func exportAsset(_ asset: AVAsset, importUUID: String, exportUUID: String, start: Int64, end: Int64){
         let trimmedSoundFileUrl = getDocumentsDirectory().appendingPathComponent("\(exportUUID).m4a")
         //                print("Saving to \(trimmedSoundFileUrl.absoluteString)")
         
@@ -473,7 +451,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         }
     }
     
-    func deleteFileAlreadyPresent(uuid: String){
+    private func deleteFileAlreadyPresent(uuid: String){
         let audioUrl = getDocumentsDirectory().appendingPathComponent("\(uuid).m4a")
         if FileManager.default.fileExists(atPath: audioUrl.path){
             print("Sound exists, removing \(audioUrl.path)")
@@ -487,8 +465,4 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             }
         }
     }
-    
 }
-
-
-

@@ -134,7 +134,7 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
             timer?.invalidate()
             let stopIcon = SFSymbolCreator.setSFSymbolColor(symbolName: "play.circle", color: .green, size: 40)
             playBackButton.setImage(stopIcon, for: .normal)
-            // reset label to be audio duration when playback is finished
+            // reset label to be audio's duration when playback is finished
             totalAudioSeconds = Int(AudioPlayer.shared.player.duration)
             hours = totalAudioSeconds / 3600
             minutes = (totalAudioSeconds % 3600) / 60
@@ -143,7 +143,6 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
             
         }
         
-        //        print(totalSecond)
         hours = totalAudioSeconds / 3600
         minutes = (totalAudioSeconds % 3600) / 60
         seconds = (totalAudioSeconds % 3600) % 60
