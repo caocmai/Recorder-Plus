@@ -235,29 +235,19 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     // - MARK: Setup UI
 
     private func setupUI() {
-        //        self.view.addSubview(instructionLabel)
         self.view.addSubview(recordingTitle)
         self.view.addSubview(recordingNote)
         self.view.addSubview(recordButton)
         self.view.addSubview(timerLabel)
         self.view.addSubview(saveButton)
         self.view.addSubview(rangeSeekSlider)
-        rangeSeekSlider.translatesAutoresizingMaskIntoConstraints = false
-        rangeSeekSlider.tintColor = .lightGray
-        rangeSeekSlider.colorBetweenHandles = #colorLiteral(red: 0.2055417001, green: 1, blue: 0, alpha: 1)
-        //        rangeSeekSlider.handleColor = .blue
-        rangeSeekSlider.lineHeight = 5
-        rangeSeekSlider.isHidden = true
-        
-        dropDown = DropDown()
         self.view.addSubview(dropDown)
+
+        dropDown = DropDown()
         dropDown.translatesAutoresizingMaskIntoConstraints = false
         dropDown.font = UIFont.boldSystemFont(ofSize: 21)
-        
-        
         dropDown.backgroundColor = .white
         dropDown.placeholder = "Select or Type-In New Topic"
-        
         
         saveButton.backgroundColor = #colorLiteral(red: 0.2055417001, green: 1, blue: 0, alpha: 1)
         saveButton.setTitleColor(.gray, for: .normal)
@@ -270,6 +260,13 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         recordingNote.translatesAutoresizingMaskIntoConstraints = false
         timerLabel.translatesAutoresizingMaskIntoConstraints = false
         recordButton.translatesAutoresizingMaskIntoConstraints = false
+        rangeSeekSlider.translatesAutoresizingMaskIntoConstraints = false
+
+        rangeSeekSlider.tintColor = .lightGray
+        rangeSeekSlider.colorBetweenHandles = #colorLiteral(red: 0.2055417001, green: 1, blue: 0, alpha: 1)
+        //        rangeSeekSlider.handleColor = .blue
+        rangeSeekSlider.lineHeight = 5
+        rangeSeekSlider.isHidden = true
         
         timerLabel.font = UIFont.systemFont(ofSize: 25)
         timerLabel.text = "00:00:00"
@@ -282,25 +279,24 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         recordButton.addTarget(self, action: #selector(recordTapped), for: .touchUpInside)
         
         recordingTitle.setBottomBorder()
-        recordingNote.setBottomBorder()
         recordingTitle.placeholder = "Title/Name (Optional)"
-        recordingNote.placeholder = "Note (Optional)"
-        
         recordingTitle.font = UIFont.systemFont(ofSize: 21)
+        
+        recordingNote.setBottomBorder()
+        recordingNote.placeholder = "Note (Optional)"
         recordingNote.font = UIFont.systemFont(ofSize: 16)
         
         if let validEditRecording = editRecording {
+            rangeSeekSlider.isHidden = false
             saveButton.setTitle("UPDATE", for: .normal)
             recordButton.setTitle("Re-record", for: .normal)
-            
-            rangeSeekSlider.isHidden = false
-            
             recordingTitle.text = validEditRecording.name
             recordingNote.text = validEditRecording.note
+            
             uuid = validEditRecording.recordingID!.uuidString
             let asset = AVURLAsset(url: getDocumentsDirectory().appendingPathComponent(uuid+".m4a"))
-            recordingDuration = CMTimeGetSeconds(asset.duration)
             
+            recordingDuration = CMTimeGetSeconds(asset.duration)
             rangeSeekSlider.maxValue = CGFloat(recordingDuration)
             dropDown.text = validEditRecording.recordingParent?.category
             
@@ -454,10 +450,10 @@ extension NewRecording {
     private func deleteFileAlreadyPresent(uuid: String){
         let audioUrl = getDocumentsDirectory().appendingPathComponent("\(uuid).m4a")
         if FileManager.default.fileExists(atPath: audioUrl.path){
-            print("Sound exists, removing \(audioUrl.path)")
+//            print("Sound exists, removing \(audioUrl.path)")
             do{
                 if try audioUrl.checkResourceIsReachable(){
-                    print("is reachable")
+                    print("is reachable and deleting")
                     try FileManager.default.removeItem(at: audioUrl)
                 }
             } catch{

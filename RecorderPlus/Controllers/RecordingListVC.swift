@@ -22,22 +22,25 @@ class RecordingListVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUpTableAndUI()
+    }
+    
+    private func setUpTableAndUI() {
         self.view.backgroundColor = .white
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.title = "Recordings"
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
+        self.navigationItem.rightBarButtonItem = addButton
+        let quickRec = UIBarButtonItem(title: "QuickREC", style: .plain, target: self, action: #selector(quickRecTapped))
+        self.navigationItem.leftBarButtonItem = quickRec
+        
         self.view.addSubview(tableview)
         tableview.frame = view.bounds
         tableview.dataSource = self
         tableview.delegate = self
         tableview.register(TableViewCell.self, forCellReuseIdentifier: "tableviewcellid")
         tableview.register(CategoryHeader.self, forHeaderFooterViewReuseIdentifier: CategoryHeader.indentifier)
-        
-        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
-        
-        self.navigationItem.rightBarButtonItem = addButton
-        
-        let quickRec = UIBarButtonItem(title: "QuickREC", style: .plain, target: self, action: #selector(quickRecTapped))
-        self.navigationItem.leftBarButtonItem = quickRec
+
     }
     
     private func fetchAndSet() {
@@ -89,7 +92,7 @@ extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
         return 200
     }
     
-    // Category Title
+    // Recording Topic header
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let headerView = tableview.dequeueReusableHeaderFooterView(withIdentifier: CategoryHeader.indentifier) as! CategoryHeader
@@ -102,7 +105,6 @@ extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
         }
         
         headerView.deleteCompletion = {
-            
             let refreshAlert = UIAlertController(title: "Delete Topic Recordings", message: "WARNING: This will delete ALL recordings for this topic", preferredStyle: UIAlertController.Style.alert)
             
             refreshAlert.addAction(UIAlertAction(title: "Delete", style: .default, handler: { (action: UIAlertAction!) in
@@ -115,7 +117,6 @@ extension RecordingListVC: UITableViewDelegate, UITableViewDataSource {
                 }
                 
                 let quickRecId = UserDefaults.standard.string(forKey: "quickRecTopicId")
-                
                 if let validQuickRecId = quickRecId {
                     if self.categories[section][0].categoryID! == UUID(uuidString: validQuickRecId) {
                         UserDefaults.standard.set(nil, forKey: "quickRecTopicId")
