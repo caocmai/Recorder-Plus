@@ -32,10 +32,8 @@ Then make sure you run the project file with the .xcworkspace extension and NOT 
 * [Xcode - 12.3](https://developer.apple.com/xcode/) - The IDE used
 * [Swift - 5.1.4](https://developer.apple.com/swift/) - Programming language
 * [CocoaPods - 1.9.3](https://cocoapods.org/) - 3rd party dependencies
-
-### CocoaPods
-* [RangeSeekSlider](https://github.com/WorldDownTown/RangeSeekSlider)
-* [iOSDropDown](https://cocoapods.org/pods/iOSDropDown)
+    * [RangeSeekSlider](https://github.com/WorldDownTown/RangeSeekSlider)
+    * [iOSDropDown](https://cocoapods.org/pods/iOSDropDown)
 
 ## Author
 * Cao Mai - [Portfolio](https://www.makeschool.com/portfolio/Cao-Mai)
