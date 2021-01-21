@@ -23,7 +23,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     var editRecording: Recording!
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
-    var dropDown: DropDown!
+    var dropDown : DropDown!
     var uuid = UUID().uuidString
     var selectedCategory: RecordingCategory? = nil
     var recordingCategory = [RecordingCategory]()
@@ -33,6 +33,8 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     var rangeSeekSlider = RangeSeekSlider()
     var recordingDuration = Float64()
     
+    let cropStackView = UIStackView()
+    let previewButton = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -226,15 +228,34 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     // - MARK: Setup UI
 
     private func setupUI() {
+        dropDown = DropDown()
         self.view.addSubview(recordingTitle)
         self.view.addSubview(recordingNote)
         self.view.addSubview(recordButton)
         self.view.addSubview(timerLabel)
         self.view.addSubview(saveButton)
-        self.view.addSubview(rangeSeekSlider)
+//        self.view.addSubview(rangeSeekSlider)
         self.view.addSubview(dropDown)
-
-        dropDown = DropDown()
+        
+        self.view.addSubview(cropStackView)
+        
+        cropStackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        cropStackView.addArrangedSubview(previewButton)
+        cropStackView.addArrangedSubview(rangeSeekSlider)
+        cropStackView.alignment = .leading
+        cropStackView.backgroundColor = .orange
+        cropStackView.layer.cornerRadius = 7
+        
+//        self.view.addSubview(previewButton)
+        let playImage = SFSymbolCreator.setSFSymbolColor(symbolName: "play", color: .green, size: 22)
+        previewButton.setImage(playImage, for: .normal)
+        previewButton.addTarget(self, action: #selector(previewButtonTapped), for: .touchUpInside)
+        
+        NSLayoutConstraint.activate([
+            previewButton.centerYAnchor.constraint(equalTo: cropStackView.centerYAnchor)
+        ])
+        
         dropDown.translatesAutoresizingMaskIntoConstraints = false
         dropDown.font = UIFont.boldSystemFont(ofSize: 21)
         dropDown.backgroundColor = .white
@@ -257,7 +278,9 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         rangeSeekSlider.colorBetweenHandles = #colorLiteral(red: 0.2055417001, green: 1, blue: 0, alpha: 1)
         //        rangeSeekSlider.handleColor = .blue
         rangeSeekSlider.lineHeight = 5
-        rangeSeekSlider.isHidden = true
+//        rangeSeekSlider.isHidden = true
+        // for testing purposes set to false otherwise must be true
+        cropStackView.isHidden = false
         
         timerLabel.font = UIFont.systemFont(ofSize: 25)
         timerLabel.text = "00:00:00"
@@ -278,7 +301,8 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         recordingNote.font = UIFont.systemFont(ofSize: 16)
         
         if let validEditRecording = editRecording {
-            rangeSeekSlider.isHidden = false
+//            rangeSeekSlider.isHidden = false
+            cropStackView.isHidden = false
             saveButton.setTitle("UPDATE", for: .normal)
             recordButton.setTitle("Re-record", for: .normal)
             recordingTitle.text = validEditRecording.name
@@ -320,11 +344,19 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             saveButton.widthAnchor.constraint(equalToConstant: 180),
             saveButton.heightAnchor.constraint(equalToConstant: 60),
             
-            rangeSeekSlider.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -5),
-            rangeSeekSlider.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5),
-            rangeSeekSlider.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5)
+//            rangeSeekSlider.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -5),
+//            rangeSeekSlider.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5),
+//            rangeSeekSlider.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5),
+            
+            cropStackView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -5),
+            cropStackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5),
+            cropStackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5)
         ])
         
+    }
+    
+    @objc func previewButtonTapped() {
+        print("preview touched")
     }
     
     func getDocumentsDirectory() -> URL {
@@ -385,7 +417,8 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             
             rangeSeekSlider.maxValue = CGFloat(recordingDuration)
             rangeSeekSlider.selectedMaxValue = CGFloat(recordingDuration)
-            rangeSeekSlider.isHidden = false
+//            rangeSeekSlider.isHidden = false
+            cropStackView.isHidden = false
             
         } else {
             recordButton.setTitle("Record", for: .normal)
