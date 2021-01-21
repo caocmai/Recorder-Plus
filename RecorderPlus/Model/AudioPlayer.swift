@@ -37,6 +37,7 @@ class AudioPlayer {
                 print(error.localizedDescription)
             }
             player.play()
+
             player.volume = 0.9
             
         } catch let error as NSError {
@@ -45,6 +46,27 @@ class AudioPlayer {
             print("AVAudioPlayer init failed")
         }
         
+    }
+    
+    func playAtTime(url: URL, atTime: Double) {
+        do {
+            player = try AVAudioPlayer(contentsOf: url)
+            
+            // to be able to play sound when device in slient mode
+            do {
+                try AVAudioSession.sharedInstance().setCategory(.playback)
+            } catch(let error) {
+                print(error.localizedDescription)
+            }
+            player.play()
+            player.currentTime = atTime
+            player.volume = 0.9
+            
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        } catch {
+            print("AVAudioPlayer init failed")
+        }
     }
     
 }

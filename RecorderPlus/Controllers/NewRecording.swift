@@ -35,6 +35,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     
     let cropStackView = UIStackView()
     let previewButton = UIButton()
+    var isPlayingPreview = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -244,12 +245,12 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         cropStackView.addArrangedSubview(previewButton)
         cropStackView.addArrangedSubview(rangeSeekSlider)
         cropStackView.alignment = .leading
-        cropStackView.backgroundColor = .orange
+//        cropStackView.backgroundColor = .orange
         cropStackView.layer.cornerRadius = 7
         
 //        self.view.addSubview(previewButton)
-        let playImage = SFSymbolCreator.setSFSymbolColor(symbolName: "play", color: .green, size: 22)
-        previewButton.setImage(playImage, for: .normal)
+        let playButton = SFSymbolCreator.setSFSymbolColor(symbolName: "play.circle", color: .green, size: 30)
+        previewButton.setImage(playButton, for: .normal)
         previewButton.addTarget(self, action: #selector(previewButtonTapped), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
@@ -279,8 +280,9 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         //        rangeSeekSlider.handleColor = .blue
         rangeSeekSlider.lineHeight = 5
 //        rangeSeekSlider.isHidden = true
+        
         // for testing purposes set to false otherwise must be true
-        cropStackView.isHidden = false
+        cropStackView.isHidden = true
         
         timerLabel.font = UIFont.systemFont(ofSize: 25)
         timerLabel.text = "00:00:00"
@@ -357,6 +359,26 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     
     @objc func previewButtonTapped() {
         print("preview touched")
+        
+//        AudioPlayer.shared.playAtTime(url: <#T##URL#>, time: <#T##Int#>)
+        let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
+
+        if isPlayingPreview == false {
+            let stopIcon = SFSymbolCreator.setSFSymbolColor(symbolName: "stop.circle", color: .green, size: 30)
+            AudioPlayer.shared.play(url: audioFilename)
+//            totalAudioSeconds = Int(AudioPlayer.shared.player.duration)
+            AudioPlayer.shared.player.play(atTime: Double(rangeSeekSlider.selectedMinValue))
+            previewButton.setImage(stopIcon, for: .normal)
+            isPlayingPreview = true
+//            startTimer()
+        } else {
+            timer?.invalidate()
+            isPlayingPreview = false
+            AudioPlayer.shared.player.stop()
+            let playButton = SFSymbolCreator.setSFSymbolColor(symbolName: "play.circle", color: .green, size: 30)
+            previewButton.setImage(playButton, for: .normal)
+        }
+        
     }
     
     func getDocumentsDirectory() -> URL {
