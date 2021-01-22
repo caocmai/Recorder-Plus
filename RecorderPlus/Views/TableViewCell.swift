@@ -152,7 +152,9 @@ extension TableViewCell: UIContextMenuInteractionDelegate {
             collectionView.deleteItems(at: [indexPath])
             let fileManager = FileManager.default
             let uuidString = recording?.recordingID?.uuidString
-            let audioFilename = self.getDocumentsDirectory().appendingPathComponent(uuidString!+".m4a")
+//            print(uuidString)
+            let audioFilename = GetDocumentDir.getDocumentsDirectory().appendingPathComponent(uuidString!+".m4a")
+//            print(audioFilename)
             do {
                 try fileManager.removeItem(at: audioFilename)
             } catch {

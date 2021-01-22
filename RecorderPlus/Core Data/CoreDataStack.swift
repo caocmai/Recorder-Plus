@@ -71,14 +71,15 @@ class CoreDataStack {
         //        fetchRequest.fetchLimit = 1
         do {
             let recordings = try managedContext.fetch(fetchRequest)
+            let fileManager = FileManager.default
+
             for object in recordings {
-                let fileManager = FileManager.default
                 let uuidString = object.recordingID?.uuidString
                 let audioFilename = self.getDocumentsDirectory().appendingPathComponent(uuidString!+".m4a")
                 do {
                     try fileManager.removeItem(at: audioFilename)
                 } catch {
-                    print("file not found to delete")
+                    print("file not found to delete in core data")
                 }
                 
                 managedContext.delete(object)

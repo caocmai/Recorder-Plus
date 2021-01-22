@@ -133,9 +133,9 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
                 
                 if dropDown.text == "" {
                     if quickRec == true {
-                        unknownTopicSaves(recordingTopic: "QuickREC Recording", recordingKey: "quickRecTopicId")
+                        unknownTopicSaves(recordingTopic: "QuickREC Recordings", recordingKey: "quickRecTopicId")
                     } else {
-                        unknownTopicSaves(recordingTopic: "Unknown Recording", recordingKey: "unknownTopicId")
+                        unknownTopicSaves(recordingTopic: "Unknown Recordings", recordingKey: "unknownTopicId")
                     }
                 } else {
                     var categoryFound = false
