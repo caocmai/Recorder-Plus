@@ -52,7 +52,6 @@ class AudioPlayer {
         do {
             player = try AVAudioPlayer(contentsOf: url)
             
-            // to be able to play sound when device in slient mode
             do {
                 try AVAudioSession.sharedInstance().setCategory(.playback)
             } catch(let error) {

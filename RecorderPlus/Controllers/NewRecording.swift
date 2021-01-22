@@ -33,7 +33,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     var rangeSeekSlider = RangeSeekSlider()
     var recordingDuration = Float64()
     
-    let cropStackView = UIStackView()
+    let croppingStackView = UIStackView()
     let previewButton = UIButton()
     var isPlayingPreview = false
     
@@ -73,22 +73,6 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         }
     }
     
-    //    override func viewWillDisappear(_ animated: Bool) {
-    //        super.viewWillDisappear(animated)
-    //
-    //        if self.isMovingFromParent {
-    //            // to delete temp recording file that wasn't saved
-    //            let fileManager = FileManager.default
-    //            let audioFilename = self.getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
-    //            do {
-    //                try fileManager.removeItem(at: audioFilename)
-    //            } catch {
-    //               print("file not found to delete")
-    //            }
-    //        }
-    //    }
-    
-
     private func setupDropDown() {
         
         coreDataStack.fetchAllRecordingCategories { (r) in
@@ -123,7 +107,11 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         if rangeSeekSlider.selectedMinValue != 0 || rangeSeekSlider.selectedMaxValue != CGFloat(recordingDuration) {
             let newTrimmedRecId = UUID().uuidString
             let asset = AVURLAsset(url: getDocumentsDirectory().appendingPathComponent(uuid+".m4a"))
-            exportAsset(asset, importUUID: uuid, exportUUID: newTrimmedRecId, start: Int64(rangeSeekSlider.selectedMinValue), end: Int64(rangeSeekSlider.selectedMaxValue))
+            
+            let cropAudioUtility = CropAudioFile()
+            cropAudioUtility.exportAsset(asset, importUUID: uuid, exportUUID: newTrimmedRecId, start: Int64(rangeSeekSlider.selectedMinValue), end: Int64(rangeSeekSlider.selectedMaxValue))
+            
+//            exportAsset(asset, importUUID: uuid, exportUUID: newTrimmedRecId, start: Int64(rangeSeekSlider.selectedMinValue), end: Int64(rangeSeekSlider.selectedMaxValue))
             uuid = newTrimmedRecId
         }
         
@@ -145,9 +133,9 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
                 
                 if dropDown.text == "" {
                     if quickRec == true {
-                        unknownTopicSaves(recordingTopic: "QuickREC", recordingKey: "quickRecTopicId")
+                        unknownTopicSaves(recordingTopic: "QuickREC Recording", recordingKey: "quickRecTopicId")
                     } else {
-                        unknownTopicSaves(recordingTopic: "Unknown", recordingKey: "unknownTopicId")
+                        unknownTopicSaves(recordingTopic: "Unknown Recording", recordingKey: "unknownTopicId")
                     }
                 } else {
                     var categoryFound = false
@@ -191,7 +179,6 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
                     self.createNewRecording(withUUID: self.uuid, topic: recordings.first!)
                 }
             }
-            
         } else {
             let categoryUUID = UUID()
             createNewRecordingTopic(withUUID: categoryUUID, recordingTopic: recordingTopic)
@@ -237,16 +224,15 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         self.view.addSubview(saveButton)
 //        self.view.addSubview(rangeSeekSlider)
         self.view.addSubview(dropDown)
+        self.view.addSubview(croppingStackView)
         
-        self.view.addSubview(cropStackView)
+        croppingStackView.translatesAutoresizingMaskIntoConstraints = false
         
-        cropStackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        cropStackView.addArrangedSubview(previewButton)
-        cropStackView.addArrangedSubview(rangeSeekSlider)
-        cropStackView.alignment = .leading
+        croppingStackView.addArrangedSubview(previewButton)
+        croppingStackView.addArrangedSubview(rangeSeekSlider)
+        croppingStackView.alignment = .leading
 //        cropStackView.backgroundColor = .orange
-        cropStackView.layer.cornerRadius = 7
+        croppingStackView.layer.cornerRadius = 7
         
 //        self.view.addSubview(previewButton)
         let playButton = SFSymbolCreator.setSFSymbolColor(symbolName: "play.circle", color: .green, size: 30)
@@ -254,7 +240,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         previewButton.addTarget(self, action: #selector(previewButtonTapped), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
-            previewButton.centerYAnchor.constraint(equalTo: cropStackView.centerYAnchor)
+            previewButton.centerYAnchor.constraint(equalTo: croppingStackView.centerYAnchor)
         ])
         
         dropDown.translatesAutoresizingMaskIntoConstraints = false
@@ -282,7 +268,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
 //        rangeSeekSlider.isHidden = true
         
         // for testing purposes set to false otherwise must be true
-        cropStackView.isHidden = true
+        croppingStackView.isHidden = true
         
         timerLabel.font = UIFont.systemFont(ofSize: 25)
         timerLabel.text = "00:00:00"
@@ -304,7 +290,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         
         if let validEditRecording = editRecording {
 //            rangeSeekSlider.isHidden = false
-            cropStackView.isHidden = false
+            croppingStackView.isHidden = false
             saveButton.setTitle("UPDATE", for: .normal)
             recordButton.setTitle("Re-record", for: .normal)
             recordingTitle.text = validEditRecording.name
@@ -350,9 +336,9 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
 //            rangeSeekSlider.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5),
 //            rangeSeekSlider.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5),
             
-            cropStackView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -5),
-            cropStackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5),
-            cropStackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5)
+            croppingStackView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -5),
+            croppingStackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5),
+            croppingStackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5)
         ])
         
     }
@@ -433,14 +419,14 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             recordButton.setImage(recordSymbol, for: .normal)
             
             let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
-            print(audioFilename)
+//            print(audioFilename)
             let asset = AVURLAsset(url: getDocumentsDirectory().appendingPathComponent(uuid+".m4a"))
             recordingDuration = CMTimeGetSeconds(asset.duration)
             
             rangeSeekSlider.maxValue = CGFloat(recordingDuration)
             rangeSeekSlider.selectedMaxValue = CGFloat(recordingDuration)
 //            rangeSeekSlider.isHidden = false
-            cropStackView.isHidden = false
+            croppingStackView.isHidden = false
             
         } else {
             recordButton.setTitle("Record", for: .normal)
@@ -456,55 +442,4 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         }
     }
     
-}
-
-// - MARK: Cropping Audio File
-
-extension NewRecording {
-    private func exportAsset(_ asset: AVAsset, importUUID: String, exportUUID: String, start: Int64, end: Int64){
-        let trimmedSoundFileUrl = getDocumentsDirectory().appendingPathComponent("\(exportUUID).m4a")
-        //                print("Saving to \(trimmedSoundFileUrl.absoluteString)")
-        
-        if let exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A){
-            exporter.outputFileType = AVFileType.m4a
-            exporter.outputURL = trimmedSoundFileUrl
-            
-            let startTime = CMTimeMake(value: start, timescale: 1)
-            let stopTime = CMTimeMake(value: end, timescale: 1)
-            exporter.timeRange = CMTimeRangeFromTimeToTime(start: startTime, end: stopTime)
-            
-            exporter.exportAsynchronously(completionHandler: {
-                print("export complete \(exporter.status)")
-                
-                switch exporter.status {
-                case  AVAssetExportSessionStatus.failed:
-                    if let e = exporter.error {
-                        print("export failed \(e)")
-                    }
-                case AVAssetExportSessionStatus.cancelled:
-                    print("export cancelled \(String(describing: exporter.error))")
-                default:
-                    print("export complete")
-                    self.deleteFileAlreadyPresent(uuid: importUUID)
-                }
-            })
-        } else{
-            print("cannot create AVAssetExportSession for asset \(asset)")
-        }
-    }
-    
-    private func deleteFileAlreadyPresent(uuid: String){
-        let audioUrl = getDocumentsDirectory().appendingPathComponent("\(uuid).m4a")
-        if FileManager.default.fileExists(atPath: audioUrl.path){
-//            print("Sound exists, removing \(audioUrl.path)")
-            do{
-                if try audioUrl.checkResourceIsReachable(){
-                    print("is reachable and deleting")
-                    try FileManager.default.removeItem(at: audioUrl)
-                }
-            } catch{
-                print("Could not remove \(audioUrl.absoluteString)")
-            }
-        }
-    }
 }

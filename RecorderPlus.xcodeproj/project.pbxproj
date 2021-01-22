@@ -25,6 +25,7 @@
 		2C7DDC2E25A8C7B100D6961A /* iOSDropDown.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C7DDC2D25A8C7B100D6961A /* iOSDropDown.framework */; };
 		2C7DDC3325A9538800D6961A /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7DDC3225A9538800D6961A /* UITextField.swift */; };
 		2C7DDC3825A9687B00D6961A /* CategoryHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7DDC3725A9687B00D6961A /* CategoryHeader.swift */; };
+		2CA7D24725BA895A00D1B1BA /* CropAudioFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA7D24625BA895A00D1B1BA /* CropAudioFile.swift */; };
 		2CC9E5F725AAB59F00F75805 /* Recording+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC9E5F325AAB59F00F75805 /* Recording+CoreDataProperties.swift */; };
 		2CC9E5F825AAB59F00F75805 /* Recording+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC9E5F425AAB59F00F75805 /* Recording+CoreDataClass.swift */; };
 		2CC9E5F925AAB59F00F75805 /* RecordingCategory+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC9E5F525AAB59F00F75805 /* RecordingCategory+CoreDataClass.swift */; };
@@ -79,6 +80,7 @@
 		2C7DDC2D25A8C7B100D6961A /* iOSDropDown.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = iOSDropDown.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C7DDC3225A9538800D6961A /* UITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		2C7DDC3725A9687B00D6961A /* CategoryHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryHeader.swift; sourceTree = "<group>"; };
+		2CA7D24625BA895A00D1B1BA /* CropAudioFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CropAudioFile.swift; sourceTree = "<group>"; };
 		2CC9E5F325AAB59F00F75805 /* Recording+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Recording+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		2CC9E5F425AAB59F00F75805 /* Recording+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Recording+CoreDataClass.swift"; sourceTree = "<group>"; };
 		2CC9E5F525AAB59F00F75805 /* RecordingCategory+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RecordingCategory+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -226,6 +228,7 @@
 			children = (
 				2CC9E5FE25AAC6CF00F75805 /* SFSymbolCreator.swift */,
 				2C53BCBA25AFEF4C00FA42C3 /* AudioPlayer.swift */,
+				2CA7D24625BA895A00D1B1BA /* CropAudioFile.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -497,6 +500,7 @@
 				2C341E2F25A7FEB8005E8AD7 /* RecordingMetaData.xcdatamodeld in Sources */,
 				2CC9E5F825AAB59F00F75805 /* Recording+CoreDataClass.swift in Sources */,
 				2C660EC925A6C0280054D556 /* RecordingListVC.swift in Sources */,
+				2CA7D24725BA895A00D1B1BA /* CropAudioFile.swift in Sources */,
 				2CC9E5FF25AAC6CF00F75805 /* SFSymbolCreator.swift in Sources */,
 				2C341E3C25A7FF6F005E8AD7 /* CoreDataStack.swift in Sources */,
 				2C7DDC3325A9538800D6961A /* UITextField.swift in Sources */,

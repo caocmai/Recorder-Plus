@@ -15,18 +15,17 @@ This is an audio recorder app where users can quickly record audio and assign it
 ### App Screenshots
 ![](Screenshots/image1.png) ![](Screenshots/image2.png)
 
-
 ### Usage
-Open the app and tap on the "+" icon on the upper right, once you allow the app to use your device's microphone to conduct audio recording sessions, you can tap on the red Record button to start your first recording. Give it a topic, name, or note if you wish. By default, the recording's topic will be set to "Unknown" if none are provided.
+Open the app and tap on the "+" icon on the upper right, once you allow the app to use your device's microphone to conduct audio recording sessions, you can tap on the red Record button to start your first recording. Give it a topic, name, or note if you wish. By default, the recording's topic will be set to "Unknown Recordings" if none are provided.
 
-If you need to quickly record something tap on the QuickRec to start a recording immediately and once done tap the SAVE button. By default, these recordings' topic will be set to "QuickRec".
+If you need to quickly record something tap on the QuickRec to start a recording immediately and once done tap the SAVE button. By default, these recordings' topic will be set to "QuickREC Recordings".
 
 ### Run Locally
 Before running this project in Xcode's simulator please note it requires the installation of some [CocoaPods](https://cocoapods.org/). To install the necessary CocoaPods navigate to the root of this project and execute the following in terminal:
 
 `pod install`
 
-Then make sure you run the project file with the .xcworkspace extension and NOT the file with .xcodeproj extension.
+Then make sure you run the project file with the `.xcworkspace` extension and NOT the file with `.xcodeproj` extension.
 
 ## Built With
 * [Xcode - 12.3](https://developer.apple.com/xcode/) - The IDE used
