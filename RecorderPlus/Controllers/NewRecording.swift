@@ -43,6 +43,11 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         self.view.backgroundColor = .white
         UITextField.connectFields(fields: [recordingTitle, recordingNote])
         
+        self.navigationItem.hidesBackButton = true
+        let newBackButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(backTapped))
+        self.navigationItem.leftBarButtonItem = newBackButton
+        
+        
         recordingSession = AVAudioSession.sharedInstance()
         // ask for recording permission
         do {
@@ -73,8 +78,20 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         }
     }
     
+    @objc func backTapped(sender: UIBarButtonItem) {
+        print("back button")
+        // delete unsaved audio file, if present cause user cancels
+        let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
+        let fileManager = FileManager.default
+        do {
+            try fileManager.removeItem(at: audioFilename)
+        } catch {
+            print("file not found to delete")
+        }
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     private func setupDropDown() {
-        
         coreDataStack.fetchAllRecordingCategories { (r) in
             switch r {
             case .failure(let error):
@@ -101,9 +118,9 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     }
     
     // - MARK: Save/Update Button
-
+    
     @objc func saveButtonTapped() {
-//        print(recordingDuration)
+        //        print(recordingDuration)
         if rangeSeekSlider.selectedMinValue != 0 || rangeSeekSlider.selectedMaxValue != CGFloat(recordingDuration) {
             let newTrimmedRecId = UUID().uuidString
             let asset = AVURLAsset(url: getDocumentsDirectory().appendingPathComponent(uuid+".m4a"))
@@ -111,7 +128,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             let cropAudioUtility = CropAudioFile()
             cropAudioUtility.exportAsset(asset, importUUID: uuid, exportUUID: newTrimmedRecId, start: Int64(rangeSeekSlider.selectedMinValue), end: Int64(rangeSeekSlider.selectedMaxValue))
             
-//            exportAsset(asset, importUUID: uuid, exportUUID: newTrimmedRecId, start: Int64(rangeSeekSlider.selectedMinValue), end: Int64(rangeSeekSlider.selectedMaxValue))
+            //            exportAsset(asset, importUUID: uuid, exportUUID: newTrimmedRecId, start: Int64(rangeSeekSlider.selectedMinValue), end: Int64(rangeSeekSlider.selectedMaxValue))
             uuid = newTrimmedRecId
         }
         
@@ -183,7 +200,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             let categoryUUID = UUID()
             createNewRecordingTopic(withUUID: categoryUUID, recordingTopic: recordingTopic)
             UserDefaults.standard.set(categoryUUID.uuidString, forKey: recordingKey)
-
+            
             coreDataStack.fetchRecordingCategoryByID(identifier: categoryUUID) { (results) in
                 switch results {
                 case .failure(let error):
@@ -214,7 +231,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     
     
     // - MARK: Setup UI
-
+    
     private func setupUI() {
         dropDown = DropDown()
         self.view.addSubview(recordingTitle)
@@ -222,7 +239,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         self.view.addSubview(recordButton)
         self.view.addSubview(timerLabel)
         self.view.addSubview(saveButton)
-//        self.view.addSubview(rangeSeekSlider)
+        //        self.view.addSubview(rangeSeekSlider)
         self.view.addSubview(dropDown)
         self.view.addSubview(croppingStackView)
         
@@ -231,10 +248,10 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         croppingStackView.addArrangedSubview(previewButton)
         croppingStackView.addArrangedSubview(rangeSeekSlider)
         croppingStackView.alignment = .leading
-//        cropStackView.backgroundColor = .orange
+        //        cropStackView.backgroundColor = .orange
         croppingStackView.layer.cornerRadius = 7
         
-//        self.view.addSubview(previewButton)
+        //        self.view.addSubview(previewButton)
         let playButton = SFSymbolCreator.setSFSymbolColor(symbolName: "play.circle", color: .green, size: 30)
         previewButton.setImage(playButton, for: .normal)
         previewButton.addTarget(self, action: #selector(previewButtonTapped), for: .touchUpInside)
@@ -260,12 +277,12 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         timerLabel.translatesAutoresizingMaskIntoConstraints = false
         recordButton.translatesAutoresizingMaskIntoConstraints = false
         rangeSeekSlider.translatesAutoresizingMaskIntoConstraints = false
-
+        
         rangeSeekSlider.tintColor = .lightGray
         rangeSeekSlider.colorBetweenHandles = #colorLiteral(red: 0.2055417001, green: 1, blue: 0, alpha: 1)
         //        rangeSeekSlider.handleColor = .blue
         rangeSeekSlider.lineHeight = 5
-//        rangeSeekSlider.isHidden = true
+        //        rangeSeekSlider.isHidden = true
         
         // for testing purposes set to false otherwise must be true
         croppingStackView.isHidden = true
@@ -289,7 +306,7 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
         recordingNote.font = UIFont.systemFont(ofSize: 16)
         
         if let validEditRecording = editRecording {
-//            rangeSeekSlider.isHidden = false
+            //            rangeSeekSlider.isHidden = false
             croppingStackView.isHidden = false
             saveButton.setTitle("UPDATE", for: .normal)
             recordButton.setTitle("Re-record", for: .normal)
@@ -332,9 +349,9 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             saveButton.widthAnchor.constraint(equalToConstant: 180),
             saveButton.heightAnchor.constraint(equalToConstant: 60),
             
-//            rangeSeekSlider.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -5),
-//            rangeSeekSlider.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5),
-//            rangeSeekSlider.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5),
+            //            rangeSeekSlider.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -5),
+            //            rangeSeekSlider.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5),
+            //            rangeSeekSlider.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5),
             
             croppingStackView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -5),
             croppingStackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5),
@@ -346,17 +363,17 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
     @objc func previewButtonTapped() {
         print("preview touched")
         
-//        AudioPlayer.shared.playAtTime(url: <#T##URL#>, time: <#T##Int#>)
+        //        AudioPlayer.shared.playAtTime(url: <#T##URL#>, time: <#T##Int#>)
         let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
-
+        
         if isPlayingPreview == false {
             let stopIcon = SFSymbolCreator.setSFSymbolColor(symbolName: "stop.circle", color: .green, size: 30)
             AudioPlayer.shared.play(url: audioFilename)
-//            totalAudioSeconds = Int(AudioPlayer.shared.player.duration)
+            //            totalAudioSeconds = Int(AudioPlayer.shared.player.duration)
             AudioPlayer.shared.player.play(atTime: Double(rangeSeekSlider.selectedMinValue))
             previewButton.setImage(stopIcon, for: .normal)
             isPlayingPreview = true
-//            startTimer()
+            //            startTimer()
         } else {
             timer?.invalidate()
             isPlayingPreview = false
@@ -419,13 +436,13 @@ class NewRecording: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDele
             recordButton.setImage(recordSymbol, for: .normal)
             
             let audioFilename = getDocumentsDirectory().appendingPathComponent(uuid+".m4a")
-//            print(audioFilename)
+            //            print(audioFilename)
             let asset = AVURLAsset(url: getDocumentsDirectory().appendingPathComponent(uuid+".m4a"))
             recordingDuration = CMTimeGetSeconds(asset.duration)
             
             rangeSeekSlider.maxValue = CGFloat(recordingDuration)
             rangeSeekSlider.selectedMaxValue = CGFloat(recordingDuration)
-//            rangeSeekSlider.isHidden = false
+            //            rangeSeekSlider.isHidden = false
             croppingStackView.isHidden = false
             
         } else {
