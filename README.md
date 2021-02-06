@@ -16,7 +16,7 @@ This is an audio recorder app where users can quickly record audio and assign it
 ![](Screenshots/image1.png) ![](Screenshots/image2.png)
 
 ### Usage
-Open the app and tap on the "+" icon on the upper right, once you allow the app to use your device's microphone to conduct audio recording sessions, you can tap on the red Record button to start your first recording. Give it a topic, name, or note if you wish. By default, the recording's topic will be set to "Unknown Recordings" if none are provided.
+Open the app and tap on the "+" icon on the upper right, once you allow the app to use your device's microphone to conduct audio recording sessions, you can tap on the red Record button to start your first recording. Give it a topic, name, or note if you wish. By default, the recording's topic will be set to "Unknown Recordings" if none is provided.
 
 If you need to quickly record something tap on the QuickRec to start a recording immediately and once done tap the SAVE button. By default, these recordings' topic will be set to "QuickREC Recordings".
 
@@ -37,4 +37,5 @@ Then make sure you run the project file with the `.xcworkspace` extension and NO
 ## Author
 * Cao Mai - [Portfolio](https://www.makeschool.com/portfolio/Cao-Mai)
 
-## Note
+## Privacy Notice
+* [Link](https://caocmai.github.io/Recorder-Plus/)
