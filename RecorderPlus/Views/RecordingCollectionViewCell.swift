@@ -61,16 +61,16 @@ class RecordingCollectionViewCell: UICollectionViewCell, AVAudioPlayerDelegate {
             recordingTitle.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -5),
         ])
         
-        
-        self.contentView.addSubview(deleteButton)
-        let trash = SFSymbolCreator.setSFSymbolColor(symbolName: "xmark.square.fill", color: .red, size: 23)
-        deleteButton.setImage(trash, for: .normal)
-        deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
-        deleteButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            deleteButton.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: -3),
-            deleteButton.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: -3),
-        ])
+//        
+//        self.contentView.addSubview(deleteButton)
+//        let trash = SFSymbolCreator.setSFSymbolColor(symbolName: "xmark.square.fill", color: .red, size: 23)
+//        deleteButton.setImage(trash, for: .normal)
+//        deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+//        deleteButton.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            deleteButton.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: -3),
+//            deleteButton.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: -3),
+//        ])
         
     }
     
